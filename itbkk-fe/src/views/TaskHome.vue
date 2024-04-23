@@ -25,15 +25,24 @@
                 <TableHead>Update At</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody v-if="tasks.length !== 0">
               <TableRow v-for="task in tasks" :key="task.id">
-                <TableCell class="max-w-96 overflow-hidden">{{ task.title }}</TableCell>
-                <TableCell>{{ task.assignees }}</TableCell>
-                <TableCell>{{ task.status }}</TableCell>
-                <TableCell>{{ task.createdAt }}</TableCell>
-                <TableCell>{{ task.updatedAt }}</TableCell>
+                <TableCell class="max-w-96 overflow-hidden">{{ task.taskTitle }}</TableCell>
+                <TableCell>
+                  <template
+                    v-for="taskAssignee in task.taskAssignees"
+                    :key="taskAssignee.assigneeId"
+                  >
+                    <span>{{ taskAssignee.assigneeName }}</span>
+                    <span v-if="task.taskAssignees.length > 1 && taskAssignee !== task.taskAssignees[task.taskAssignees.length - 1]">, </span>
+                  </template>
+                </TableCell>
+                <TableCell>{{ task.taskStatus }}</TableCell>
+                <TableCell>{{ task.createdOn }}</TableCell>
+                <TableCell>{{ task.updatedOn }}</TableCell>
               </TableRow>
             </TableBody>
+            <p v-else class="p-6 text-center text-red-500">No tasks found</p>
           </Table>
         </div>
       </div>
@@ -64,56 +73,12 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { ref } from 'vue'
-import { Fullscreen } from 'lucide-vue-next'
-const tasks = ref([
-  {
-    id: 1,
-    title:
-      'TaskTitle1TaskTitle2TaskTitle3TaskTitle4TaskTitle5TaskTitle6TaskTitle7TaskTitle8TaskTitle9TaskTitle0',
-    description:
-      'Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti1Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti2Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti3Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti4Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti5',
-    assignees: 'Assignee 1, Assignee 2',
-    status: 'No Status',
-    createdAt: '2022-01-01 09:00:00 UTC',
-    updatedAt: '2022-01-01 09:00:00 UTC'
-  },
-  {
-    id: 2,
-    title: 'ดาต้าเบส',
-    description: 'คำอธิบาย2',
-    assignees: 'あなた、彼、彼女 (私ではありません',
-    status: 'Doing',
-    createdAt: '2022-01-01 09:00:00 UTC',
-    updatedAt: '2022-01-01 09:00:00 UTC'
-  },
-  {
-    id: 3,
-    title: 'TaskTitle3',
-    description: 'Description3',
-    assignees: 'Assignee 1, Assignee 2',
-    status: 'No Status',
-    createdAt: '2022-01-01 09:00:00 UTC',
-    updatedAt: '2022-01-01 09:00:00 UTC'
-  },
-  {
-    id: 4,
-    title: 'TaskTitle4',
-    description: 'Description4',
-    assignees: 'Assignee 1, Assignee 2',
-    status: 'No Status',
-    createdAt: '2022-01-01 09:00:00 UTC',
-    updatedAt: '2022-01-01 09:00:00 UTC'
-  },
-  {
-    id: 5,
-    title: 'TaskTitle5',
-    description: 'Description5',
-    assignees: 'Assignee 1, Assignee 2',
-    status: 'No Status',
-    createdAt: '2022-01-01 09:00:00 UTC',
-    updatedAt: '2022-01-01 09:00:00 UTC'
-  }
-])
+const tasks = ref([])
+import { onMounted } from 'vue'
+import { getAllTasks } from '@/api/taskService'
+onMounted(async () => {
+  tasks.value = await getAllTasks()
+})
 </script>
 
 <style lang="scss" scoped></style>
