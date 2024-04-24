@@ -1,150 +1,29 @@
 {
-    "tasks": [
+    "tasks": 
+    [
       {
-        "taskId": 1,
-        "taskTitle": "TaskTitle1TaskTitle2TaskTitle3TaskTitle4TaskTitle5TaskTitle6TaskTitle7TaskTitle8TaskTitle9TaskTitle0",
-        "taskDescription": "Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti1Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti2Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti3Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti4Descripti1Descripti2Descripti3Descripti4Descripti5Descripti6Descripti7Descripti8Descripti9Descripti5",
-        "taskAssignees": [{
-            "assigneeId": 1,
-            "assigneeName": "John Doe"
-            },
-            {
-            "assigneeId": 2,
-            "assigneeName": "Jane Doe"
-            },
-            {
-            "assigneeId": 3,
-            "assigneeName": "John Smith"
-        }],
-        "taskStatus": "No Status",
-        "createdOn": "2024-04-22 09:00:00",
-        "updatedOn": "2024-04-22 09:00:00"
+          "id": 1,
+          "title": "TaskTitle1TaskTitle2TaskTitle3TaskTitle4TaskTitle5TaskTitle6TaskTitle7TaskTitle8TaskTitle9TaskTitle0",
+          "assignees": "Assignees1Assignees2Assignees3",
+          "status": "NO_STATUS"
       },
       {
-        "taskId": 2,
-        "taskTitle": "Repository",
-        "taskDescription": "",
-        "taskAssignees": [{
-            "assigneeId": 1,
-            "assigneeName": "John Doe"
-            },
-            {
-            "assigneeId": 2,
-            "assigneeName": "Jane Doe"
-            }
-        ],
-        "taskStatus": "To Do",
-        "createdOn": "2024-04-22 09:05:00",
-        "updatedOn": "2024-04-22 14:00:00"
+          "id": 2,
+          "title": "Repository",
+          "assignees": "",
+          "status": "TO_DO"
       },
       {
-        "taskId": 3,
-        "taskTitle": "ดาต้าเบส",
-        "taskDescription": "ສ້າງຖານຂໍ້ມູນ",
-        "taskAssignees": [{
-            "assigneeId": 1,
-            "assigneeName": "あなた、彼、彼女 (私ではありません"
-            }
-        ],
-        "taskStatus": "Doing",
-        "createdOn": "2024-04-22 09:10:00",
-        "updatedOn": "2024-04-25 00:00:00"
+          "id": 3,
+          "title": "ดาต้าเบส",
+          "assignees": "あなた、彼、彼⼥ (私ではありません)",
+          "status": "DOING"
       },
       {
-        "taskId": 4,
-        "taskTitle": "Important Task",
-        "taskDescription": "This task is crucial and needs immediate attention.",
-        "taskAssignees": [
-          {
-            "assigneeId": 1,
-            "assigneeName": "Alice Smith"
-          }
-        ],
-        "taskStatus": "In Progress",
-        "createdOn": "2024-04-22 10:30:00",
-        "updatedOn": "2024-04-22 11:45:00"
-      },
-      {
-        "taskId": 5,
-        "taskTitle": "Code Review",
-        "taskDescription": "Review the code changes made in the latest feature branch.",
-        "taskAssignees": [
-          {
-            "assigneeId": 1,
-            "assigneeName": "David Lee"
-          },
-          {
-            "assigneeId": 2,
-            "assigneeName": "Sarah Johnson"
-          }
-        ],
-        "taskStatus": "To Do",
-        "createdOn": "2024-04-23 10:45:00",
-        "updatedOn": "2024-04-23 12:30:00"
-      },
-      {
-        "taskId": 6,
-        "taskTitle": "Bug Fixing",
-        "taskDescription": "Investigate and fix the reported bugs in the application.",
-        "taskAssignees": [
-          {
-            "assigneeId": 8,
-            "assigneeName": "Matthew Williams"
-          },
-          {
-            "assigneeId": 9,
-            "assigneeName": "Olivia Taylor"
-          }
-        ],
-        "taskStatus": "In Progress",
-        "createdOn": "2024-04-24 08:30:00",
-        "updatedOn": "2024-04-24 10:15:00"
-      },
-      {
-        "taskId": 7,
-        "taskTitle": "Documentation Update",
-        "taskDescription": "Update the project documentation with recent changes and features.",
-        "taskAssignees": [
-          {
-            "assigneeId": 10,
-            "assigneeName": "Ethan Martinez"
-          }
-        ],
-        "taskStatus": "To Do",
-        "createdOn": "2024-04-24 11:00:00",
-        "updatedOn": "2024-04-24 11:30:00"
-      },
-      {
-        "taskId": 8,
-        "taskTitle": "Feature Development",
-        "taskDescription": "Implement new features as per the client's requirements.",
-        "taskAssignees": [
-          {
-            "assigneeId": 11,
-            "assigneeName": "Sophia Garcia"
-          },
-          {
-            "assigneeId": 12,
-            "assigneeName": "Liam Rodriguez"
-          }
-        ],
-        "taskStatus": "In Progress",
-        "createdOn": "2024-04-24 14:45:00",
-        "updatedOn": "2024-04-24 16:30:00"
-      },
-      {
-        "taskId": 9,
-        "taskTitle": "Server Maintenance",
-        "taskDescription": "Perform routine maintenance tasks on the server infrastructure.",
-        "taskAssignees": [
-          {
-            "assigneeId": 13,
-            "assigneeName": "Ava Wilson"
-          }
-        ],
-        "taskStatus": "To Do",
-        "createdOn": "2024-04-24 09:30:00",
-        "updatedOn": "2024-04-24 10:00:00"
-      }      
-    ]
-  }
+          "id": 4,
+          "title": "_Infrastructure_",
+          "assignees": "ไก่งวง กับ เพนกวิน",
+          "status": "DONE"
+      }
+  ]
+}

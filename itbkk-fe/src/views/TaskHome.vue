@@ -21,25 +21,21 @@
                 <TableHead>Title</TableHead>
                 <TableHead>Assignees</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Create On</TableHead>
-                <TableHead>Update On</TableHead>
               </TableRow>
             </TableHeader>
+
             <TableBody v-if="tasks.length !== 0">
-              <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id">
-                <TableCell class="itbkk-title">{{ task.taskTitle }}</TableCell>
+              <TableRow
+                class="itbkk-item"
+                v-for="task in tasks"
+                :key="task.id"
+                @click="openTaskDetail(task.id)"
+              >
+                <TableCell class="itbkk-title">{{ task.title }}</TableCell>
                 <TableCell class="itbkk-assignees">
-                  <template
-                    v-for="taskAssignee in task.taskAssignees"
-                    :key="taskAssignee.assigneeId"
-                  >
-                    <span>{{ taskAssignee.assigneeName }}</span>
-                    <span v-if="task.taskAssignees.length > 1 && taskAssignee !== task.taskAssignees[task.taskAssignees.length - 1]">, </span>
-                  </template>
+                  {{ task.assignees }}
                 </TableCell>
-                <TableCell class="itbkk-status">{{ task.taskStatus }}</TableCell>
-                <TableCell class="itbkk-created-on">{{ task.createdOn }}</TableCell>
-                <TableCell class="itbkk-updated-on">{{ task.updatedOn }}</TableCell>
+                <TableCell class="itbkk-status">{{ task.status }}</TableCell>
               </TableRow>
             </TableBody>
             <p v-else class="p-6 text-center text-red-500">No tasks found</p>
@@ -51,7 +47,6 @@
 </template>
 
 <script setup>
-import Button from '@/components/ui/button/Button.vue'
 import {
   Table,
   TableBody,
@@ -61,26 +56,24 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
+
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-const tasks = ref([])
 import { onMounted } from 'vue'
 import { getAllTasks } from '@/api/taskService'
+
+const tasks = ref([])
+const router = useRouter()
+
 onMounted(async () => {
   tasks.value = await getAllTasks()
 })
+
+const openTaskDetail = async (id) => {
+  await router.push(`/task/${id}`)
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
