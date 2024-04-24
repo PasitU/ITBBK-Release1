@@ -81,6 +81,70 @@
         "taskStatus": "To Do",
         "createdOn": "2024-04-23 10:45:00",
         "updatedOn": "2024-04-23 12:30:00"
-      }
+      },
+      {
+        "taskId": 6,
+        "taskTitle": "Bug Fixing",
+        "taskDescription": "Investigate and fix the reported bugs in the application.",
+        "taskAssignees": [
+          {
+            "assigneeId": 8,
+            "assigneeName": "Matthew Williams"
+          },
+          {
+            "assigneeId": 9,
+            "assigneeName": "Olivia Taylor"
+          }
+        ],
+        "taskStatus": "In Progress",
+        "createdOn": "2024-04-24 08:30:00",
+        "updatedOn": "2024-04-24 10:15:00"
+      },
+      {
+        "taskId": 7,
+        "taskTitle": "Documentation Update",
+        "taskDescription": "Update the project documentation with recent changes and features.",
+        "taskAssignees": [
+          {
+            "assigneeId": 10,
+            "assigneeName": "Ethan Martinez"
+          }
+        ],
+        "taskStatus": "To Do",
+        "createdOn": "2024-04-24 11:00:00",
+        "updatedOn": "2024-04-24 11:30:00"
+      },
+      {
+        "taskId": 8,
+        "taskTitle": "Feature Development",
+        "taskDescription": "Implement new features as per the client's requirements.",
+        "taskAssignees": [
+          {
+            "assigneeId": 11,
+            "assigneeName": "Sophia Garcia"
+          },
+          {
+            "assigneeId": 12,
+            "assigneeName": "Liam Rodriguez"
+          }
+        ],
+        "taskStatus": "In Progress",
+        "createdOn": "2024-04-24 14:45:00",
+        "updatedOn": "2024-04-24 16:30:00"
+      },
+      {
+        "taskId": 9,
+        "taskTitle": "Server Maintenance",
+        "taskDescription": "Perform routine maintenance tasks on the server infrastructure.",
+        "taskAssignees": [
+          {
+            "assigneeId": 13,
+            "assigneeName": "Ava Wilson"
+          }
+        ],
+        "taskStatus": "To Do",
+        "createdOn": "2024-04-24 09:30:00",
+        "updatedOn": "2024-04-24 10:00:00"
+      }      
     ]
   }

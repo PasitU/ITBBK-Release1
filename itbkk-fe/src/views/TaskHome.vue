@@ -21,14 +21,14 @@
                 <TableHead>Title</TableHead>
                 <TableHead>Assignees</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Create At</TableHead>
-                <TableHead>Update At</TableHead>
+                <TableHead>Create On</TableHead>
+                <TableHead>Update On</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody v-if="tasks.length !== 0">
-              <TableRow v-for="task in tasks" :key="task.id">
-                <TableCell class="max-w-96 overflow-hidden">{{ task.taskTitle }}</TableCell>
-                <TableCell>
+              <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id">
+                <TableCell class="itbkk-title">{{ task.taskTitle }}</TableCell>
+                <TableCell class="itbkk-assignees">
                   <template
                     v-for="taskAssignee in task.taskAssignees"
                     :key="taskAssignee.assigneeId"
@@ -37,9 +37,9 @@
                     <span v-if="task.taskAssignees.length > 1 && taskAssignee !== task.taskAssignees[task.taskAssignees.length - 1]">, </span>
                   </template>
                 </TableCell>
-                <TableCell>{{ task.taskStatus }}</TableCell>
-                <TableCell>{{ task.createdOn }}</TableCell>
-                <TableCell>{{ task.updatedOn }}</TableCell>
+                <TableCell class="itbkk-status">{{ task.taskStatus }}</TableCell>
+                <TableCell class="itbkk-created-on">{{ task.createdOn }}</TableCell>
+                <TableCell class="itbkk-updated-on">{{ task.updatedOn }}</TableCell>
               </TableRow>
             </TableBody>
             <p v-else class="p-6 text-center text-red-500">No tasks found</p>
@@ -81,4 +81,6 @@ onMounted(async () => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
