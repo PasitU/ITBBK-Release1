@@ -10,12 +10,12 @@
       <div>
         <div class="flex justify-between items-center p-6">
           <h1>
-            <span class="font-semibold">Tasks</span>
+            <span class="font-bold">Tasks</span>
           </h1>
         </div>
         <div class="h-full w-full p-6">
           <Table class="border">
-            <TableCaption class="pb-4">Total {{ tasks.length }} Tasks</TableCaption>
+            <TableCaption v-if="!isNull" class="pb-4">Total {{ tasks.length }} Tasks</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Title</TableHead>
@@ -24,7 +24,7 @@
               </TableRow>
             </TableHeader>
 
-            <TableBody v-if="tasks.length !== 0">
+            <TableBody>
               <TableRow
                 class="itbkk-item"
                 v-for="task in tasks"
@@ -38,8 +38,8 @@
                 <TableCell class="itbkk-status">{{ task.status }}</TableCell>
               </TableRow>
             </TableBody>
-            <p v-else class="p-6 text-center text-red-500">No tasks found</p>
           </Table>
+          <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
         </div>
       </div>
     </ResizablePanel>
@@ -66,9 +66,14 @@ import { getAllTasks } from '@/api/taskService'
 
 const tasks = ref([])
 const router = useRouter()
+const isNull = ref(false)
 
 onMounted(async () => {
-  tasks.value = await getAllTasks()
+  try {
+    tasks.value = await getAllTasks()
+  } catch (error) {
+    isNull.value = true
+  }
 })
 
 const openTaskDetail = async (id) => {
