@@ -41,19 +41,16 @@
             <div class="stat">
               <div class="stat-title">CreatedOn</div>
               <div class="stat-value">{{ task.createdOn }}</div>
-              <div class="stat-desc">Jan 1st - Feb 1st</div>
             </div>
 
             <div class="stat">
               <div class="stat-title">UpdatedOn</div>
               <div class="stat-value">{{ task.updatedOn }}</div>
-              <div class="stat-desc">↗︎ 400 (22%)</div>
             </div>
 
             <div class="stat">
               <div class="stat-title">TimeZone</div>
               <div class="stat-value">{{ task.timezone }}</div>
-              <div class="stat-desc">↘︎ 90 (14%)</div>
             </div>
           </div>
         </CardContent>
@@ -78,7 +75,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-
+import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
 const router = useRouter()
 const task = ref({
   title: '',
@@ -94,6 +91,9 @@ const taskId = router.currentRoute.value.params.id
 onMounted(async () => {
   try {
     task.value = await getTaskById(taskId)
+    task.value.createdOn = UTCtoLocalFormat(task.value.createdOn)
+    task.value.updatedOn = UTCtoLocalFormat(task.value.updatedOn)
+    task.value.timezone = getUserTimeZoneId()
   } catch (error) {
     router.back()
   }

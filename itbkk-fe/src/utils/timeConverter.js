@@ -1,9 +1,9 @@
-export function getUserTimeZoneId() {
+function getUserTimeZoneId() {
     const timeZoneId = Intl.DateTimeFormat().resolvedOptions().timeZone;
     return timeZoneId;
 }
 
-export function UTCtoLocalFormat(utcTimeString) {
+function UTCtoLocalFormat(utcTimeString) {
     const utcDate = new Date(utcTimeString);
 
     const offsetMinutes = utcDate.getTimezoneOffset();
@@ -27,3 +27,5 @@ console.log(getUserTimeZoneId());
 const utcTimeString = "2024-04-26T00:30:00Z";
 const localFormattedDate = UTCtoLocalFormat(utcTimeString);
 console.log(localFormattedDate);
+
+export { getUserTimeZoneId, UTCtoLocalFormat };
