@@ -1,8 +1,8 @@
 <template>
   <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg border">
-    <ResizablePanel id="handle-demo-panel-1" :default-size="20">
+    <ResizablePanel id="handle-demo-panel-1" :default-size="displaySidebar ? 0 : 20">
       <div class="flex h-full items-center justify-center p-6">
-        <span class="font-semibold">Sidebar</span>
+        <span class="font-semibold">Sidebar </span>
       </div>
     </ResizablePanel>
     <ResizableHandle id="handle-demo-handle-1" with-handle />
@@ -10,18 +10,18 @@
       <div>
         <div class="flex justify-center items-center p-6">
           <h1>
-            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1</span>
+            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 {{ displaySidebar }}</span>
           </h1>
         </div>
 
         <div class="h-full w-full p-6">
-          <Table class="border">
+          <Table class="border text-black">
             <TableCaption v-if="!isNull" class="pb-4">Total {{ tasks.length }} Tasks</TableCaption>
             <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Assignees</TableHead>
-                <TableHead>Status</TableHead>
+              <TableRow  >
+                <TableHead class="text-red-800 font-bold text-[1.5rem]">Title</TableHead>
+                <TableHead class="text-red-800 font-bold text-[1.5rem]">Assignees</TableHead>
+                <TableHead class="text-red-800 font-bold text-[1.5rem]" >Status</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -36,11 +36,13 @@
                 <TableCell class="itbkk-assignees">
                   {{ task.assignees }}
                 </TableCell>
-                <TableCell class="itbkk-status">{{ task.status }}</TableCell>
+                <TableCell class="itbkk-status" >
+                  <button :class="getStatusClass(task.status)" class="btn btn-active h-[1rem] min-h-[1.8rem] text-black" @click="toggleSidebar">{{ task.status }}</button></TableCell>
               </TableRow>
             </TableBody>
           </Table>
           <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
+          <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">Button</button>
         </div>
       </div>
     </ResizablePanel>
@@ -61,13 +63,14 @@ import {
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref , computed } from 'vue'
 import { onMounted } from 'vue'
 import { getAllTasks } from '@/api/taskService'
 
 const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
+const displaySidebar = ref(false)
 
 onMounted(async () => {
   try {
@@ -80,6 +83,26 @@ onMounted(async () => {
 const openTaskDetail = async (id) => {
   await router.push(`/task/${id}`)
 }
+const toggleSidebar = () => {
+  displaySidebar.value = !displaySidebar.value
+}
+
+const getStatusClass = (status) => {
+  switch (status) {
+    case 'NO_STATUS':
+      return 'bg-gray-500';
+    case 'TO_DO':
+      return 'bg-blue-500';
+    case 'DOING':
+      return 'bg-yellow-500';
+    case 'DONE':
+      return 'bg-green-500';
+    default:
+      return '';
+  }
+  }
 </script>
+
+
 
 <style lang="scss" scoped></style>

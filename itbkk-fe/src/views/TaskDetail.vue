@@ -3,6 +3,7 @@
     <div class="w-1/2">
       <Card class="items-center self-center w-full h-full">
         <CardHeader>
+          Title
           <div>
             <div class="space-x-5 rounded-md border p-4">
               {{ task.title }}
