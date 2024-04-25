@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
-    <div class="w-1/2">
-      <Card class="items-center self-center w-full h-full">
+    <div class="w-3/5">
+      <Card class="items-center self-center min-w-full h-full">
         <CardHeader>
           Title
           <div>
@@ -91,13 +91,16 @@ const taskId = router.currentRoute.value.params.id
 onMounted(async () => {
   try {
     task.value = await getTaskById(taskId)
-    task.value.createdOn = UTCtoLocalFormat(task.value.createdOn)
-    task.value.updatedOn = UTCtoLocalFormat(task.value.updatedOn)
-    task.value.timezone = getUserTimeZoneId()
   } catch (error) {
     router.back()
   }
+  task.value.title = task.value.title ? task.value.title : 'No title'
+  task.value.status = task.value.status ? task.value.status : 'No_status'
+  task.value.assignees = task.value.assignees ? task.value.assignees : 'No assignees'
   task.value.description = task.value.description ? task.value.description : 'No description'
+  task.value.createdOn = task.value.createdOn ? UTCtoLocalFormat(task.value.createdOn) : 'No Data'
+  task.value.updatedOn = task.value.updatedOn ? UTCtoLocalFormat(task.value.updatedOn) : 'No Data'
+  task.value.timezone = getUserTimeZoneId()
 })
 
 const closePage = () => {
