@@ -1,12 +1,15 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import taskHome from '@/views/TaskHome.vue'
-import taskDetail from '@/views/TaskDetail.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import TaskHome from '@/views/TaskHome.vue'
 
-const routes = [
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    redirect: '/task' 
+  },
   {
     path: '/task/:id?',
     name: 'Home',
-    component: taskHome
+    component: TaskHome
   }
 ]
 
