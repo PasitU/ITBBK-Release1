@@ -20,6 +20,9 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+      daisyui: {
+        themes: ["light", "dark", "cupcake"],
+      },
     },
     extend: {
       colors: {
@@ -89,5 +92,5 @@ module.exports = {
       },
     },
   },
-  plugins: [animate],
+  plugins: [animate, require("daisyui")],
 }
