@@ -1,22 +1,22 @@
 <template>
   <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg border">
-    <ResizablePanel id="handle-demo-panel-1" :default-size="displaySidebar ? 0 : 20">
+    <ResizablePanel id="handle-demo-panel-0" :default-size="displaySidebar ? 0 : 20">
       <div class="flex h-full items-center justify-center p-6">
         <span class="font-semibold">Sidebar {{ $route.params.id }} </span>
       </div>
     </ResizablePanel>
     <ResizableHandle id="handle-demo-handle-1" with-handle />
-    <ResizablePanel  id="handle-demo-panel-2" :default-size="80" class="h-screen ">
+    <ResizablePanel  id="handle-demo-panel-2" :default-size="displaySidebar ? 100 : 80" class="h-screen ">
       <div>
         <div class="flex justify-center items-center p-6">
-          <h1>
-            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 {{ displaySidebar }}</span>
+          <h1>  
+            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 {{ displaySidebar }} </span>
           </h1>
         </div>
 
         <div class="h-full w-full p-6">
           <Table class=" text-black border border-solid border-black">
-            <TableCaption v-if="!isNull" class="pb-4">Total {{ tasks.length }} Tasks</TableCaption>
+            <TableCaption  v-if="!isNull" class="pb-4 text-red-800 font-bold text-[1.5rem]">Total {{ tasks.length }} Tasks</TableCaption>
             <TableHeader>
               <TableRow class="border border-solid border-black"  >
                 <TableHead class="text-red-800 font-bold text-[1.5rem] border border-solid border-black">Title</TableHead>
@@ -66,14 +66,14 @@ import {
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import TaskDetail from './TaskDetail.vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ref , computed } from 'vue'
+import { ref , } from 'vue'
 import { onMounted } from 'vue'
 import { getAllTasks } from '@/api/taskService'
 
 const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
-const displaySidebar = ref(false)
+const displaySidebar = ref(true)
 const route = useRoute()
 onMounted(async () => {
   try {
