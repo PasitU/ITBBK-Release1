@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div id="modal"></div>
+  <div id="modal" class="absolute z-20"></div>
   <RouterView />
 </template>
 

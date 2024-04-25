@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen">
+  <div class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
     <div class="w-1/2">
       <Card class="items-center self-center w-full h-full">
         <CardHeader>
