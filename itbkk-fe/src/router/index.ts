@@ -4,14 +4,9 @@ import taskDetail from '@/views/TaskDetail.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/task/:id?',
     name: 'Home',
     component: taskHome
-  },
-  {
-    path: '/task/:id',
-    name: 'TaskDetail',
-    component: taskDetail
   }
 ]
 

@@ -2,7 +2,7 @@
   <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg border">
     <ResizablePanel id="handle-demo-panel-1" :default-size="displaySidebar ? 0 : 20">
       <div class="flex h-full items-center justify-center p-6">
-        <span class="font-semibold">Sidebar </span>
+        <span class="font-semibold">Sidebar {{ $route.params.id }} </span>
       </div>
     </ResizablePanel>
     <ResizableHandle id="handle-demo-handle-1" with-handle />
@@ -47,6 +47,9 @@
       </div>
     </ResizablePanel>
   </ResizablePanelGroup>
+  <Teleport to="#modal" v-if="route.params.id.length > 0">
+    <TaskDetail></TaskDetail>
+  </Teleport>
 </template>
 
 <script setup>
@@ -61,8 +64,8 @@ import {
 } from '@/components/ui/table'
 
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-
-import { useRouter } from 'vue-router'
+import TaskDetail from './TaskDetail.vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ref , computed } from 'vue'
 import { onMounted } from 'vue'
 import { getAllTasks } from '@/api/taskService'
@@ -71,7 +74,7 @@ const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
 const displaySidebar = ref(false)
-
+const route = useRoute()
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
