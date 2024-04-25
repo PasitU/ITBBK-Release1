@@ -6,7 +6,7 @@
       </div>
     </ResizablePanel>
     <ResizableHandle id="handle-demo-handle-1" with-handle />
-    <ResizablePanel id="handle-demo-panel-2" :default-size="80" class="h-screen">
+    <ResizablePanel  id="handle-demo-panel-2" :default-size="80" class="h-screen ">
       <div>
         <div class="flex justify-center items-center p-6">
           <h1>
@@ -15,13 +15,13 @@
         </div>
 
         <div class="h-full w-full p-6">
-          <Table class="border text-black">
+          <Table class=" text-black border border-solid border-black">
             <TableCaption v-if="!isNull" class="pb-4">Total {{ tasks.length }} Tasks</TableCaption>
             <TableHeader>
-              <TableRow  >
-                <TableHead class="text-red-800 font-bold text-[1.5rem]">Title</TableHead>
-                <TableHead class="text-red-800 font-bold text-[1.5rem]">Assignees</TableHead>
-                <TableHead class="text-red-800 font-bold text-[1.5rem]" >Status</TableHead>
+              <TableRow class="border border-solid border-black"  >
+                <TableHead class="text-red-800 font-bold text-[1.5rem] border border-solid border-black">Title</TableHead>
+                <TableHead class="text-red-800 font-bold text-[1.5rem] border border-solid border-black">Assignees</TableHead>
+                <TableHead class="text-red-800 font-bold text-[1.5rem] border border-solid border-black" >Status</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -32,11 +32,11 @@
                 :key="task.id"
                 @click="openTaskDetail(task.id)"
               >
-                <TableCell class="itbkk-title">{{ task.title }}</TableCell>
-                <TableCell class="itbkk-assignees">
+                <TableCell class="itbkk-title border border-solid border-black">{{ task.title }}</TableCell>
+                <TableCell class="itbkk-assignees border border-solid border-black">
                   {{ task.assignees }}
                 </TableCell>
-                <TableCell class="itbkk-status" >
+                <TableCell class="itbkk-status border border-solid border-black" >
                   <button :class="getStatusClass(task.status)" class="btn btn-active h-[1rem] min-h-[1.8rem] text-black" @click="toggleSidebar">{{ task.status }}</button></TableCell>
               </TableRow>
             </TableBody>
