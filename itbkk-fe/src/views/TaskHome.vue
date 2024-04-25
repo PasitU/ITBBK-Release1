@@ -8,11 +8,12 @@
     <ResizableHandle id="handle-demo-handle-1" with-handle />
     <ResizablePanel id="handle-demo-panel-2" :default-size="80" class="h-screen">
       <div>
-        <div class="flex justify-between items-center p-6">
+        <div class="flex justify-center items-center p-6">
           <h1>
-            <span class="font-bold">Tasks</span>
+            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1</span>
           </h1>
         </div>
+
         <div class="h-full w-full p-6">
           <Table class="border">
             <TableCaption v-if="!isNull" class="pb-4">Total {{ tasks.length }} Tasks</TableCaption>
