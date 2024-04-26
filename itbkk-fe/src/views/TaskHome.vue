@@ -7,11 +7,7 @@
       </div>
     </ResizablePanel>
     <ResizableHandle id="handle-demo-handle-1" with-handle />
-    <ResizablePanel
-      id="handle-demo-panel-2"
-      :default-size="contentSize"
-      class="h-screen"
-    >
+    <ResizablePanel id="handle-demo-panel-2" :default-size="contentSize" class="h-screen">
       <div>
         <div class="flex justify-center items-center p-6">
           <h1>
@@ -44,25 +40,26 @@
             </TableHeader>
 
             <TableBody>
-              <TableRow
-                class="itbkk-item"
-                v-for="task in tasks"
-                :key="task.id"
-                @click="openTaskDetail(task.id)"
-              >
-                <TableCell class="itbkk-title border border-solid border-black">{{
-                  task.title
-                }}</TableCell>
-                <TableCell class="itbkk-assignees border border-solid border-black">
-                  {{ task.assignees }}
+              <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id" @click="openTaskDetail(task.id)">
+                <TableCell class="border border-solid border-black">
+                  <p class="itbkk-title">
+                    {{ task.title }}
+                  </p>
                 </TableCell>
-                <TableCell class="itbkk-status border border-solid border-black">
+                <TableCell class="border border-solid border-black">
+                  <p class="itbkk-assignees" :class="{ 'italic': !task.assignees }">
+                    {{ task.assignees || "Unassigned" }}
+                  </p>
+                </TableCell>
+                <TableCell class="border border-solid border-black">
                   <button
                     :class="getStatusClass(task.status)"
                     class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
                     @click="toggleSidebar"
                   >
+                  <p class="itbkk-status">
                     {{ task.status }}
+                  </p>
                   </button></TableCell
                 >
               </TableRow>
@@ -136,7 +133,7 @@ const displaySidebar = ref(true)
 const toggleSidebar = () => {
   displaySidebar.value = !displaySidebar.value
   sidebarSize.value = displaySidebar.value ? 25 : 0
-  contentSize.value = displaySidebar.value ? 75 : 100 
+  contentSize.value = displaySidebar.value ? 75 : 100
 }
 </script>
 

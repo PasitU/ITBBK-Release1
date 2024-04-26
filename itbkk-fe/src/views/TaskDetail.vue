@@ -6,7 +6,9 @@
           Title
           <div>
             <div class="space-x-5 rounded-md border p-4">
-              {{ task.title }}
+              <p class="itbkk-title">
+                {{ task.title }}
+              </p>
             </div>
           </div>
         </CardHeader>
@@ -15,13 +17,17 @@
             <p>Description:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p>{{ task.description }}</p>
+                <p class="itbkk-description">
+                  {{ task.description }}
+                </p>
               </h1>
             </div>
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p>{{ task.assignees }}</p>
+                <p class="itbkk-assignees">
+                  {{ task.assignees }}
+                </p>
               </h1>
             </div>
             <p>Status:</p>
@@ -30,7 +36,7 @@
               v-model="task.status"
               :selected="task.status"
             >
-              <option disabled hidden>{{ task.status }}</option>
+              <option disabled hidden><p class="itbkk-status">{{ task.status }}</p></option>
               <option :value="'NO_STATUS'">NO_STATUS</option>
               <option :value="'TO_DO'">TO_DO</option>
               <option :value="'DOING'">DOING</option>
@@ -40,17 +46,17 @@
           <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10">
             <div class="stat">
               <div class="stat-title">CreatedOn</div>
-              <div class="stat-value">{{ task.createdOn }}</div>
+              <div class="stat-value"><p class="itbkk-created-on">{{ task.createdOn }}</p></div>
             </div>
 
             <div class="stat">
               <div class="stat-title">UpdatedOn</div>
-              <div class="stat-value">{{ task.updatedOn }}</div>
+              <div class="stat-value"><p class="itbkk-updated-on">{{ task.updatedOn }}</p></div>
             </div>
 
             <div class="stat">
               <div class="stat-title">TimeZone</div>
-              <div class="stat-value">{{ task.timezone }}</div>
+              <div class="stat-value"><p class="itbkk-timezone">{{ task.timezone }}</p></div>
             </div>
           </div>
         </CardContent>
@@ -96,7 +102,7 @@ onMounted(async () => {
   }
   task.value.title = task.value.title ? task.value.title : 'No title'
   task.value.status = task.value.status ? task.value.status : 'No_status'
-  task.value.assignees = task.value.assignees ? task.value.assignees : 'No assignees'
+  task.value.assignees = task.value.assignees ? task.value.assignees : 'Unassigned'
   task.value.description = task.value.description ? task.value.description : 'No description'
   task.value.createdOn = task.value.createdOn ? UTCtoLocalFormat(task.value.createdOn) : 'No Data'
   task.value.updatedOn = task.value.updatedOn ? UTCtoLocalFormat(task.value.updatedOn) : 'No Data'
