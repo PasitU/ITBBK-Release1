@@ -1,19 +1,25 @@
 <template>
   <!-- :default-size="displaySidebar ? 0 : 20" -->
   <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg border">
-    <ResizablePanel id="handle-demo-panel-0">
-      <div class="flex h-full items-center justify-center p-6" :default-size="sidebarSize">
+    <ResizablePanel
+      v-show="displaySidebar"
+      id="handle-demo-panel-3"
+      :default-size="displaySidebar ? 10 : 0"
+    >
+      <div class="flex h-full items-center justify-center p-6">
         <span class="font-semibold">Sidebar {{ $route.params.id }} </span>
       </div>
     </ResizablePanel>
     <ResizableHandle id="handle-demo-handle-1" with-handle />
-    <ResizablePanel id="handle-demo-panel-2" :default-size="contentSize" class="h-screen">
+    <ResizablePanel
+      id="handle-demo-panel-1"
+      :default-size="displaySidebar ? 50 : 20"
+      class="h-screen"
+    >
       <div>
         <div class="flex justify-center items-center p-6">
           <h1>
-            <span class="font-bold text-3xl"
-              >INTEGRATED PROJECT ITBKK-SY-1 {{ displaySidebar }}
-            </span>
+            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 </span>
           </h1>
         </div>
 
@@ -63,7 +69,7 @@
                     @click="toggleSidebar"
                   >
                     <p class="itbkk-status">
-                       {{ changeStatusName(task.status) }}
+                      {{ changeStatusName(task.status) }}
                     </p>
                   </button></TableCell
                 >
@@ -71,7 +77,10 @@
             </TableBody>
           </Table>
           <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
-          <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">Button</button>
+          <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
+            {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}
+          </button>
+          {{ displaySidebar ? 'Sidebar is on' : 'Sidebar is off' }}
         </div>
       </div>
     </ResizablePanel>
@@ -146,14 +155,11 @@ const changeStatusName = (status) => {
   }
 }
 
-const sidebarSize = ref(25)
-const contentSize = ref(75)
 const displaySidebar = ref(true)
+
 
 const toggleSidebar = () => {
   displaySidebar.value = !displaySidebar.value
-  sidebarSize.value = displaySidebar.value ? 25 : 0
-  contentSize.value = displaySidebar.value ? 75 : 100
 }
 </script>
 
