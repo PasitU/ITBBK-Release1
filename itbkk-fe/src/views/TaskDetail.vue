@@ -1,7 +1,16 @@
 <template>
   <div class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
     <div class="w-3/5">
-      <Card class="items-center self-center min-w-full h-full">
+      <Card class="items-center self-center w-auto" v-if="isLoading">
+        <CardHeader class="flex justify-center items-center">
+          <span class="loading loading-spinner loading-lg"></span>
+        </CardHeader>
+      </Card>
+
+      <Card
+        class="items-center self-center min-w-full h-full"
+        v-if="!fetchError.hasError && !isLoading"
+      >
         <CardHeader>
           Title
           <div>
@@ -72,6 +81,37 @@
           <Button class="justify-between content-between" @click="closePage">Close</Button>
         </CardFooter>
       </Card>
+
+      <Card
+        class="items-center self-center min-w-full h-full"
+        v-else-if="fetchError.hasError && !isLoading"
+      >
+        <CardHeader class="flex justify-center items-center bg-rose-500">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="stroke-current shrink-0 h-28 w-28 stroke-white"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </CardHeader>
+        <CardContent class="mt-2 flex flex-col items-center">
+          <div class="text-xl">An Error Occurred</div>
+          <div class="mt-2">{{ fetchError.message }}</div>
+          <div>Please try again later</div>
+        </CardContent>
+        <CardFooter class="flex justify-center">
+          <Button class="justify-between content-between bg-rose-500 text-white" @click="closePage"
+            >Close</Button
+          >
+        </CardFooter>
+      </Card>
     </div>
   </div>
 </template>
@@ -84,6 +124,8 @@ import { getTaskById } from '@/api/taskService'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
 const router = useRouter()
+const fetchError = ref({ hasError: false, message: '' })
+const isLoading = ref(false)
 const task = ref({
   title: '',
   description: '',
@@ -96,11 +138,15 @@ const task = ref({
 const taskId = router.currentRoute.value.params.id
 
 onMounted(async () => {
+  isLoading.value = true
   try {
     task.value = await getTaskById(taskId)
   } catch (error) {
-    router.back()
+    fetchError.value = { hasError: true, message: error.message }
+    isLoading.value = false
+    return
   }
+  isLoading.value = false
   task.value.title = task.value.title ? task.value.title : 'No title'
   task.value.status = task.value.status ? task.value.status : 'No_status'
   task.value.assignees = task.value.assignees ? task.value.assignees : ''
@@ -115,6 +161,7 @@ onMounted(async () => {
 const closePage = () => {
   router.back()
 }
+
 </script>
 
 <style lang="scss" scoped></style>
