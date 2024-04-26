@@ -40,15 +40,20 @@
             </TableHeader>
 
             <TableBody>
-              <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id" @click="openTaskDetail(task.id)">
+              <TableRow
+                class="itbkk-item"
+                v-for="task in tasks"
+                :key="task.id"
+                @click="openTaskDetail(task.id)"
+              >
                 <TableCell class="border border-solid border-black">
                   <p class="itbkk-title">
                     {{ task.title }}
                   </p>
                 </TableCell>
                 <TableCell class="border border-solid border-black">
-                  <p class="itbkk-assignees" :class="{ 'italic': !task.assignees }">
-                    {{ task.assignees || "Unassigned" }}
+                  <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                    {{ task.assignees || 'Unassigned' }}
                   </p>
                 </TableCell>
                 <TableCell class="border border-solid border-black">
@@ -57,9 +62,9 @@
                     class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
                     @click="toggleSidebar"
                   >
-                  <p class="itbkk-status">
-                    {{ task.status }}
-                  </p>
+                    <p class="itbkk-status">
+                       {{ changeStatusName(task.status) }}
+                    </p>
                   </button></TableCell
                 >
               </TableRow>
@@ -121,6 +126,21 @@ const getStatusClass = (status) => {
       return 'bg-yellow-500'
     case 'DONE':
       return 'bg-green-500'
+    default:
+      return ''
+  }
+}
+
+const changeStatusName = (status) => {
+  switch (status) {
+    case 'NO_STATUS':
+      return 'No Status'
+    case 'TO_DO':
+      return 'To Do'
+    case 'DOING':
+      return 'Doing'
+    case 'DONE':
+      return 'Done'
     default:
       return ''
   }

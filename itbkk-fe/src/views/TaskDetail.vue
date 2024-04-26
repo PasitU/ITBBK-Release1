@@ -17,7 +17,7 @@
             <p>Description:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-description">
+                <p class="itbkk-description" :class="{ italic: !task.assignees }">
                   {{ task.description }}
                 </p>
               </h1>
@@ -25,7 +25,7 @@
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-assignees">
+                <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
                   {{ task.assignees }}
                 </p>
               </h1>
@@ -36,27 +36,35 @@
               v-model="task.status"
               :selected="task.status"
             >
-              <option disabled hidden><p class="itbkk-status">{{ task.status }}</p></option>
-              <option :value="'NO_STATUS'">NO_STATUS</option>
-              <option :value="'TO_DO'">TO_DO</option>
-              <option :value="'DOING'">DOING</option>
-              <option :value="'DONE'">DONE</option>
+              <option disabled hidden>
+                <p class="itbkk-status">{{ task.status }}</p>
+              </option>
+              <option :value="'NO_STATUS'">No Status</option>
+              <option :value="'TO_DO'">To Do</option>
+              <option :value="'DOING'">Doing</option>
+              <option :value="'DONE'">Done</option>
             </select>
           </div>
           <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10">
             <div class="stat">
               <div class="stat-title">CreatedOn</div>
-              <div class="stat-value"><p class="itbkk-created-on">{{ task.createdOn }}</p></div>
+              <div class="stat-value">
+                <p class="itbkk-created-on">{{ task.createdOn }}</p>
+              </div>
             </div>
 
             <div class="stat">
               <div class="stat-title">UpdatedOn</div>
-              <div class="stat-value"><p class="itbkk-updated-on">{{ task.updatedOn }}</p></div>
+              <div class="stat-value">
+                <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
+              </div>
             </div>
 
             <div class="stat">
               <div class="stat-title">TimeZone</div>
-              <div class="stat-value"><p class="itbkk-timezone">{{ task.timezone }}</p></div>
+              <div class="stat-value">
+                <p class="itbkk-timezone">{{ task.timezone }}</p>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -73,14 +81,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getTaskById } from '@/api/taskService'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
 const router = useRouter()
 const task = ref({
@@ -102,8 +103,10 @@ onMounted(async () => {
   }
   task.value.title = task.value.title ? task.value.title : 'No title'
   task.value.status = task.value.status ? task.value.status : 'No_status'
-  task.value.assignees = task.value.assignees ? task.value.assignees : 'Unassigned'
-  task.value.description = task.value.description ? task.value.description : 'No description'
+  task.value.assignees = task.value.assignees ? task.value.assignees : ''
+  task.value.description = task.value.description
+    ? task.value.description
+    : 'No Description Provided'
   task.value.createdOn = task.value.createdOn ? UTCtoLocalFormat(task.value.createdOn) : 'No Data'
   task.value.updatedOn = task.value.updatedOn ? UTCtoLocalFormat(task.value.updatedOn) : 'No Data'
   task.value.timezone = getUserTimeZoneId()
