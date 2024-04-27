@@ -46,7 +46,7 @@
               :selected="task.status"
             >
               <option disabled hidden>
-                <p class="itbkk-status">{{ task.status }}</p>
+                <p class="itbkk-status">{{ changeStatusName(task.status) }}</p>
               </option>
               <option :value="'NO_STATUS'">No Status</option>
               <option :value="'TO_DO'">To Do</option>
@@ -135,8 +135,23 @@ const task = ref({
   updatedOn: '',
   timezone: ''
 })
-const taskId = router.currentRoute.value.params.id
 
+const changeStatusName = (status) => {
+  switch (status) {
+    case 'NO_STATUS':
+      return 'No Status'
+    case 'TO_DO':
+      return 'To Do'
+    case 'DOING':
+      return 'Doing'
+    case 'DONE':
+      return 'Done'
+    default:
+      return ''
+  }
+}
+
+const taskId = router.currentRoute.value.params.id
 onMounted(async () => {
   isLoading.value = true
   try {
@@ -161,7 +176,6 @@ onMounted(async () => {
 const closePage = () => {
   router.back()
 }
-
 </script>
 
 <style lang="scss" scoped></style>
