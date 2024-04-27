@@ -29,14 +29,15 @@
                 <p class="itbkk-description" :class="{ italic: !task.assignees }">
                   {{ task.description }}
                 </p>
+                
               </h1>
             </div>
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
                 <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                  {{ task.assignees }}
-                </p>
+                    {{ task.assignees || 'Unassigned' }}
+                  </p>
               </h1>
             </div>
             <p>Status:</p>
@@ -165,7 +166,6 @@ onMounted(async () => {
   isLoading.value = false
   task.value.title = task.value.title ? task.value.title : 'No title'
   task.value.status = task.value.status ? task.value.status : 'No_status'
-  task.value.assignees = task.value.assignees ? task.value.assignees : ''
   task.value.description = task.value.description
     ? task.value.description
     : 'No Description Provided'

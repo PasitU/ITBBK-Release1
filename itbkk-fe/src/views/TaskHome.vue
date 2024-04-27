@@ -59,7 +59,7 @@
                 </TableCell>
                 <TableCell class="border border-solid border-black">
                   <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                    {{ task.assignees || 'Unassigned' }}
+                    {{ task.assignees || '' }}
                   </p>
                 </TableCell>
                 <TableCell class="border border-solid border-black">
