@@ -28,8 +28,8 @@ function UTCtoLocalFormat(utcTimeString) {
 }
 
 // Example usage:
-console.log(getUserTimeZoneId())
-console.log(UTCtoLocalFormat('2024-04-22T09:30:00'))
-console.log(UTCtoLocalFormat('2024-04-22T09:00:00Z'))
+// console.log(getUserTimeZoneId())
+// console.log(UTCtoLocalFormat('2024-04-22T09:30:00'))
+// console.log(UTCtoLocalFormat('2024-04-22T09:00:00Z'))
 
 export { getUserTimeZoneId, getUserTimeZoneLocale, UTCtoLocalFormat }
