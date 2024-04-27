@@ -59,7 +59,7 @@
                 </TableCell>
                 <TableCell class="border border-solid border-black">
                   <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                    {{ task.assignees || '' }}
+                    {{ task.assignees || 'Unassigned' }}
                   </p>
                 </TableCell>
                 <TableCell class="border border-solid border-black">
@@ -155,7 +155,7 @@ const changeStatusName = (status) => {
   }
 }
 
-const displaySidebar = ref(true)
+const displaySidebar = ref(false)
 
 
 const toggleSidebar = () => {

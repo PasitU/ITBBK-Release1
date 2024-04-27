@@ -166,6 +166,7 @@ onMounted(async () => {
   isLoading.value = false
   task.value.title = task.value.title ? task.value.title : 'No title'
   task.value.status = task.value.status ? task.value.status : 'No_status'
+
   task.value.description = task.value.description
     ? task.value.description
     : 'No Description Provided'
