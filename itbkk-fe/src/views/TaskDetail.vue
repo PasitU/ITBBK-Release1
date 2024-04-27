@@ -159,6 +159,7 @@ onMounted(async () => {
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
     isLoading.value = false
+    closePage() //TestCase need to change path to /tasks immediately when error occurs
     return
   }
   isLoading.value = false

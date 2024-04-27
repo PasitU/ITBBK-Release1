@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 const BASE_URL = 'http://ip23us2.sit.kmutt.ac.th:8080/v1/tasks'
-// const BASE_URL = 'http://localhost:8080/itb-kk/v1/tasks'
+// const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
 
 export const getAllTasks = async () => {
@@ -18,7 +18,6 @@ export const getAllTasks = async () => {
 export const getTaskById = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`)
-    console.log(response)
     if(response.status === 404){
       throw new Error("The requested task does not exist")
     }
