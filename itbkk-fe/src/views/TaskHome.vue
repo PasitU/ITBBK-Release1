@@ -85,7 +85,7 @@
       </div>
     </ResizablePanel>
     <Button
-      class="bg-red-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-red-800"
+      class="bg-blue-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-blue-800"
       @click="navigateToAddTask"
       >Add Task</Button
     >

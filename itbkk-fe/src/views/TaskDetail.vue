@@ -42,12 +42,13 @@
             </div>
             <p>Status:</p>
             <select
-              class="select select-bordered w-full"
+              class="select select-bordered w-full bg-white"
               v-model="task.status"
               :selected="task.status"
+              
             >
-              <option disabled hidden>
-                <p class="itbkk-status">{{ changeStatusName(task.status) }}</p>
+              <option disabled hidden >
+                <p class="itbkk-status" >{{ changeStatusName(task.status) }}</p>
               </option>
               <option :value="'NO_STATUS'">No Status</option>
               <option :value="'TO_DO'">To Do</option>
@@ -55,7 +56,7 @@
               <option :value="'DONE'">Done</option>
             </select>
           </div>
-          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10">
+          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 bg-white">
             <div class="stat">
               <div class="stat-title">CreatedOn</div>
               <div class="stat-value">
