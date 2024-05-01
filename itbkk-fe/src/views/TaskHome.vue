@@ -84,12 +84,18 @@
         </div>
       </div>
     </ResizablePanel>
-    <Button class="bg-red-700 absolute bottom-8 right-16 text-18" >KUY</Button>
+    <Button
+      class="bg-red-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-red-800"
+      @click="navigateToAddTask"
+      >Add Task</Button
+    >
   </ResizablePanelGroup>
-  <Teleport to="#modal" v-if="route.params.id.length > 0">
+  <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
     <TaskDetail></TaskDetail>
   </Teleport>
-  
+  <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
+    <TaskAdd></TaskAdd>
+  </Teleport>
 </template>
 
 <script setup>
@@ -105,6 +111,7 @@ import {
 
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import TaskDetail from './TaskDetail.vue'
+import TaskAdd from './TaskAdd.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
@@ -115,7 +122,6 @@ const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
 
-const route = useRoute()
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
@@ -123,6 +129,9 @@ onMounted(async () => {
     isNull.value = true
   }
 })
+const navigateToAddTask = () => {
+  router.push('/task/add')
+}
 
 const openTaskDetail = async (id) => {
   await router.push(`/task/${id}`)
@@ -159,7 +168,6 @@ const changeStatusName = (status) => {
 }
 
 const displaySidebar = ref(false)
-
 
 const toggleSidebar = () => {
   displaySidebar.value = !displaySidebar.value
