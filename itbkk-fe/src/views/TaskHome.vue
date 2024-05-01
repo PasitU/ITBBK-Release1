@@ -93,9 +93,11 @@
   <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
     <TaskDetail></TaskDetail>
   </Teleport>
-  <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
-    <TaskAdd></TaskAdd>
-  </Teleport>
+
+    <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
+      <TaskAdd></TaskAdd>
+    </Teleport>
+  
 </template>
 
 <script setup>
@@ -174,4 +176,6 @@ const toggleSidebar = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+
+</style>

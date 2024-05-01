@@ -34,8 +34,13 @@
             <textarea class="textarea textarea-bordered min-h-[8rem] w-full bg-white" placeholder="Bio"></textarea>
           </div>
         </CardContent>
-        <CardFooter>
-          <Button class="justify-between content-between" @click="closePage">Close</Button>
+        <CardFooter class="gap-3">
+          <Button class="justify-between content-between bg-green-500 hover:bg-green-600 text-white" @click="closePage"
+            >Ok</Button
+          >
+          <Button class="justify-between content-between bg-rose-500 hover:bg-rose-600 text-white" @click="closePage"
+            >Cancle</Button
+          >
         </CardFooter>
       </Card>
     </div>

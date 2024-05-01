@@ -108,6 +108,7 @@
           <div>Please try again later</div>
         </CardContent>
         <CardFooter class="flex justify-center">
+          
           <Button class="justify-between content-between bg-rose-500 text-white" @click="closePage"
             >Close</Button
           >
