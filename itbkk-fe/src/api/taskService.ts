@@ -54,12 +54,19 @@ export const createTask = async (task:Task) => {
   }
 }
 
-export const deleteTask = async (id:number) => {
-// url = http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks/{id}
-// method = DELETE
-}
 
-export const updateTask = async (id:number, task:Task) => {
-// url = http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks/{id}
-// method = PUT
+
+export const deleteTask = async (id: number): Promise<void> => {
+  try {
+    const response = await fetch(BASE_URL, {
+      method: 'DELETE'
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete task with ID: ${id}. Status: ${response.status}`)
+    }
+    console.log('Task deleted successfully')
+  } catch (error) {
+    console.error('Error deleting task:', error)
+  }
 }

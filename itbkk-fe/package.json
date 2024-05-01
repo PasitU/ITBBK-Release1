@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "json-server": "^1.0.0-alpha.23",
     "lucide-vue-next": "^0.372.0",
+    "oh-vue-icons": "^1.0.0-rc3",
     "radix-vue": "^1.7.2",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",

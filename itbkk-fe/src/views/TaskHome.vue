@@ -32,6 +32,9 @@
               <TableRow class="border border-solid border-black">
                 <TableHead
                   class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
+                ></TableHead>
+                <TableHead
+                  class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
                   >Title</TableHead
                 >
                 <TableHead
@@ -46,23 +49,47 @@
             </TableHeader>
 
             <TableBody>
-              <TableRow
-                class="itbkk-item"
-                v-for="task in tasks"
-                :key="task.id"
-                @click="openTaskDetail(task.id)"
-              >
-                <TableCell class="border border-solid border-black">
+              <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id">
+                <TableCell class="border border-solid border-black p-0">
+                  <div class="flex items-center justify-center gap-3">
+                    <p class="itbkk-title">
+                      {{ task.id }}
+                    </p>
+                    <details class="dropdown ">
+                      <summary class="block">
+                        <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
+                      </summary>
+
+                      <ul
+                        tabindex="0"
+                        class="shadow menu dropdown-content z-[1] p-2 bg-white rounded-box w-32"
+                      >
+                        <li><a>Edit</a></li>
+                        <li><a>Delete</a></li>
+                      </ul>
+                    </details>
+                  </div>
+                </TableCell>
+                <TableCell
+                  @click="openTaskDetail(task.id)"
+                  class="border border-solid border-black"
+                >
                   <p class="itbkk-title">
                     {{ task.title }}
                   </p>
                 </TableCell>
-                <TableCell class="border border-solid border-black">
+                <TableCell
+                  @click="openTaskDetail(task.id)"
+                  class="border border-solid border-black"
+                >
                   <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
                     {{ task.assignees || 'Unassigned' }}
                   </p>
                 </TableCell>
-                <TableCell class="border border-solid border-black">
+                <TableCell
+                  @click="openTaskDetail(task.id)"
+                  class="border border-solid border-black"
+                >
                   <button
                     :class="getStatusClass(task.status)"
                     class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
@@ -94,10 +121,9 @@
     <TaskDetail></TaskDetail>
   </Teleport>
 
-    <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
-      <TaskAdd></TaskAdd>
-    </Teleport>
-  
+  <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
+    <TaskAdd></TaskAdd>
+  </Teleport>
 </template>
 
 <script setup>
@@ -176,6 +202,4 @@ const toggleSidebar = () => {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
