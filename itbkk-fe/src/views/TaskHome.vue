@@ -84,10 +84,12 @@
         </div>
       </div>
     </ResizablePanel>
+    <Button class="bg-red-700 absolute bottom-8 right-16 text-18" >KUY</Button>
   </ResizablePanelGroup>
   <Teleport to="#modal" v-if="route.params.id.length > 0">
     <TaskDetail></TaskDetail>
   </Teleport>
+  
 </template>
 
 <script setup>
@@ -107,6 +109,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { getAllTasks } from '@/api/taskService'
+import { Button } from '@/components/ui/button'
 
 const tasks = ref([])
 const router = useRouter()
