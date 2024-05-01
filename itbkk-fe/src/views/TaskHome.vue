@@ -114,11 +114,11 @@ import {
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import TaskDetail from './TaskDetail.vue'
 import TaskAdd from './TaskAdd.vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
-import { getAllTasks } from '@/api/taskService'
 import { Button } from '@/components/ui/button'
+import { getAllTasks } from '@/api/taskService'
 
 const tasks = ref([])
 const router = useRouter()

@@ -8,8 +8,8 @@ function getUserTimeZoneLocale() {
   return timeZoneLocale
 }
 
-function UTCtoLocalFormat(utcTimeString) {
-  let utcDate = new Date(utcTimeString)
+function UTCtoLocalFormat(utcTimeString:string) {
+  const utcDate = new Date(utcTimeString)
   console.log(utcDate);
   const formattedDate = utcDate.toLocaleString('en-GB')
   return formattedDate
