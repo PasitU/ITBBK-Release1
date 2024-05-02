@@ -1,7 +1,6 @@
-
 /* eslint-disable no-useless-catch */
-const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
-// const BASE_URL = 'http://localhost:8080/v1/tasks'
+// const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
+const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
 
 export const getAllTasks = async () => {
@@ -31,42 +30,39 @@ export const getTaskById = async (id: number) => {
   }
 }
 
-export const createTask = async (task:Task) => {
+export const createTask = async (newTask: any): Promise<any> => {
   try {
     const response = await fetch(BASE_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'content-type': 'application/json'
       },
-      body: JSON.stringify({
-        title: task.title,
-        description: task.description,
-        assignees: task.assignees,
-        status: task.status
-      })
+      body: JSON.stringify({ ...newTask })
     })
-    if (!response.ok) {
-      throw new Error('Unable to create task.')
+
+    if (response.status !== 201) {
+      throw new Error(`Unable to save the task`)
     }
-    return response.json()
+
+    return await response.json()
   } catch (error) {
     throw error
   }
 }
 
-
-
 export const deleteTask = async (id: number): Promise<void> => {
   try {
-    const response = await fetch(BASE_URL, {
+    const response = await fetch(`${BASE_URL}/${id}`, {
       method: 'DELETE'
     })
 
     if (!response.ok) {
       throw new Error(`Failed to delete task with ID: ${id}. Status: ${response.status}`)
     }
+
     console.log('Task deleted successfully')
   } catch (error) {
     console.error('Error deleting task:', error)
   }
 }
+

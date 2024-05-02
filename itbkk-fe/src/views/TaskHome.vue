@@ -82,7 +82,7 @@
                         <li
                           class="text-red-700"
                           onclick="my_modal_1.showModal()"
-                          @click="openDeleteDialog(task.title)"
+                          @click="openDeleteDialog(task.title, task.id)"
                         >
                           <a><v-icon name="md-deleteforever"></v-icon>Delete</a>
                         </li>
@@ -92,12 +92,15 @@
                   <dialog id="my_modal_1" class="modal">
                     <div class="modal-box bg-white">
                       <h3 class="font-bold text-lg">Delete a Task</h3>
-                      <p class="py-4 break-words">
-                        Do you want to delete the task "{{ currentTaskId }}"?
+                      <p class="py-4 break-words text-2xl">
+                        Do you want to delete the task "{{ taskTitle }}"?
                       </p>
                       <div class="modal-action">
-                        <form method="dialog">
-                          <button class="btn bg-white">Close</button>
+                        <form method="dialog" class="flex gap-4">
+                          <button class="btn bg-rose-500 text-white">Cancle</button>
+                          <button class="btn bg-green-500 text-white" @click="deleteTaskConfirm()">
+                            Confirm
+                          </button>
                         </form>
                       </div>
                     </div>
@@ -181,14 +184,15 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
-import { getAllTasks } from '@/api/taskService'
+import { getAllTasks, deleteTask } from '@/api/taskService'
 
 const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
 const saveResult = ref({ displayResult: false, result: true, message: '' })
 
-const currentTaskId = ref(null)
+const taskTitle = ref(null)
+const taskId = ref(null)
 
 onMounted(async () => {
   try {
@@ -206,12 +210,24 @@ const checkReceivedStatus = async (response) => {
   saveResult.value.result = response.status
   saveResult.value.message = response.message
   if (saveResult.value.result) {
-      try {
-        tasks.value = await getAllTasks()
-      } catch(error){
-        console.log(error)
-      }
+    try {
+      tasks.value = await getAllTasks()
+    } catch (error) {
+      console.log(error)
+    }
   }
+}
+
+const deleteTaskConfirm = async () => {
+  if (taskId.value !== null) {
+    try {
+      await deleteTask(taskId.value)
+      console.log('Task deleted successfully')
+    } catch (error) {
+      console.error('Error deleting task:', error)
+    }
+  }
+  // closeModal();
 }
 
 const openTaskDetail = async (id) => {
@@ -248,11 +264,11 @@ const changeStatusName = (status) => {
   }
 }
 
-const openDeleteDialog = (taskId) => {
-  currentTaskId.value = taskId
+const openDeleteDialog = (title, id) => {
+  taskTitle.value = title
+  taskId.value = id
+  my_modal_1.showModal()
 }
-
-
 
 const displaySidebar = ref(false)
 

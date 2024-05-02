@@ -67,7 +67,7 @@ import Button from '@/components/ui/button/Button.vue'
 // import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { createTask } from '@/api/taskService.js'
+import { createTask } from '@/api/taskService.ts'
 import { ref, defineEmits } from 'vue'
 const warning = ref("")
 const emit = defineEmits(["returnStatus"])

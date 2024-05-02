@@ -48,7 +48,7 @@
               
             >
               <option disabled hidden >
-                <p class="itbkk-status" >{{ changeStatusName(task.status) }}</p>
+                <p class="itbkk-status bg-white" >{{ changeStatusName(task.status) }}</p>
               </option>
               <option :value="'NO_STATUS'">No Status</option>
               <option :value="'TO_DO'">To Do</option>
