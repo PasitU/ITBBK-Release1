@@ -16,7 +16,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/task/:id?',
     name: 'Home',
     component: TaskHome
-  }
+  },
+  // {
+  //   path: '/task/:id?',
+  //   name: 'Home',
+  //   component: TaskHome
+  // }
 ]
 
 

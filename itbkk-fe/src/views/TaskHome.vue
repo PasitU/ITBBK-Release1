@@ -43,8 +43,8 @@
                 >
                 <TableHead
                   class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
-                  >Status</TableHead
-                >
+                  >Status
+                </TableHead>
               </TableRow>
             </TableHeader>
 
@@ -55,17 +55,22 @@
                     <p class="itbkk-title">
                       {{ task.id }}
                     </p>
-                    <details class="dropdown ">
+                    <details class="dropdown">
                       <summary class="block">
                         <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
                       </summary>
 
                       <ul
                         tabindex="0"
-                        class="shadow menu dropdown-content z-[1] p-2 bg-white rounded-box w-32"
+                        class="shadow menu dropdown-content z-[1]  bg-white rounded-box w-auto text-[]"
+                        
                       >
-                        <li><a>Edit</a></li>
-                        <li><a>Delete</a></li>
+                        <li class="text-yellow-500">
+                          <a> <v-icon name="fa-edit"></v-icon>Edit</a>
+                        </li>
+                        <li class="text-red-700">
+                          <a> <v-icon name="md-deleteforever"></v-icon>Delete</a>
+                        </li>
                       </ul>
                     </details>
                   </div>
@@ -120,6 +125,9 @@
   <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
     <TaskDetail></TaskDetail>
   </Teleport>
+   <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
+    <TaskDetail></TaskDetail>
+  </Teleport> -->
 
   <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
     <TaskAdd></TaskAdd>

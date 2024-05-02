@@ -3,9 +3,9 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { CoSettings} from 'oh-vue-icons/icons'
+import { CoSettings, FaEdit, MdDeleteforever } from 'oh-vue-icons/icons'
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
-addIcons(CoSettings)
+addIcons(CoSettings, FaEdit, MdDeleteforever)
 
 const app = createApp(App)
 app.use(router)
