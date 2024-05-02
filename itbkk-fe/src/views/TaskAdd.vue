@@ -7,7 +7,8 @@
           <input
             type="text"
             placeholder="Type here"
-            class="input input-bordered w-full  bg-white"
+            class="input input-bordered w-full bg-white"
+            v-model="newTask.title"
           />
         </CardHeader>
         <CardContent class="flex">
@@ -16,10 +17,11 @@
             <input
               type="text"
               placeholder="Type here"
-              class="input input-bordered w-full  bg-white "
+              class="input input-bordered w-full bg-white"
+              v-model="newTask.assignees"
             />
             <p>Status:</p>
-            <select class="select select-bordered w-full bg-white">
+            <select class="select select-bordered w-full bg-white" v-model="newTask.status">
               <option disabled hidden>
                 <p class="itbkk-status"></p>
               </option>
@@ -31,15 +33,28 @@
           </div>
           <div class="w-1/2 gap-5 ml-10">
             <p class="pb-2">Description:</p>
-            <textarea class="textarea textarea-bordered min-h-[8rem] w-full bg-white" placeholder="Bio"></textarea>
+            <textarea
+              class="textarea textarea-bordered min-h-[8rem] w-full bg-white"
+              placeholder="Bio"
+              v-model="newTask.description"
+            ></textarea>
+          </div>
+        </CardContent>
+        <CardContent class="-mt-6 -mb-4">
+          <div v-if="warning.length > 0" class="gap-3 text-red-600">
+            {{ warning }}
           </div>
         </CardContent>
         <CardFooter class="gap-3">
-          <Button class="justify-between content-between bg-green-500 hover:bg-green-600 text-white" @click="closePage"
+          <Button
+            class="justify-between content-between bg-green-500 hover:bg-green-600 text-white"
+            @click="saveNewTask"
             >Ok</Button
           >
-          <Button class="justify-between content-between bg-rose-500 hover:bg-rose-600 text-white" @click="closePage"
-            >Cancle</Button
+          <Button
+            class="justify-between content-between bg-rose-500 hover:bg-rose-600 text-white"
+            @click="closePage"
+            >Cancel</Button
           >
         </CardFooter>
       </Card>
@@ -52,10 +67,34 @@ import Button from '@/components/ui/button/Button.vue'
 // import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { createTask } from '@/api/taskService.js'
+import { ref, defineEmits } from 'vue'
+const warning = ref("")
+const emit = defineEmits(["returnStatus"])
+const newTask = ref({ title: '', description: '', assignees: '', status: 'NO_STATUS' })
 const router = useRouter()
 const closePage = () => {
   router.back()
 }
+
+const saveNewTask = async () => {
+  if (newTask.value.title.length === 0) {
+    warning.value = "Title can't be empty!"
+    return
+  }
+  try {
+    await createTask(newTask.value)
+  } catch (error) {
+    console.log(' erro r')
+    emit('returnStatus', {status:false, message:`An error occured: task "${newTask.value.title}" couldn't be saved, Please try again later`})
+    router.back()
+    return
+  }
+  
+  emit('returnStatus', {status:true, message:`The task "${newTask.value.title}" has been saved!`})
+  router.back()
+}
+
 </script>
 
 <style lang="scss" scoped></style>

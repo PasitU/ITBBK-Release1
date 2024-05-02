@@ -42,7 +42,7 @@
             </div>
             <p>Status:</p>
             <select
-              class="select select-bordered w-full bg-white"
+              class="select select-bordered w-full pointer-events-none"
               v-model="task.status"
               :selected="task.status"
               
@@ -91,7 +91,7 @@
         <CardHeader class="flex justify-center items-center bg-rose-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="stroke-current shrink-0 h-28 w-28 stroke-white"
+            class=" shrink-0 h-28 w-28 stroke-white"
             fill="none"
             viewBox="0 0 24 24"
           >

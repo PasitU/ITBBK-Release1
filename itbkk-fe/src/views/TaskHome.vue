@@ -23,6 +23,21 @@
           </h1>
         </div>
 
+        <div
+          class="flex justify-between alert ml-6 w-auto mr-6 -mb-3"
+          :class="saveResult.result ? 'alert-success' : 'alert-error'"
+          v-if="saveResult.displayResult"
+        >
+          <div>
+            <span class="font-bold text-xl text-slate-900">{{
+              saveResult.result ? 'Success' : 'Error'
+            }}</span
+            ><br />
+            <span class="text-slate-800">{{ saveResult.message }}</span>
+          </div>
+          <span class="pb-5 cursor-pointer" @click="saveResult.displayResult = false">x</span>
+        </div>
+
         <div class="h-full w-full p-6">
           <Table class="text-black border border-solid border-black">
             <TableCaption v-if="!isNull" class="pb-4 text-red-800 font-bold text-[1.5rem]"
@@ -144,7 +159,7 @@
   </Teleport> -->
 
   <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
-    <TaskAdd></TaskAdd>
+    <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
   </Teleport>
 </template>
 
@@ -171,6 +186,7 @@ import { getAllTasks } from '@/api/taskService'
 const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
+const saveResult = ref({ displayResult: false, result: true, message: '' })
 
 const currentTaskId = ref(null)
 
@@ -183,6 +199,19 @@ onMounted(async () => {
 })
 const navigateToAddTask = () => {
   router.push('/task/add')
+}
+
+const checkReceivedStatus = async (response) => {
+  saveResult.value.displayResult = true
+  saveResult.value.result = response.status
+  saveResult.value.message = response.message
+  if (saveResult.value.result) {
+      try {
+        tasks.value = await getAllTasks()
+      } catch(error){
+        console.log(error)
+      }
+  }
 }
 
 const openTaskDetail = async (id) => {
