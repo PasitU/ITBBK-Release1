@@ -69,8 +69,9 @@ import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { createTask } from '@/api/taskService.ts'
 import { ref, defineEmits } from 'vue'
-const warning = ref("")
-const emit = defineEmits(["returnStatus"])
+
+const warning = ref('')
+const emit = defineEmits(['returnStatus'])
 const newTask = ref({ title: '', description: '', assignees: '', status: 'NO_STATUS' })
 const router = useRouter()
 const closePage = () => {
@@ -86,15 +87,20 @@ const saveNewTask = async () => {
     await createTask(newTask.value)
   } catch (error) {
     console.log(' erro r')
-    emit('returnStatus', {status:false, message:`An error occured: task "${newTask.value.title}" couldn't be saved, Please try again later`})
+    emit('returnStatus', {
+      status: false,
+      message: `An error occured: task "${newTask.value.title}" couldn't be saved, Please try again later`
+    })
     router.back()
     return
   }
-  
-  emit('returnStatus', {status:true, message:`The task "${newTask.value.title}" has been saved!`})
+
+  emit('returnStatus', {
+    status: true,
+    message: `The task "${newTask.value.title}" has been saved!`
+  })
   router.back()
 }
-
 </script>
 
 <style lang="scss" scoped></style>

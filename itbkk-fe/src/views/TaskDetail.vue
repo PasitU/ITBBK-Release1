@@ -29,26 +29,24 @@
                 <p class="itbkk-description" :class="{ italic: !task.assignees }">
                   {{ task.description }}
                 </p>
-                
               </h1>
             </div>
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
                 <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                    {{ task.assignees || 'Unassigned' }}
-                  </p>
+                  {{ task.assignees || 'Unassigned' }}
+                </p>
               </h1>
             </div>
             <p>Status:</p>
             <select
-              class="select select-bordered w-full pointer-events-none"
+              class="select select-bordered w-full pointer-events-none bg-white"
               v-model="task.status"
               :selected="task.status"
-              
             >
-              <option disabled hidden >
-                <p class="itbkk-status bg-white" >{{ changeStatusName(task.status) }}</p>
+              <option disabled hidden>
+                <p class="itbkk-status">{{ changeStatusName(task.status) }}</p>
               </option>
               <option :value="'NO_STATUS'">No Status</option>
               <option :value="'TO_DO'">To Do</option>
@@ -91,7 +89,7 @@
         <CardHeader class="flex justify-center items-center bg-rose-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class=" shrink-0 h-28 w-28 stroke-white"
+            class="shrink-0 h-28 w-28 stroke-white"
             fill="none"
             viewBox="0 0 24 24"
           >
@@ -109,7 +107,6 @@
           <div>Please try again later</div>
         </CardContent>
         <CardFooter class="flex justify-center">
-          
           <Button class="justify-between content-between bg-rose-500 text-white" @click="closePage"
             >Close</Button
           >
@@ -138,6 +135,7 @@ const task = ref({
   updatedOn: '',
   timezone: ''
 })
+
 
 const changeStatusName = (status) => {
   switch (status) {

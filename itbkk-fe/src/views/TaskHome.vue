@@ -64,10 +64,10 @@
             </TableHeader>
 
             <TableBody>
-              <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id">
+              <TableRow class="itbkk-item" v-for="(task, key) in tasks" :key="key">
                 <TableCell class="border border-solid border-black p-0">
                   <div class="flex items-center justify-center gap-3">
-                    <p class="itbkk-title">{{ task.id }}</p>
+                    <p class="itbkk-title">{{ key + 1 }}</p>
                     <details class="dropdown">
                       <summary class="block">
                         <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
@@ -92,14 +92,19 @@
                   <dialog id="my_modal_1" class="modal">
                     <div class="modal-box bg-white">
                       <h3 class="font-bold text-lg">Delete a Task</h3>
-                      <p class="py-4 break-words text-2xl">
+                      <p class="py-4 break-words text-2xl itbkk-message">
                         Do you want to delete the task "{{ taskTitle }}"?
                       </p>
                       <div class="modal-action">
                         <form method="dialog" class="flex gap-4">
-                          <button class="btn bg-rose-500 text-white">Cancle</button>
-                          <button class="btn bg-green-500 text-white" @click="deleteTaskConfirm()">
-                            Confirm
+                          <button class="-cancel btn bg-rose-500 text-white">
+                            <p class="itbkk-button">Cancel</p>
+                          </button>
+                          <button
+                            class="itbkk-button-confirm btn bg-green-500 text-white"
+                            @click="deleteTaskConfirm()"
+                          >
+                            <p class="itbkk-button">Confirm</p>
                           </button>
                         </form>
                       </div>
@@ -223,11 +228,11 @@ const deleteTaskConfirm = async () => {
     try {
       await deleteTask(taskId.value)
       console.log('Task deleted successfully')
+      tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
     } catch (error) {
       console.error('Error deleting task:', error)
     }
   }
-  // closeModal();
 }
 
 const openTaskDetail = async (id) => {
