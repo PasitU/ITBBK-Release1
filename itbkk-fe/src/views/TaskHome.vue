@@ -52,42 +52,43 @@
               <TableRow class="itbkk-item" v-for="task in tasks" :key="task.id">
                 <TableCell class="border border-solid border-black p-0">
                   <div class="flex items-center justify-center gap-3">
-                    <p class="itbkk-title">
-                      {{ task.id }}
-                    </p>
+                    <p class="itbkk-title">{{ task.id }}</p>
                     <details class="dropdown">
                       <summary class="block">
                         <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
                       </summary>
-
                       <ul
                         tabindex="0"
-                        class="shadow menu dropdown-content z-[1] bg-white rounded-box w-auto text-[]"
+                        class="shadow menu dropdown-content z-[1] bg-white rounded-box w-auto"
                       >
                         <li class="text-yellow-500">
-                          <a> <v-icon name="fa-edit"></v-icon>Edit</a>
+                          <a @click="editTask(task.id)"><v-icon name="fa-edit"></v-icon>Edit</a>
                         </li>
-                        <li class="text-red-700" onclick="my_modal_1.showModal()">
-                          <a> <v-icon name="md-deleteforever"></v-icon>Delete</a>
+                        <li
+                          class="text-red-700"
+                          onclick="my_modal_1.showModal()"
+                          @click="openDeleteDialog(task.title)"
+                        >
+                          <a><v-icon name="md-deleteforever"></v-icon>Delete</a>
                         </li>
                       </ul>
                     </details>
-                    <dialog id="my_modal_1" class="modal" v-for="task in tasks" :key="task.id">
-                      <div class="modal-box bg-white">
-                        <h3 class="font-bold text-lg">Delete a Task</h3>
-                        <p class="py-4 break-words">
-                          Do you want to delete the task "{{ task.id }}"
-                        </p>
-                        <div class="modal-action">
-                          <form method="dialog">
-                            <!-- if there is a button in form, it will close the modal -->
-                            <button class="btn bg-white">Close</button>
-                          </form>
-                        </div>
-                      </div>
-                    </dialog>
                   </div>
+                  <dialog id="my_modal_1" class="modal">
+                    <div class="modal-box bg-white">
+                      <h3 class="font-bold text-lg">Delete a Task</h3>
+                      <p class="py-4 break-words">
+                        Do you want to delete the task "{{ currentTaskId }}"?
+                      </p>
+                      <div class="modal-action">
+                        <form method="dialog">
+                          <button class="btn bg-white">Close</button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
                 </TableCell>
+
                 <TableCell
                   @click="openTaskDetail(task.id)"
                   class="border border-solid border-black"
@@ -171,6 +172,8 @@ const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
 
+const currentTaskId = ref(null)
+
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
@@ -215,6 +218,12 @@ const changeStatusName = (status) => {
       return ''
   }
 }
+
+const openDeleteDialog = (taskId) => {
+  currentTaskId.value = taskId
+}
+
+
 
 const displaySidebar = ref(false)
 
