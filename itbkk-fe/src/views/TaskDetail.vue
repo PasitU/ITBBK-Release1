@@ -42,7 +42,7 @@
             </div>
             <p>Status:</p>
             <select
-              class="select select-bordered w-full"
+              class="select select-bordered w-full pointer-events-none"
               v-model="task.status"
               :selected="task.status"
             >
