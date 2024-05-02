@@ -62,17 +62,30 @@
 
                       <ul
                         tabindex="0"
-                        class="shadow menu dropdown-content z-[1]  bg-white rounded-box w-auto text-[]"
-                        
+                        class="shadow menu dropdown-content z-[1] bg-white rounded-box w-auto text-[]"
                       >
                         <li class="text-yellow-500">
                           <a> <v-icon name="fa-edit"></v-icon>Edit</a>
                         </li>
-                        <li class="text-red-700">
+                        <li class="text-red-700" onclick="my_modal_1.showModal()">
                           <a> <v-icon name="md-deleteforever"></v-icon>Delete</a>
                         </li>
                       </ul>
                     </details>
+                    <dialog id="my_modal_1" class="modal" v-for="task in tasks" :key="task.id">
+                      <div class="modal-box bg-white">
+                        <h3 class="font-bold text-lg">Delete a Task</h3>
+                        <p class="py-4 break-words">
+                          Do you want to delete the task "{{ task.id }}"
+                        </p>
+                        <div class="modal-action">
+                          <form method="dialog">
+                            <!-- if there is a button in form, it will close the modal -->
+                            <button class="btn bg-white">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
                   </div>
                 </TableCell>
                 <TableCell
@@ -125,7 +138,7 @@
   <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
     <TaskDetail></TaskDetail>
   </Teleport>
-   <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
+  <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
     <TaskDetail></TaskDetail>
   </Teleport> -->
 
