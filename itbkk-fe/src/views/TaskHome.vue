@@ -20,10 +20,12 @@
         <div>
           <div class="flex justify-center items-center p-6">
             <h1>
-              <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 </span>
+              <span class="font-bold text-3xl"
+                >INTEGRATED PROJECT ITBKK-SY-1 {{ openDeleteModal }}</span
+              >
             </h1>
           </div>
-  
+
           <div
             class="flex justify-between alert ml-6 w-auto mr-6 -mb-3"
             :class="saveResult.result ? 'alert-success' : 'alert-error'"
@@ -38,98 +40,38 @@
             </div>
             <span class="pb-5 cursor-pointer" @click="saveResult.displayResult = false">x</span>
           </div>
-  
-          <div class="h-full w-full p-6 overflow-x-auto">
+
+          <div class="h-full w-full p-6 overflow-auto">
             <table class="table">
               <thead class="text-slate-700">
                 <tr>
-                  <th
-                    class="font-bold text-[1.5rem]"
-                  ></th>
-                  <th
-                    class="font-bold text-[1.5rem]"
-                    >Title</th
-                  >
-                  <th
-                    class="font-bold text-[1.5rem]"
-                    >Assignees</th
-                  >
-                  <th
-                    class="font-bold text-[1.5rem]"
-                    >Status
-                  </th>
+                  <th class="font-bold text-[1.5rem]"></th>
+                  <th class="font-bold text-[1.5rem]">Title</th>
+                  <th class="font-bold text-[1.5rem]">Assignees</th>
+                  <th class="font-bold text-[1.5rem]">Status</th>
+                  <th class="font-bold text-[1.5rem]">Action</th>
                 </tr>
               </thead>
-  
+
               <tbody>
                 <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
                   <td class="p-5">
                     <div class="flex">
                       <p class="itbkk-title font-bold">{{ key + 1 }}</p>
-                      <details class="dropdown">
-                        <summary class="block pl-4">
-                          <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
-                        </summary>
-                        <ul
-                          tabindex="0"
-                          class="shadow menu dropdown-content z-[1] rounded-box w-auto"
-                        >
-                          <li class="text-yellow-500">
-                            <a @click="editTask(task.id)"><v-icon name="fa-edit"></v-icon>Edit</a>
-                          </li>
-                          <li
-                            class="text-red-700"
-                            onclick="my_modal_1.showModal()"
-                            @click="openDeleteDialog(task.title, task.id)"
-                          >
-                            <a><v-icon name="md-deleteforever"></v-icon>Delete</a>
-                          </li>
-                        </ul>
-                      </details>
                     </div>
-                    <dialog id="my_modal_1" class="modal">
-                      <div class="modal-box">
-                        <h3 class="font-bold text-lg">Delete a Task</h3>
-                        <p class="py-4 break-words text-2xl itbkk-message">
-                          Do you want to delete the task "{{ taskTitle }}"?
-                        </p>
-                        <div class="modal-action">
-                          <form method="dialog" class="flex gap-4">
-                            <button class="-cancel btn bg-rose-500 text-white">
-                              <p class="itbkk-button">Cancel</p>
-                            </button>
-                            <button
-                              class="itbkk-button-confirm btn bg-green-500 text-white"
-                              @click="deleteTaskConfirm()"
-                            >
-                              <p class="itbkk-button">Confirm</p>
-                            </button>
-                          </form>
-                        </div>
-                      </div>
-                    </dialog>
                   </td>
-  
-                  <td
-                    @click="openTaskDetail(task.id)"
-                    class=""
-                  >
+
+                  <td @click="openTaskDetail(task.id)" class="">
                     <p class="itbkk-title">
                       {{ task.title }}
                     </p>
                   </td>
-                  <td
-                    @click="openTaskDetail(task.id)"
-                    class=""
-                  >
+                  <td @click="openTaskDetail(task.id)" class="">
                     <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
                       {{ task.assignees || 'Unassigned' }}
                     </p>
                   </td>
-                  <td
-                    @click="openTaskDetail(task.id)"
-                    class=""
-                  >
+                  <td @click="openTaskDetail(task.id)" class="">
                     <button
                       :class="getStatusClass(task.status)"
                       class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
@@ -138,8 +80,30 @@
                       <p class="itbkk-status">
                         {{ changeStatusName(task.status) }}
                       </p>
-                    </button></td
-                  >
+                    </button>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <div tabindex="0" role="button" class="btn m-1">
+                        <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
+                      </div>
+                      <ul
+                        tabindex="0"
+                        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
+                      >
+                        <li class="felx flex-row">
+                          <button class="text-warning w-full" @click="editTask(task.id)">
+                            <v-icon name="fa-edit"></v-icon>Edit
+                          </button>
+                        </li>
+                        <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id)">
+                          <button class="text-error w-full" onclick="my_modal_1.showModal()">
+                            <v-icon name="md-deleteforever"></v-icon>Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -163,11 +127,30 @@
     <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
       <TaskDetail></TaskDetail>
     </Teleport> -->
-  
+
     <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
       <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
     </Teleport>
 
+    <!-- Open the modal using ID.showModal() method -->
+    <dialog id="my_modal_1" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Delete a Task</h3>
+        <p class="py-4 break-words">Do you want to delete the task "{{ taskTitle }}"?</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn bg-error text-white">Close</button>
+            <button
+              class="itbkk-button-confirm btn bg-success text-white ml-2"
+              @click="deleteTaskConfirm()"
+            >
+              <p class="itbkk-button">Confirm</p>
+            </button>
+          </form>
+        </div>
+      </div>
+    </dialog>
   </div>
 </template>
 
@@ -219,6 +202,7 @@ const deleteTaskConfirm = async () => {
       await deleteTask(taskId.value)
       console.log('Task deleted successfully')
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
+      my_modal_1.closeModal()
     } catch (error) {
       console.error('Error deleting task:', error)
     }
@@ -262,7 +246,7 @@ const changeStatusName = (status) => {
 const openDeleteDialog = (title, id) => {
   taskTitle.value = title
   taskId.value = id
-  my_modal_1.showModal()
+  openDeleteModal.value = true
 }
 
 const displaySidebar = ref(false)
