@@ -1,187 +1,177 @@
 <template>
-  <!-- :default-size="displaySidebar ? 0 : 20" -->
-  <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg border">
-    <ResizablePanel
-      v-show="displaySidebar"
-      id="handle-demo-panel-3"
-      :default-size="displaySidebar ? 10 : 0"
-    >
-      <div class="flex h-full items-center justify-center p-6">
-        <span class="font-semibold">Sidebar {{ $route.params.id }} </span>
-      </div>
-    </ResizablePanel>
-    <ResizableHandle id="handle-demo-handle-1" with-handle />
-    <ResizablePanel
-      id="handle-demo-panel-1"
-      :default-size="displaySidebar ? 50 : 20"
-      class="h-screen"
-    >
-      <div>
-        <div class="flex justify-center items-center p-6">
-          <h1>
-            <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 </span>
-          </h1>
+  <div data-theme="light">
+    <!-- :default-size="displaySidebar ? 0 : 20" -->
+    <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg">
+      <ResizablePanel
+        v-show="displaySidebar"
+        id="handle-demo-panel-3"
+        :default-size="displaySidebar ? 10 : 0"
+      >
+        <div class="flex h-full items-center justify-center p-6">
+          <span class="font-semibold">Sidebar {{ $route.params.id }} </span>
         </div>
-
-        <div
-          class="flex justify-between alert ml-6 w-auto mr-6 -mb-3"
-          :class="saveResult.result ? 'alert-success' : 'alert-error'"
-          v-if="saveResult.displayResult"
-        >
-          <div>
-            <span class="font-bold text-xl text-slate-900">{{
-              saveResult.result ? 'Success' : 'Error'
-            }}</span
-            ><br />
-            <span class="text-slate-800">{{ saveResult.message }}</span>
+      </ResizablePanel>
+      <ResizableHandle id="handle-demo-handle-1" with-handle />
+      <ResizablePanel
+        id="handle-demo-panel-1"
+        :default-size="displaySidebar ? 50 : 20"
+        class="h-screen"
+      >
+        <div>
+          <div class="flex justify-center items-center p-6">
+            <h1>
+              <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1 </span>
+            </h1>
           </div>
-          <span class="pb-5 cursor-pointer" @click="saveResult.displayResult = false">x</span>
-        </div>
-
-        <div class="h-full w-full p-6">
-          <Table class="text-black border border-solid border-black">
-            <TableCaption v-if="!isNull" class="pb-4 text-red-800 font-bold text-[1.5rem]"
-              >Total {{ tasks.length }} Tasks</TableCaption
-            >
-            <TableHeader>
-              <TableRow class="border border-solid border-black">
-                <TableHead
-                  class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
-                ></TableHead>
-                <TableHead
-                  class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
-                  >Title</TableHead
-                >
-                <TableHead
-                  class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
-                  >Assignees</TableHead
-                >
-                <TableHead
-                  class="text-red-800 font-bold text-[1.5rem] border border-solid border-black"
-                  >Status
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              <TableRow class="itbkk-item" v-for="(task, key) in tasks" :key="key">
-                <TableCell class="border border-solid border-black p-0">
-                  <div class="flex items-center justify-center gap-3">
-                    <p class="itbkk-title">{{ key + 1 }}</p>
-                    <details class="dropdown">
-                      <summary class="block">
-                        <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
-                      </summary>
-                      <ul
-                        tabindex="0"
-                        class="shadow menu dropdown-content z-[1] bg-white rounded-box w-auto"
-                      >
-                        <li class="text-yellow-500">
-                          <a @click="editTask(task.id)"><v-icon name="fa-edit"></v-icon>Edit</a>
-                        </li>
-                        <li
-                          class="text-red-700"
-                          onclick="my_modal_1.showModal()"
-                          @click="openDeleteDialog(task.title, task.id)"
-                        >
-                          <a><v-icon name="md-deleteforever"></v-icon>Delete</a>
-                        </li>
-                      </ul>
-                    </details>
-                  </div>
-                  <dialog id="my_modal_1" class="modal">
-                    <div class="modal-box bg-white">
-                      <h3 class="font-bold text-lg">Delete a Task</h3>
-                      <p class="py-4 break-words text-2xl itbkk-message">
-                        Do you want to delete the task "{{ taskTitle }}"?
-                      </p>
-                      <div class="modal-action">
-                        <form method="dialog" class="flex gap-4">
-                          <button class="-cancel btn bg-rose-500 text-white">
-                            <p class="itbkk-button">Cancel</p>
-                          </button>
-                          <button
-                            class="itbkk-button-confirm btn bg-green-500 text-white"
-                            @click="deleteTaskConfirm()"
-                          >
-                            <p class="itbkk-button">Confirm</p>
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                  </dialog>
-                </TableCell>
-
-                <TableCell
-                  @click="openTaskDetail(task.id)"
-                  class="border border-solid border-black"
-                >
-                  <p class="itbkk-title">
-                    {{ task.title }}
-                  </p>
-                </TableCell>
-                <TableCell
-                  @click="openTaskDetail(task.id)"
-                  class="border border-solid border-black"
-                >
-                  <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                    {{ task.assignees || 'Unassigned' }}
-                  </p>
-                </TableCell>
-                <TableCell
-                  @click="openTaskDetail(task.id)"
-                  class="border border-solid border-black"
-                >
-                  <button
-                    :class="getStatusClass(task.status)"
-                    class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
-                    @click="toggleSidebar"
+  
+          <div
+            class="flex justify-between alert ml-6 w-auto mr-6 -mb-3"
+            :class="saveResult.result ? 'alert-success' : 'alert-error'"
+            v-if="saveResult.displayResult"
+          >
+            <div>
+              <span class="font-bold text-xl text-slate-900">{{
+                saveResult.result ? 'Success' : 'Error'
+              }}</span
+              ><br />
+              <span class="text-slate-800">{{ saveResult.message }}</span>
+            </div>
+            <span class="pb-5 cursor-pointer" @click="saveResult.displayResult = false">x</span>
+          </div>
+  
+          <div class="h-full w-full p-6 overflow-x-auto">
+            <table class="table">
+              <thead class="text-slate-700">
+                <tr>
+                  <th
+                    class="font-bold text-[1.5rem]"
+                  ></th>
+                  <th
+                    class="font-bold text-[1.5rem]"
+                    >Title</th
                   >
-                    <p class="itbkk-status">
-                      {{ changeStatusName(task.status) }}
+                  <th
+                    class="font-bold text-[1.5rem]"
+                    >Assignees</th
+                  >
+                  <th
+                    class="font-bold text-[1.5rem]"
+                    >Status
+                  </th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
+                  <td class="p-5">
+                    <div class="flex">
+                      <p class="itbkk-title font-bold">{{ key + 1 }}</p>
+                      <details class="dropdown">
+                        <summary class="block pl-4">
+                          <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
+                        </summary>
+                        <ul
+                          tabindex="0"
+                          class="shadow menu dropdown-content z-[1] rounded-box w-auto"
+                        >
+                          <li class="text-yellow-500">
+                            <a @click="editTask(task.id)"><v-icon name="fa-edit"></v-icon>Edit</a>
+                          </li>
+                          <li
+                            class="text-red-700"
+                            onclick="my_modal_1.showModal()"
+                            @click="openDeleteDialog(task.title, task.id)"
+                          >
+                            <a><v-icon name="md-deleteforever"></v-icon>Delete</a>
+                          </li>
+                        </ul>
+                      </details>
+                    </div>
+                    <dialog id="my_modal_1" class="modal">
+                      <div class="modal-box">
+                        <h3 class="font-bold text-lg">Delete a Task</h3>
+                        <p class="py-4 break-words text-2xl itbkk-message">
+                          Do you want to delete the task "{{ taskTitle }}"?
+                        </p>
+                        <div class="modal-action">
+                          <form method="dialog" class="flex gap-4">
+                            <button class="-cancel btn bg-rose-500 text-white">
+                              <p class="itbkk-button">Cancel</p>
+                            </button>
+                            <button
+                              class="itbkk-button-confirm btn bg-green-500 text-white"
+                              @click="deleteTaskConfirm()"
+                            >
+                              <p class="itbkk-button">Confirm</p>
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
+                  </td>
+  
+                  <td
+                    @click="openTaskDetail(task.id)"
+                    class=""
+                  >
+                    <p class="itbkk-title">
+                      {{ task.title }}
                     </p>
-                  </button></TableCell
-                >
-              </TableRow>
-            </TableBody>
-          </Table>
-          <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
-          <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
-            {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}
-          </button>
-          {{ displaySidebar ? 'Sidebar is on' : 'Sidebar is off' }}
+                  </td>
+                  <td
+                    @click="openTaskDetail(task.id)"
+                    class=""
+                  >
+                    <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                      {{ task.assignees || 'Unassigned' }}
+                    </p>
+                  </td>
+                  <td
+                    @click="openTaskDetail(task.id)"
+                    class=""
+                  >
+                    <button
+                      :class="getStatusClass(task.status)"
+                      class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
+                      @click="toggleSidebar"
+                    >
+                      <p class="itbkk-status">
+                        {{ changeStatusName(task.status) }}
+                      </p>
+                    </button></td
+                  >
+                </tr>
+              </tbody>
+            </table>
+            <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
+            <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
+              {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}
+            </button>
+            {{ displaySidebar ? 'Sidebar is on' : 'Sidebar is off' }}
+          </div>
         </div>
-      </div>
-    </ResizablePanel>
-    <Button
-      class="bg-blue-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-blue-800"
-      @click="navigateToAddTask"
-      >Add Task</Button
-    >
-  </ResizablePanelGroup>
-  <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
-    <TaskDetail></TaskDetail>
-  </Teleport>
-  <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
-    <TaskDetail></TaskDetail>
-  </Teleport> -->
+      </ResizablePanel>
+      <Button
+        class="bg-blue-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-blue-800"
+        @click="navigateToAddTask"
+        >Add Task</Button
+      >
+    </ResizablePanelGroup>
+    <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
+      <TaskDetail></TaskDetail>
+    </Teleport>
+    <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
+      <TaskDetail></TaskDetail>
+    </Teleport> -->
+  
+    <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
+      <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
+    </Teleport>
 
-  <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
-    <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
-  </Teleport>
+  </div>
 </template>
 
 <script setup>
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import TaskDetail from './TaskDetail.vue'
 import TaskAdd from './TaskAdd.vue'

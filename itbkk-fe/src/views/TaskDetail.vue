@@ -54,7 +54,7 @@
               <option :value="'DONE'">Done</option>
             </select>
           </div>
-          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 bg-white">
+          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 bg-white text-slate-700">
             <div class="stat">
               <div class="stat-title">CreatedOn</div>
               <div class="stat-value">
