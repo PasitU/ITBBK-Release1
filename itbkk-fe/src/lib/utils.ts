@@ -9,4 +9,5 @@ export function shortenTitle(title){
   if(title.length > 20){
     return `${title.slice(-20)}...`
   }
+  return title
 }

@@ -20,6 +20,7 @@
             type="text"
             class="input input-bordered w-full space-x-5 border p-4 mt-2"
             v-model="task.title"
+            :class="titleError ? `input-error` : ``"
             :placeholder="taskUpdate.title"
           />
         </CardHeader>
@@ -132,10 +133,12 @@ import { useRouter } from 'vue-router'
 import { getTaskById, updateTask } from '@/api/taskService'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
+import { shortenTitle } from '@/lib/utils'
 const router = useRouter()
 const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)
+const titleError = ref(false)
 const warning = ref('')
 const task = ref({
   title: '',
@@ -183,6 +186,7 @@ const isTaskSame = computed(() => {
 const saveTask = async () => {
   if (task.value.title.length === 0) {
     warning.value = "Title can't be empty!"
+    titleError.value = true 
     return
   }
   try {
@@ -192,14 +196,14 @@ const saveTask = async () => {
   } catch (error) {
     emit('returnStatus', {
       status: false,
-      message: `An error occured: task "${taskUpdate.value.title}" couldn't be updated, Please try again later`
+      message: `An error occured: task "${shortenTitle(taskUpdate.value.title)}" couldn't be updated, Please try again later`
     })
     router.back
     return
   }
   emit('returnStatus', {
     status: true,
-    message: `The task "${taskUpdate.value.title}" has been updated!`
+    message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
   })
   router.back()
 }

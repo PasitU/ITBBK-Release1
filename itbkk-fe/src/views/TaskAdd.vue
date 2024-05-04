@@ -8,6 +8,7 @@
             type="text"
             placeholder="Type here"
             class="input input-bordered w-full bg-white"
+            :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
           />
         </CardHeader>
@@ -75,6 +76,7 @@ const warning = ref('')
 const emit = defineEmits(['returnStatus'])
 const newTask = ref({ title: '', description: '', assignees: '', status: 'NO_STATUS' })
 const router = useRouter()
+const titleError = ref(false)
 const closePage = () => {
   router.back()
 }
@@ -82,6 +84,7 @@ const closePage = () => {
 const saveNewTask = async () => {
   if (newTask.value.title.length === 0) {
     warning.value = "Title can't be empty!"
+    titleError.value = true 
     return
   }
   try {

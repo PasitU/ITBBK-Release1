@@ -190,7 +190,7 @@ import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import { getAllTasks, deleteTask } from '@/api/taskService'
-
+import { shortenTitle } from '@/lib/utils'
 const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
@@ -229,7 +229,7 @@ const deleteTaskConfirm = async () => {
       await deleteTask(taskId.value)
       await checkReceivedStatus({
         status: true,
-        message: `The task "${taskTitle.value}" has been deleted successfully`
+        message: `The task "${shortenTitle(taskTitle.value)}" has been deleted successfully`
       })
       // my_modal_1.closeModal()
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
