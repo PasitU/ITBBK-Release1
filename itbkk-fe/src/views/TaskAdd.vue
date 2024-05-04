@@ -6,8 +6,8 @@
           <p class="pb-2">Title</p>
           <input
             type="text"
-            placeholder="Type here"
-            class="input input-bordered w-full bg-white"
+            placeholder="title is require"
+            class="itbkk-title input input-bordered w-full bg-white"
             :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
           />
@@ -17,15 +17,12 @@
             <p class="pb-2">Assignees:</p>
             <input
               type="text"
-              placeholder="Type here"
-              class="input input-bordered w-full bg-white"
+              placeholder="enter assignees here"
+              class="itbkk-assignees input input-bordered w-full bg-white"
               v-model="newTask.assignees"
             />
             <p>Status:</p>
-            <select class="select select-bordered w-full bg-white" v-model="newTask.status">
-              <option disabled hidden>
-                <p class="itbkk-status"></p>
-              </option>
+            <select class="itbkk-status select select-bordered w-full bg-white" v-model="newTask.status">
               <option :value="'NO_STATUS'">No Status</option>
               <option :value="'TO_DO'">To Do</option>
               <option :value="'DOING'">Doing</option>
@@ -35,8 +32,8 @@
           <div class="w-1/2 gap-5 ml-10">
             <p class="pb-2">Description:</p>
             <textarea
-              class="textarea textarea-bordered min-h-[8rem] w-full bg-white"
-              placeholder="Bio"
+              class="itbkk-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
+              placeholder="enter description here"
               v-model="newTask.description"
             ></textarea>
           </div>
@@ -48,12 +45,12 @@
         </CardContent>
         <CardFooter class="gap-3">
           <Button
-            class="justify-between content-between bg-green-500 hover:bg-green-600 text-white"
+            class="itbkk-button-confirm justify-between content-between bg-green-500 hover:bg-green-600 text-white"
             @click="saveNewTask"
-            >Ok</Button
+            >Confirm</Button
           >
           <Button
-            class="justify-between content-between bg-rose-500 hover:bg-rose-600 text-white"
+            class="itbkk-button-cancel justify-between content-between bg-rose-500 hover:bg-rose-600 text-white"
             @click="closePage"
             >Cancel</Button
           >

@@ -58,7 +58,7 @@
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>{{ crudResult.message }}</span>
+            <span class="itbkk-message">{{ crudResult.message }}</span>
             <button
               class="btn btn-xs btn-outline btn-circle"
               @click="crudResult.displayResult = false"
@@ -68,7 +68,7 @@
           </div>
 
           <div class="h-full w-full p-6 overflow-auto">
-            <table class="table">
+            <table class="table mb-6">
               <thead class="text-slate-700">
                 <tr>
                   <th class="font-bold text-[1.5rem]"></th>
@@ -110,7 +110,7 @@
                   </td>
                   <td>
                     <div class="dropdown">
-                      <div tabindex="0" role="button" class="btn m-1">
+                      <div tabindex="0" role="button" class="itbkk-button-action btn m-1">
                         <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
                       </div>
                       <ul
@@ -118,12 +118,12 @@
                         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
                       >
                         <li class="felx flex-row">
-                          <button class="text-warning w-full" @click="editTask(task.id)">
+                          <button class="itbkk-button-edit text-warning w-full" @click="editTask(task.id)">
                             <v-icon name="fa-edit"></v-icon>Edit
                           </button>
                         </li>
                         <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id)">
-                          <button class="text-error w-full" onclick="my_modal_1.showModal()">
+                          <button class="itbkk-button-delete text-error w-full" onclick="my_modal_1.showModal()">
                             <v-icon name="md-deleteforever"></v-icon>Delete
                           </button>
                         </li>
@@ -142,7 +142,7 @@
         </div>
       </ResizablePanel>
       <Button
-        class="bg-blue-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-blue-800"
+        class="itbkk-button-add bg-blue-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-blue-800"
         @click="navigateToAddTask"
         >Add Task</Button
       >
@@ -162,11 +162,11 @@
     <dialog id="my_modal_1" class="modal">
       <div class="modal-box">
         <h3 class="font-bold text-lg">Delete a Task</h3>
-        <p class="py-4 break-words">Do you want to delete the task "{{ taskTitle }}"?</p>
+        <p class="itbkk-message py-4 break-words">Do you want to delete the task "{{ taskTitle }}"?</p>
         <div class="modal-action">
           <form method="dialog">
             <!-- if there is a button in form, it will close the modal -->
-            <button class="btn bg-error text-white">Close</button>
+            <button class="itbkk-button-cancel btn bg-error text-white">Cancel</button>
             <button
               class="itbkk-button-confirm btn bg-success text-white ml-2"
               @click="deleteTaskConfirm()"

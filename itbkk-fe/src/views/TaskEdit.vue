@@ -18,9 +18,9 @@
           Title
           <input
             type="text"
-            class="input input-bordered w-full space-x-5 border p-4 mt-2"
+            class="itbkk-title input input-bordered w-full space-x-5 border p-4 mt-2"
             v-model="task.title"
-            :class="titleError ? `input-error` : ``"
+            :class="isTitleNull ? `input-error` : ``"
             :placeholder="taskUpdate.title"
           />
         </CardHeader>
@@ -28,7 +28,7 @@
           <div class="w-1/2">
             <p>Description:</p>
             <textarea
-              class="textarea textarea-bordered h-1/2 w-full"
+              class="itbkk-description textarea textarea-bordered h-1/2 w-full"
               v-model="task.description"
               :placeholder="taskUpdate.description"
             >
@@ -36,13 +36,13 @@
             <p>Assignees:</p>
             <input
               type="text"
-              class="input input-bordered w-full space-x-5 border p-4"
+              class="itbkk-assignees input input-bordered w-full space-x-5 border p-4"
               v-model="task.assignees"
               :placeholder="taskUpdate.assignees"
             />
             <p>Status:</p>
             <select
-              class="select select-bordered w-full"
+              class="itbkk-status select select-bordered w-full"
               v-model="task.status"
               :selected="task.status"
             >
@@ -52,7 +52,7 @@
               <option :value="'DONE'">Done</option>
             </select>
           </div>
-          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 text-slate-700">
+          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 mt-4 text-slate-700">
             <div class="stat">
               <div class="stat-title">CreatedOn</div>
               <div class="stat-value">
@@ -75,16 +75,16 @@
             </div>
           </div>
         </CardContent>
-        <CardContent class="-mt-6 -mb-4">
-          <div v-if="warning.length > 0" class="gap-3 text-red-600">
-            {{ warning }}
+        <CardContent class="-mb-3 -mt-3">
+          <div v-if="isTitleNull" class="gap-3 text-red-600">
+            {{ isTitleNull }}
           </div>
         </CardContent>
         <CardFooter>
-          <button class="btn btn-error mr-3 w-20" @click="closePage">Close</button>
+          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">Close</button>
           <button
-            class="btn btn-success w-20"
-            :class="{ 'btn-disabled': isTaskSame }"
+            class="itbkk-button-confirm btn btn-success w-20"
+            :class="{ 'btn-disabled': isTaskSame || isTitleNull }"
             @click="saveTask"
           >
             Save
@@ -138,8 +138,6 @@ const router = useRouter()
 const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)
-const titleError = ref(false)
-const warning = ref('')
 const task = ref({
   title: '',
   description: '',
@@ -183,12 +181,11 @@ const isTaskSame = computed(() => {
   )
 })
 
+const isTitleNull = computed(() => {
+  return task.value.title.length === 0 ? "Title can't be empty!" : ""
+})
+
 const saveTask = async () => {
-  if (task.value.title.length === 0) {
-    warning.value = "Title can't be empty!"
-    titleError.value = true 
-    return
-  }
   try {
     taskUpdate.value = { ...task.value }
     await updateTask(taskId, taskUpdate.value)
