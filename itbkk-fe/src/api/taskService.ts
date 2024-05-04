@@ -91,6 +91,6 @@ export const updateTask = async (id:number, updatedTask:any) => {
       throw new Error(`Failed to update task with ID: ${updatedTask.id}.`)
     }
   } catch (error) {
-   throw new Error(`Error updating task: ${error.message}`)
+   throw error
   }
 }

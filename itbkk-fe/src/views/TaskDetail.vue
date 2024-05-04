@@ -26,7 +26,7 @@
             <p>Description:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-description" :class="{ italic: !task.assignees }">
+                <p class="itbkk-description" :class="task.assignees.length === 0 ? `italic text-slate-400` : ``">
                   {{ task.description }}
                 </p>
               </h1>
@@ -34,7 +34,7 @@
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                <p class="itbkk-assignees" :class="task.assignees.length === 0 ? `italic text-slate-400` : ``">
                   {{ task.assignees || 'Unassigned' }}
                 </p>
               </h1>
@@ -162,7 +162,7 @@ onMounted(async () => {
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
     isLoading.value = false
-    closePage() //TestCase need to change path to /tasks immediately when error occurs
+    // closePage() //TestCase need to change path to /tasks immediately when error occurs
     return
   }
   isLoading.value = false
