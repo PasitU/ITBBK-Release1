@@ -20,25 +20,51 @@
         <div>
           <div class="flex justify-center items-center p-6">
             <h1>
-              <span class="font-bold text-3xl"
-                >INTEGRATED PROJECT ITBKK-SY-1</span
-              >
+              <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1</span>
             </h1>
           </div>
 
           <div
-            class="flex justify-between alert ml-6 w-auto mr-6 -mb-3"
-            :class="saveResult.result ? 'alert-success' : 'alert-error'"
-            v-if="saveResult.displayResult"
+            v-if="crudResult.displayResult"
+            role="alert"
+            class="alert absolute bottom-20 right-3 w-1/3 z-10"
+            :class="crudResult.result ? `alert-success` : `alert-error`"
           >
-            <div>
-              <span class="font-bold text-xl text-slate-900">{{
-                saveResult.result ? 'Success' : 'Error'
-              }}</span
-              ><br />
-              <span class="text-slate-800">{{ saveResult.message }}</span>
-            </div>
-            <span class="pb-5 cursor-pointer" @click="saveResult.displayResult = false">x</span>
+            <svg
+              v-if="crudResult.result"
+              xmlns="http://www.w3.org/2000/svg"
+              class="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <svg
+              v-if="!crudResult.result"
+              xmlns="http://www.w3.org/2000/svg"
+              class="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{{ crudResult.message }}</span>
+            <button
+              class="btn btn-xs btn-outline btn-circle"
+              @click="crudResult.displayResult = false"
+            >
+              X
+            </button>
           </div>
 
           <div class="h-full w-full p-6 overflow-auto">
@@ -84,9 +110,9 @@
                   </td>
                   <td>
                     <div class="dropdown">
-                        <div tabindex="0" role="button" class="btn m-1">
-                          <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
-                        </div>
+                      <div tabindex="0" role="button" class="btn m-1">
+                        <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
+                      </div>
                       <ul
                         tabindex="0"
                         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
@@ -125,7 +151,7 @@
       <TaskDetail></TaskDetail>
     </Teleport>
     <Teleport to="#modal" v-if="$route.params.id > 0 && $route.path.includes('edit')">
-      <TaskEdit @update-tasks="taskEditEmit"></TaskEdit>
+      <TaskEdit @return-status="checkReceivedStatus"></TaskEdit>
     </Teleport>
 
     <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
@@ -168,7 +194,7 @@ import { getAllTasks, deleteTask } from '@/api/taskService'
 const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
-const saveResult = ref({ displayResult: false, result: true, message: '' })
+const crudResult = ref({ displayResult: false, result: true, message: '' })
 
 const taskTitle = ref(null)
 const taskId = ref(null)
@@ -185,10 +211,10 @@ const navigateToAddTask = () => {
 }
 
 const checkReceivedStatus = async (response) => {
-  saveResult.value.displayResult = true
-  saveResult.value.result = response.status
-  saveResult.value.message = response.message
-  if (saveResult.value.result) {
+  crudResult.value.displayResult = true
+  crudResult.value.result = response.status
+  crudResult.value.message = response.message
+  if (crudResult.value.result) {
     try {
       tasks.value = await getAllTasks()
     } catch (error) {
@@ -197,19 +223,21 @@ const checkReceivedStatus = async (response) => {
   }
 }
 
-const taskEditEmit = async () => {
-  tasks.value = await getAllTasks()
-}
-
 const deleteTaskConfirm = async () => {
   if (taskId.value !== null) {
     try {
       await deleteTask(taskId.value)
-      console.log('Task deleted successfully')
+      await checkReceivedStatus({
+        status: true,
+        message: `The task "${taskTitle.value}" has been deleted successfully`
+      })
+      // my_modal_1.closeModal()
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
-      my_modal_1.closeModal()
     } catch (error) {
-      console.error('Error deleting task:', error)
+      await checkReceivedStatus({
+        status: false,
+        message: error.message
+      })
     }
   }
 }

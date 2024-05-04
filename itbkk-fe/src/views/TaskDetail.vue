@@ -112,7 +112,9 @@
           >
         </CardFooter>
       </Card>
+
     </div>
+
   </div>
 </template>
 
