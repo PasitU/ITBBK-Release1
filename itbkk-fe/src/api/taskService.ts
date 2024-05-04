@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
-// const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
-const BASE_URL = 'http://localhost:8080/v1/tasks'
+const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
+// const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
 
 export const getAllTasks = async () => {
