@@ -21,7 +21,7 @@
           <div class="flex justify-center items-center p-6">
             <h1>
               <span class="font-bold text-3xl"
-                >INTEGRATED PROJECT ITBKK-SY-1 {{ openDeleteModal }}</span
+                >INTEGRATED PROJECT ITBKK-SY-1</span
               >
             </h1>
           </div>
@@ -84,9 +84,9 @@
                   </td>
                   <td>
                     <div class="dropdown">
-                      <div tabindex="0" role="button" class="btn m-1">
-                        <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
-                      </div>
+                        <div tabindex="0" role="button" class="btn m-1">
+                          <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
+                        </div>
                       <ul
                         tabindex="0"
                         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
@@ -121,12 +121,12 @@
         >Add Task</Button
       >
     </ResizablePanelGroup>
-    <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
+    <Teleport to="#modal" v-if="$route.params.id > 0 && !$route.path.includes('edit')">
       <TaskDetail></TaskDetail>
     </Teleport>
-    <!-- <Teleport to="#modal" v-if="$route.params.id && $route.params.id.length > 0">
-      <TaskDetail></TaskDetail>
-    </Teleport> -->
+    <Teleport to="#modal" v-if="$route.params.id > 0 && $route.path.includes('edit')">
+      <TaskEdit @update-tasks="taskEditEmit"></TaskEdit>
+    </Teleport>
 
     <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
       <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
@@ -158,6 +158,7 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import TaskDetail from './TaskDetail.vue'
 import TaskAdd from './TaskAdd.vue'
+import TaskEdit from './TaskEdit.vue'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
@@ -196,6 +197,10 @@ const checkReceivedStatus = async (response) => {
   }
 }
 
+const taskEditEmit = async () => {
+  tasks.value = await getAllTasks()
+}
+
 const deleteTaskConfirm = async () => {
   if (taskId.value !== null) {
     try {
@@ -211,6 +216,9 @@ const deleteTaskConfirm = async () => {
 
 const openTaskDetail = async (id) => {
   await router.push(`/task/${id}`)
+}
+const editTask = async (id) => {
+  await router.push(`/task/${id}/edit`)
 }
 
 const getStatusClass = (status) => {
@@ -246,7 +254,6 @@ const changeStatusName = (status) => {
 const openDeleteDialog = (title, id) => {
   taskTitle.value = title
   taskId.value = id
-  openDeleteModal.value = true
 }
 
 const displaySidebar = ref(false)

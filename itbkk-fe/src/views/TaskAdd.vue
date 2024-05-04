@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
+  <div theme-data="light" class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
     <div class="w-3/5">
       <Card class="items-center self-center min-w-full h-full">
         <CardHeader>
@@ -86,7 +86,7 @@ const saveNewTask = async () => {
   try {
     await createTask(newTask.value)
   } catch (error) {
-    console.log(' erro r')
+    console.log(' error')
     emit('returnStatus', {
       status: false,
       message: `An error occured: task "${newTask.value.title}" couldn't be saved, Please try again later`

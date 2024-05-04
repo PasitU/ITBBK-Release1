@@ -56,13 +56,41 @@ export const deleteTask = async (id: number): Promise<void> => {
       method: 'DELETE'
     })
 
+    if (response.status === 404) {
+      throw new Error(`Unable to delete, Requested task ID: ${id} not exist.`)
+    }
+
     if (!response.ok) {
-      throw new Error(`Failed to delete task with ID: ${id}. Status: ${response.status}`)
+      throw new Error(`Unable to delete task ID: ${id}`)
     }
 
     console.log('Task deleted successfully')
   } catch (error) {
-    console.error('Error deleting task:', error)
+    throw error('Error deleting task:', error.message)
   }
 }
 
+export const updateTask = async (id:number, updatedTask:any) => {
+  try {
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        title : updatedTask.title,
+        description : updatedTask.description,
+        assignees : updatedTask.assignees,
+        status : updatedTask.status
+      })
+    })
+    if (response.status === 404) {
+      throw new Error(`Unable to update task with ID: ${updatedTask.id}. Task not found.`)
+    }
+    if (!response.ok) {
+      throw new Error(`Failed to update task with ID: ${updatedTask.id}.`)
+    }
+  } catch (error) {
+   throw error('Error updating task:', error.message)
+  }
+}
