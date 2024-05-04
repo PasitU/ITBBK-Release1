@@ -12,6 +12,7 @@
         </div>
       </ResizablePanel>
       <ResizableHandle id="handle-demo-handle-1" with-handle />
+
       <ResizablePanel
         id="handle-demo-panel-1"
         :default-size="displaySidebar ? 50 : 20"
@@ -23,6 +24,7 @@
               <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1</span>
             </h1>
           </div>
+          <CountCard :statusCounts="statusCounts"></CountCard>
 
           <div
             v-if="crudResult.displayResult"
@@ -118,12 +120,18 @@
                         class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
                       >
                         <li class="felx flex-row">
-                          <button class="itbkk-button-edit text-warning w-full" @click="editTask(task.id)">
+                          <button
+                            class="itbkk-button-edit text-warning w-full"
+                            @click="editTask(task.id)"
+                          >
                             <v-icon name="fa-edit"></v-icon>Edit
                           </button>
                         </li>
                         <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id)">
-                          <button class="itbkk-button-delete text-error w-full" onclick="my_modal_1.showModal()">
+                          <button
+                            class="itbkk-button-delete text-error w-full"
+                            onclick="my_modal_1.showModal()"
+                          >
                             <v-icon name="md-deleteforever"></v-icon>Delete
                           </button>
                         </li>
@@ -162,7 +170,9 @@
     <dialog id="my_modal_1" class="modal">
       <div class="modal-box">
         <h3 class="font-bold text-lg">Delete a Task</h3>
-        <p class="itbkk-message py-4 break-words">Do you want to delete the task "{{ taskTitle }}"?</p>
+        <p class="itbkk-message py-4 break-words">
+          Do you want to delete the task "{{ taskTitle }}"?
+        </p>
         <div class="modal-action">
           <form method="dialog">
             <!-- if there is a button in form, it will close the modal -->
@@ -186,9 +196,10 @@ import TaskDetail from './TaskDetail.vue'
 import TaskAdd from './TaskAdd.vue'
 import TaskEdit from './TaskEdit.vue'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
+import CountCard from '@/components/ui/card/CountCard.vue'
 import { getAllTasks, deleteTask } from '@/api/taskService'
 import { shortenTitle } from '@/lib/utils'
 const tasks = ref([])
@@ -289,6 +300,18 @@ const displaySidebar = ref(false)
 const toggleSidebar = () => {
   displaySidebar.value = !displaySidebar.value
 }
+
+const statusCounts = computed(() => {
+  const counts = {}
+  tasks.value.forEach((task) => {
+    if (counts[task.status]) {
+      counts[task.status]++
+    } else {
+      counts[task.status] = 1
+    }
+  })
+  return counts
+})
 </script>
 
 <style></style>
