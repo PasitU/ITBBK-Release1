@@ -20,7 +20,8 @@
             type="text"
             class="input input-bordered w-full space-x-5 border p-4 mt-2"
             v-model="task.title"
-            placeholder="title"
+            :class="titleError ? `input-error` : ``"
+            :placeholder="taskUpdate.title"
           />
         </CardHeader>
         <CardContent class="flex">
@@ -29,7 +30,7 @@
             <textarea
               class="textarea textarea-bordered h-1/2 w-full"
               v-model="task.description"
-              placeholder="description"
+              :placeholder="taskUpdate.description"
             >
             </textarea>
             <p>Assignees:</p>
@@ -37,7 +38,7 @@
               type="text"
               class="input input-bordered w-full space-x-5 border p-4"
               v-model="task.assignees"
-              placeholder="assignees"
+              :placeholder="taskUpdate.assignees"
             />
             <p>Status:</p>
             <select
@@ -74,6 +75,11 @@
             </div>
           </div>
         </CardContent>
+        <CardContent class="-mt-6 -mb-4">
+          <div v-if="warning.length > 0" class="gap-3 text-red-600">
+            {{ warning }}
+          </div>
+        </CardContent>
         <CardFooter>
           <button class="btn btn-error mr-3 w-20" @click="closePage">Close</button>
           <button
@@ -83,7 +89,6 @@
           >
             Save
           </button>
-          
         </CardFooter>
       </Card>
 
@@ -118,54 +123,23 @@
         </CardFooter>
       </Card>
     </div>
-    <div v-if="saveResult.success" role="alert" class="alert alert-success absolute bottom-0 right-0 w-1/3">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="stroke-current shrink-0 h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <span>Task ID: "{{ taskId }}" has been update!</span>
-      <button class="btn btn-xs btn-outline btn-circle" @click="closeAlert">X</button>
-    </div>
-    <div v-if="saveResult.unsuccessful" role="alert" class="alert alert-error absolute bottom-0 right-0 w-1/3">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="stroke-current shrink-0 h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-      <span>Unable to update Task ID: "{{ taskId }}", {{ saveResult.message }}</span>
-      <button class="btn btn-xs btn-outline btn-circle" @click="closeAlert">X</button>
-    </div>
   </div>
 </template>
 
 <script setup>
 import Button from '@/components/ui/button/Button.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import { getTaskById, updateTask } from '@/api/taskService'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
+import { shortenTitle } from '@/lib/utils'
 const router = useRouter()
+const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)
-const saveResult = ref({ success : false, unsuccessful: false, message: ''})
+const titleError = ref(false)
+const warning = ref('')
 const task = ref({
   title: '',
   description: '',
@@ -191,7 +165,7 @@ const mount = onMounted(async () => {
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
     isLoading.value = false
-    closePage() //TestCase need to change path to /tasks immediately when error occurs
+    // closePage() //TestCase need to change path to /tasks immediately when error occurs
     return
   }
   isLoading.value = false
@@ -209,22 +183,29 @@ const isTaskSame = computed(() => {
   )
 })
 
-const emit = defineEmits(['UpdateTasks'])
-
 const saveTask = async () => {
+  if (task.value.title.length === 0) {
+    warning.value = "Title can't be empty!"
+    titleError.value = true 
+    return
+  }
   try {
     taskUpdate.value = { ...task.value }
     await updateTask(taskId, taskUpdate.value)
-    saveResult.value = { success: true, unsuccessful: false, message: 'Task updated successfully' }
     mount()
-    emit('UpdateTasks')
   } catch (error) {
-    saveResult.value = { success: false, unsuccessful: true, message: error.message }
+    emit('returnStatus', {
+      status: false,
+      message: `An error occured: task "${shortenTitle(taskUpdate.value.title)}" couldn't be updated, Please try again later`
+    })
+    router.back
+    return
   }
-}
-
-const closeAlert = () => {
-  saveResult.value = { success: false, unsuccessful: false, message: ''}
+  emit('returnStatus', {
+    status: true,
+    message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
+  })
+  router.back()
 }
 
 const closePage = () => {

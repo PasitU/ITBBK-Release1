@@ -8,6 +8,7 @@
             type="text"
             placeholder="Type here"
             class="input input-bordered w-full bg-white"
+            :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
           />
         </CardHeader>
@@ -69,11 +70,13 @@ import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { createTask } from '@/api/taskService.ts'
 import { ref, defineEmits } from 'vue'
+import { shortenTitle } from '@/lib/utils'
 
 const warning = ref('')
 const emit = defineEmits(['returnStatus'])
 const newTask = ref({ title: '', description: '', assignees: '', status: 'NO_STATUS' })
 const router = useRouter()
+const titleError = ref(false)
 const closePage = () => {
   router.back()
 }
@@ -81,15 +84,16 @@ const closePage = () => {
 const saveNewTask = async () => {
   if (newTask.value.title.length === 0) {
     warning.value = "Title can't be empty!"
+    titleError.value = true 
     return
   }
   try {
     await createTask(newTask.value)
   } catch (error) {
-    console.log(' error')
+    console.log(error)
     emit('returnStatus', {
       status: false,
-      message: `An error occured: task "${newTask.value.title}" couldn't be saved, Please try again later`
+      message: `An error occured: task "${shortenTitle(newTask.value.title)}" couldn't be saved, Please try again later`
     })
     router.back()
     return
@@ -97,7 +101,7 @@ const saveNewTask = async () => {
 
   emit('returnStatus', {
     status: true,
-    message: `The task "${newTask.value.title}" has been saved!`
+    message: `The task "${shortenTitle(newTask.value.title)}" has been saved! ...`
   })
   router.back()
 }

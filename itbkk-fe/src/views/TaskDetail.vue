@@ -26,15 +26,15 @@
             <p>Description:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-description" :class="{ italic: !task.assignees }">
-                  {{ task.description }}
+                <p class="itbkk-description" :class="task.description.length === 0 ? `italic text-slate-400` : ``">
+                  {{ task.description || 'No Description Provided' }}
                 </p>
               </h1>
             </div>
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                <p class="itbkk-assignees" :class="task.assignees.length === 0 ? `italic text-slate-400` : ``">
                   {{ task.assignees || 'Unassigned' }}
                 </p>
               </h1>
@@ -112,7 +112,9 @@
           >
         </CardFooter>
       </Card>
+
     </div>
+
   </div>
 </template>
 
@@ -160,16 +162,12 @@ onMounted(async () => {
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
     isLoading.value = false
-    closePage() //TestCase need to change path to /tasks immediately when error occurs
+    // closePage() //TestCase need to change path to /tasks immediately when error occurs
     return
   }
   isLoading.value = false
   task.value.title = task.value.title ? task.value.title : 'No title'
   task.value.status = task.value.status ? task.value.status : 'No_status'
-
-  task.value.description = task.value.description
-    ? task.value.description
-    : 'No Description Provided'
   task.value.createdOn = task.value.createdOn ? UTCtoLocalFormat(task.value.createdOn) : 'No Data'
   task.value.updatedOn = task.value.updatedOn ? UTCtoLocalFormat(task.value.updatedOn) : 'No Data'
   task.value.timezone = getUserTimeZoneId()
