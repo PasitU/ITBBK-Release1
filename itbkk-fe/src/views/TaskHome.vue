@@ -24,8 +24,7 @@
               <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1</span>
             </h1>
           </div>
-          <CountCard :statusCounts="statusCounts"></CountCard>
-
+          <CountCard :statusCounts="statusCounts"></CountCard> 
           <div
             v-if="crudResult.displayResult"
             role="alert"
