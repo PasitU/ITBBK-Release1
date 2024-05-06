@@ -126,7 +126,7 @@
                             <v-icon name="fa-edit"></v-icon>Edit
                           </button>
                         </li>
-                        <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id)">
+                        <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id, key+1)">
                           <button
                             class="itbkk-button-delete text-error w-full"
                             onclick="my_modal_1.showModal()"
@@ -170,7 +170,7 @@
       <div class="modal-box">
         <h3 class="font-bold text-lg">Delete a Task</h3>
         <p class="itbkk-message py-4 break-words">
-          Do you want to delete the task number "{{ taskTitle }}"?
+          Do you want to delete the task number: {{ deleteTaskNumber }} "{{ taskTitle }}"?
         </p>
         <div class="modal-action">
           <form method="dialog">
@@ -208,6 +208,7 @@ const crudResult = ref({ displayResult: false, result: true, message: '' })
 
 const taskTitle = ref(null)
 const taskId = ref(null)
+const deleteTaskNumber = ref(null)
 
 onMounted(async () => {
   try {
@@ -289,9 +290,10 @@ const changeStatusName = (status) => {
   }
 }
 
-const openDeleteDialog = (title, id) => {
+const openDeleteDialog = (title, id, key) => {
   taskTitle.value = title
   taskId.value = id
+  deleteTaskNumber.value = key
 }
 
 const displaySidebar = ref(false)
