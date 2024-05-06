@@ -1,5 +1,8 @@
 <template>
-  <div theme-data="light" class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
+  <div
+    theme-data="light"
+    class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
+  >
     <div class="w-3/5">
       <Card class="items-center self-center min-w-full h-full">
         <CardHeader>
@@ -7,7 +10,7 @@
           <input
             type="text"
             placeholder="title is require"
-            class="itbkk-title input input-bordered w-full bg-white"
+            class="itbkk-title-add input input-bordered w-full bg-white"
             :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
           />
@@ -18,11 +21,14 @@
             <input
               type="text"
               placeholder="enter assignees here"
-              class="itbkk-assignees input input-bordered w-full bg-white"
+              class="itbkk-assignees-add input input-bordered w-full bg-white"
               v-model="newTask.assignees"
             />
             <p>Status:</p>
-            <select class="itbkk-status select select-bordered w-full bg-white" v-model="newTask.status">
+            <select
+              class="itbkk-status-add select select-bordered w-full bg-white"
+              v-model="newTask.status"
+            >
               <option :value="'NO_STATUS'">No Status</option>
               <option :value="'TO_DO'">To Do</option>
               <option :value="'DOING'">Doing</option>
@@ -32,7 +38,7 @@
           <div class="w-1/2 gap-5 ml-10">
             <p class="pb-2">Description:</p>
             <textarea
-              class="itbkk-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
+              class="itbkk-description-add textarea textarea-bordered min-h-[8rem] w-full bg-white"
               placeholder="enter description here"
               v-model="newTask.description"
             ></textarea>
@@ -45,16 +51,15 @@
         </CardContent>
         <CardFooter class="gap-3">
           <button
-            class="itbkk-button-confirm btn btn-success text-white"
-            :class="titleError ? 'disabled btn-disabled': ''"
+            class="itbkk-button-add-confirm btn btn-success text-white"
+            :class="titleError ? 'disabled btn-disabled' : ''"
             @click="saveNewTask"
-            >save</button
           >
-          <button
-            class="itbkk-button-cancel btn btn-error text-white"
-            @click="closePage"
-            >cancel</button
-          >
+            save
+          </button>
+          <button class="itbkk-button-add-cancel btn btn-error text-white" @click="closePage">
+            cancel
+          </button>
         </CardFooter>
       </Card>
     </div>
@@ -87,6 +92,11 @@ const saveNewTask = async () => {
   }
   try {
     await createTask(newTask.value)
+    emit('returnStatus', {
+      status: true,
+      message: `The task "${shortenTitle(newTask.value.title)}" has been saved! ...`
+    })
+    router.back()
   } catch (error) {
     console.log(error)
     emit('returnStatus', {
@@ -94,14 +104,7 @@ const saveNewTask = async () => {
       message: `An error occured: task "${shortenTitle(newTask.value.title)}" couldn't be saved, Please try again later`
     })
     router.back()
-    return
   }
-
-  emit('returnStatus', {
-    status: true,
-    message: `The task "${shortenTitle(newTask.value.title)}" has been saved! ...`
-  })
-  router.back()
 }
 </script>
 

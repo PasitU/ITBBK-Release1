@@ -27,18 +27,18 @@ describe(`TC-PBI3-ADD-TASK-BASIC-1\n
     cy.get('.itbkk-button-add').should('exist').click() ;
     cy.wait(100)
 
-    cy.get('.itbkk-button-confirm').contains('save',{matchCase: false}).as('save') ;
+    cy.get('.itbkk-button-add-confirm').contains('save',{matchCase: false}).as('save') ;
     cy.get('@save').should('have.class','disabled')
-    cy.get('.itbkk-button-cancel').contains('cancel',{matchCase: false}).click()
+    cy.get('.itbkk-button-add-cancel').contains('cancel',{matchCase: false}).click()
   })
 
   it('should return the task list page when clicking the Cancel button',()=>{
     cy.get('.itbkk-button-add').should('exist').click() ;
     cy.wait(100)
 
-    cy.get('.itbkk-button-confirm').contains('save',{matchCase: false}).as('save') ;
+    cy.get('.itbkk-button-add-confirm').contains('save',{matchCase: false}).as('save') ;
     cy.get('@save').should('have.class','disabled')
-    cy.get('.itbkk-button-cancel').contains('cancel',{matchCase: false}).click()
+    cy.get('.itbkk-button-add-cancel').contains('cancel',{matchCase: false}).click()
     cy.url().should('contain','/task')
   })
 })

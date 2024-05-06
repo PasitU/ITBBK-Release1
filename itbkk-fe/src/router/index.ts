@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import TaskHome from '@/views/TaskHome.vue'
 import TaskEdit from '@/views/TaskEdit.vue'
+import TaskAdd from '@/views/TaskAdd.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 
 const routes: Array<RouteRecordRaw> = [

@@ -27,8 +27,8 @@ describe(`TC-PBI3-ADD-TASK-BASIC-2\n
     cy.get('.itbkk-button-add').should('exist').click() ;
     cy.wait(100)
 
-    cy.get('.itbkk-title').type("DevSecOps")
-    cy.get('.itbkk-button-confirm').contains('save',{matchCase: false}).as('save') ;
+    cy.get('.itbkk-title-add').type('DevSecOps')
+    cy.get('.itbkk-button-add-confirm').contains('save',{matchCase: false}).as('save') ;
     cy.get('@save').click()
   })
 
