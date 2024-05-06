@@ -240,7 +240,7 @@ const deleteTaskConfirm = async () => {
       await deleteTask(taskId.value)
       await checkReceivedStatus({
         status: true,
-        message: `The task "${shortenTitle(taskTitle.value)}" has been deleted successfully`
+        message: `"${shortenTitle(taskTitle.value)}" The task has been deleted successfully`
       })
       // my_modal_1.closeModal()
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
