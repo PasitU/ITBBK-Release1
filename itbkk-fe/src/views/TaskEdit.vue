@@ -81,10 +81,10 @@
           </div>
         </CardContent>
         <CardFooter>
-          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">Close</button>
+          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">Cancel</button>
           <button
             class="itbkk-button-confirm btn btn-success w-20"
-            :class="{ 'btn-disabled': isTaskSame || isTitleNull }"
+            :class="{ 'btn-disabled disabled': isTaskSame || isTitleNull }"
             @click="saveTask"
           >
             Save

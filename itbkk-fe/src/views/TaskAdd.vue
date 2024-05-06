@@ -9,7 +9,7 @@
           <p class="pb-2">Title</p>
           <input
             type="text"
-            placeholder="title is require"
+            placeholder="title is required"
             class="itbkk-title-add input input-bordered w-full bg-white"
             :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
