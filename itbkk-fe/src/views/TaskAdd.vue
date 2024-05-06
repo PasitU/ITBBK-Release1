@@ -44,15 +44,16 @@
           </div>
         </CardContent>
         <CardFooter class="gap-3">
-          <Button
-            class="itbkk-button-confirm justify-between content-between bg-green-500 hover:bg-green-600 text-white"
+          <button
+            class="itbkk-button-confirm btn btn-success text-white"
+            :class="titleError ? 'disabled btn-disabled': ''"
             @click="saveNewTask"
-            >Confirm</Button
+            >save</button
           >
-          <Button
-            class="itbkk-button-cancel justify-between content-between bg-rose-500 hover:bg-rose-600 text-white"
+          <button
+            class="itbkk-button-cancel btn btn-error text-white"
             @click="closePage"
-            >Cancel</Button
+            >cancel</button
           >
         </CardFooter>
       </Card>
@@ -61,27 +62,27 @@
 </template>
 
 <script setup>
-import Button from '@/components/ui/button/Button.vue'
-// import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { createTask } from '@/api/taskService.ts'
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, computed } from 'vue'
 import { shortenTitle } from '@/lib/utils'
 
 const warning = ref('')
 const emit = defineEmits(['returnStatus'])
 const newTask = ref({ title: '', description: '', assignees: '', status: 'NO_STATUS' })
 const router = useRouter()
-const titleError = ref(false)
 const closePage = () => {
   router.back()
 }
 
+const titleError = computed(() => {
+  return newTask.value.title.length === 0
+})
+
 const saveNewTask = async () => {
   if (newTask.value.title.length === 0) {
     warning.value = "Title can't be empty!"
-    titleError.value = true 
     return
   }
   try {
