@@ -24,7 +24,7 @@
               <span class="font-bold text-3xl">INTEGRATED PROJECT ITBKK-SY-1</span>
             </h1>
           </div>
-          <CountCard :statusCounts="statusCounts"></CountCard> 
+          <CountCard :statusCounts="statusCounts"></CountCard>
           <div
             v-if="crudResult.displayResult"
             role="alert"
@@ -110,8 +110,8 @@
                     </button>
                   </td>
                   <td>
-                    <div class="dropdown">
-                      <div tabindex="0" role="button" class="itbkk-button-action btn m-1">
+                    <div class="dropdown itbkk-button-action">
+                      <div tabindex="0" role="button" class="btn m-1">
                         <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
                       </div>
                       <ul
@@ -170,7 +170,7 @@
       <div class="modal-box">
         <h3 class="font-bold text-lg">Delete a Task</h3>
         <p class="itbkk-message py-4 break-words">
-          Do you want to delete the task "{{ taskTitle }}"?
+          Do you want to delete the task number "{{ taskTitle }}"?
         </p>
         <div class="modal-action">
           <form method="dialog">
