@@ -85,81 +85,78 @@
             </button>
           </div>
 
-          <div class="h-full w-full p-6 overflow-auto">
-            <table class="table mb-6">
-              <thead class="text-slate-700">
-                <tr>
-                  <th class="font-bold text-[1.5rem]"></th>
-                  <th class="font-bold text-[1.5rem]">Title</th>
-                  <th class="font-bold text-[1.5rem]">Assignees</th>
-                  <th class="font-bold text-[1.5rem]">Status</th>
-                  <th class="font-bold text-[1.5rem]">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
-                  <td class="p-5">
-                    <div class="flex">
-                      <p class="itbkk-title font-bold">{{ key + 1 }}</p>
-                    </div>
-                  </td>
-
-                  <td @click="openTaskDetail(task.id)" class="">
-                    <p class="itbkk-title">
-                      {{ task.title }}
-                    </p>
-                  </td>
-                  <td @click="openTaskDetail(task.id)" class="">
-                    <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                      {{ task.assignees || 'Unassigned' }}
-                    </p>
-                  </td>
-                  <td @click="openTaskDetail(task.id)" class="">
-                    <button
-                      :class="getStatusClass(task.status)"
-                      class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
-                      @click="toggleSidebar"
-                    >
-                      <p class="itbkk-status">
-                        {{ changeStatusName(task.status) }}
-                      </p>
-                    </button>
-                  </td>
-                  <td>
-                    <div class="dropdown itbkk-button-action">
-                      <div tabindex="0" role="button" class="btn m-1">
-                        <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
+          <div class=" w-full px-6 overflow-auto">
+            <div class="overflow-y-auto h-[780px] pt-2">
+              <!-- Set the height as required -->
+              <table class="table mb-6">
+                <thead class="text-slate-700">
+                  <tr>
+                    <th class="font-bold text-[1.5rem]"></th>
+                    <th class="font-bold text-[1.5rem]">Title</th>
+                    <th class="font-bold text-[1.5rem]">Assignees</th>
+                    <th class="font-bold text-[1.5rem]">Status</th>
+                    <th class="font-bold text-[1.5rem]">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
+                    <td class="p-5">
+                      <div class="flex">
+                        <p class="itbkk-title font-bold">{{ key + 1 }}</p>
                       </div>
-                      <ul
-                        tabindex="0"
-                        class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
+                    </td>
+                    <td @click="openTaskDetail(task.id)" class="">
+                      <p class="itbkk-title">{{ task.title }}</p>
+                    </td>
+                    <td @click="openTaskDetail(task.id)" class="">
+                      <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                        {{ task.assignees || 'Unassigned' }}
+                      </p>
+                    </td>
+                    <td @click="openTaskDetail(task.id)" class="">
+                      <button
+                        :class="getStatusClass(task.status)"
+                        class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
+                        @click.stop="toggleSidebar"
                       >
-                        <li class="felx flex-row">
-                          <button
-                            class="itbkk-button-edit text-warning w-full"
-                            @click="editTask(task.id)"
-                          >
-                            <v-icon name="fa-edit"></v-icon>Edit
-                          </button>
-                        </li>
-                        <li
-                          class="flex flex-row"
-                          @click="openDeleteDialog(task.title, task.id, key + 1)"
+                        <p class="itbkk-status">{{ changeStatusName(task.status) }}</p>
+                      </button>
+                    </td>
+                    <td>
+                      <div class="dropdown itbkk-button-action">
+                        <div tabindex="0" role="button" class="btn m-1">
+                          <v-icon name="co-settings" tabindex="0" role="button"></v-icon>
+                        </div>
+                        <ul
+                          tabindex="0"
+                          class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
                         >
-                          <button
-                            class="itbkk-button-delete text-error w-full"
-                            onclick="my_modal_1.showModal()"
+                          <li class="flex flex-row">
+                            <button
+                              class="itbkk-button-edit text-warning w-full"
+                              @click="editTask(task.id)"
+                            >
+                              <v-icon name="fa-edit"></v-icon>Edit
+                            </button>
+                          </li>
+                          <li
+                            class="flex flex-row"
+                            @click="openDeleteDialog(task.title, task.id, key + 1)"
                           >
-                            <v-icon name="md-deleteforever"></v-icon>Delete
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                            <button
+                              class="itbkk-button-delete text-error w-full"
+                              onclick="my_modal_1.showModal()"
+                            >
+                              <v-icon name="md-deleteforever"></v-icon>Delete
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
             <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
               {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}

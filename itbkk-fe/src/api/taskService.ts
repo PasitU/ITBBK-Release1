@@ -2,6 +2,7 @@
 const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
+// const BASE_URL = 'http://localhost:8080/v2'
 
 export const getAllTasks = async () => {
   try {
@@ -70,7 +71,7 @@ export const deleteTask = async (id: number): Promise<void> => {
   }
 }
 
-export const updateTask = async (id:number, updatedTask:any) => {
+export const updateTask = async (id: number, updatedTask: any) => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: 'PUT',
@@ -78,10 +79,10 @@ export const updateTask = async (id:number, updatedTask:any) => {
         'content-type': 'application/json'
       },
       body: JSON.stringify({
-        title : updatedTask.title,
-        description : updatedTask.description,
-        assignees : updatedTask.assignees,
-        status : updatedTask.status
+        title: updatedTask.title,
+        description: updatedTask.description,
+        assignees: updatedTask.assignees,
+        status: updatedTask.status
       })
     })
     if (response.status === 404) {
@@ -91,6 +92,18 @@ export const updateTask = async (id:number, updatedTask:any) => {
       throw new Error(`Failed to update task with ID: ${updatedTask.id}.`)
     }
   } catch (error) {
-   throw error
+    throw error
+  }
+}
+
+export const getAllStatuses = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/v2/statuses')
+    if (!response.ok) {
+      throw new Error('Unable to fetch Status.')
+    }
+    return response.json()
+  } catch (error) {
+    throw error
   }
 }

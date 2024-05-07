@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import TaskHome from '@/views/TaskHome.vue'
 import TaskEdit from '@/views/TaskEdit.vue'
-import TaskAdd from '@/views/TaskAdd.vue'
+// import TaskAdd from '@/views/TaskAdd.vue'
 import StatusTable from '@/views/StatusTable.vue'
+import StatusAdd from '@/views/StatusAdd.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -27,11 +28,15 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/status',
-    name: 'status',
+    name: 'Status',
+    component: StatusTable
+  },
+  {
+    path: '/status/add',
+    name: 'statusAdd',
     component: StatusTable
   }
 ]
-
 
 const router = createRouter({
   history: createWebHistory(),
