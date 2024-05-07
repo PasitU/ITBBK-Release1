@@ -25,22 +25,6 @@
               </span>
             </h1>
           </div>
-          <div class="absolute top-10 right-10">
-            <Button
-              @click="navigateToStatus()"
-              class="itbkk-button-add bg-green-700 text-18 text-red-50 hover:bg-green-800 mr-2"
-              >Manage Status</Button
-            >
-            <Button
-              class="itbkk-button-add bg-blue-700 text-18 text-red-50 hover:bg-blue-800"
-              @click="navigateToAddTask"
-              >Add Task</Button
-            >
-          </div>
-
-          <div class="flex items-center justify-evenly">
-            <CountCard :statusCounts="statusCounts"></CountCard>
-          </div>
 
           <div
             v-if="crudResult.displayResult"
@@ -85,37 +69,52 @@
             </button>
           </div>
 
-          <div class="h-full w-full p-6 overflow-auto">
-            <table class="table mb-6">
+          <div class="h-full w-full px-[3rem] overflow-auto">
+            <table class="table mb-30">
               <thead class="text-slate-700">
                 <tr>
                   <th class="font-bold text-[1.5rem]"></th>
-                  <th class="font-bold text-[1.5rem]">Title</th>
-                  <th class="font-bold text-[1.5rem]">Assignees</th>
-                  <th class="font-bold text-[1.5rem]">Status</th>
+                  <th class="font-bold text-[1.5rem]">Name</th>
+                  <th class="font-bold text-[1.5rem]">Description</th>
                   <th class="font-bold text-[1.5rem]">Action</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
+                <tr
+                  class="itbkk-item hover"
+                  v-for="(status, key) in statusesData.Statuses"
+                  :key="key"
+                >
                   <td class="p-5">
                     <div class="flex">
                       <p class="itbkk-title font-bold">{{ key + 1 }}</p>
                     </div>
                   </td>
 
-                  <td @click="openTaskDetail(task.id)" class="">
+                  <td class="">
                     <p class="itbkk-title">
-                      {{ task.title }}
+                      {{ status.Name }}
                     </p>
                   </td>
-                  <td @click="openTaskDetail(task.id)" class="">
-                    <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                      {{ task.assignees || 'Unassigned' }}
+                  <td class="">
+                    <p class="itbkk-assignees">
+                      {{ status.Description || 'Unassigned' }}
                     </p>
                   </td>
-                  <td @click="openTaskDetail(task.id)" class="">
+
+                  <td class="">
+                    <button class="itbkk-button-edit text-warning pr-4">
+                      <v-icon name="fa-edit"></v-icon>Edit
+                    </button>
+                    <button class="itbkk-button-delete text-error">
+                      <v-icon name="md-deleteforever"></v-icon>Delete
+                    </button>
+                  </td>
+
+                 
+
+                  <!-- <td @click="openTaskDetail(task.id)" class="">
                     <button
                       :class="getStatusClass(task.status)"
                       class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
@@ -125,8 +124,8 @@
                         {{ changeStatusName(task.status) }}
                       </p>
                     </button>
-                  </td>
-                  <td>
+                  </td> -->
+                  <!-- <td>
                     <div class="dropdown itbkk-button-action">
                       <div tabindex="0" role="button" class="btn m-1">
                         <v-icon name="co-settings" tabindex="0" role="button"> </v-icon>
@@ -156,7 +155,7 @@
                         </li>
                       </ul>
                     </div>
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
             </table>
@@ -169,7 +168,7 @@
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-    <Teleport to="#modal" v-if="$route.params.id > 0 && !$route.path.includes('edit')">
+    <!-- <Teleport to="#modal" v-if="$route.params.id > 0 && !$route.path.includes('edit')">
       <TaskDetail></TaskDetail>
     </Teleport>
     <Teleport to="#modal" v-if="$route.params.id > 0 && $route.path.includes('edit')">
@@ -178,10 +177,9 @@
 
     <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
       <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
-    </Teleport>
+    </Teleport> -->
 
-    <!-- Open the modal using ID.showModal() method -->
-    <dialog id="my_modal_1" class="modal">
+    <!-- <dialog id="my_modal_1" class="modal">
       <div class="modal-box">
         <h3 class="font-bold text-lg">Delete a Task</h3>
         <p class="itbkk-message py-4 break-words">
@@ -189,7 +187,7 @@
         </p>
         <div class="modal-action">
           <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
+          
             <button class="itbkk-button-cancel btn bg-error text-white">Cancel</button>
             <button
               class="itbkk-button-confirm btn bg-success text-white ml-2"
@@ -200,20 +198,18 @@
           </form>
         </div>
       </div>
-    </dialog>
+    </dialog> -->
   </div>
 </template>
 
 <script setup>
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import TaskDetail from './TaskDetail.vue'
-import TaskAdd from './TaskAdd.vue'
-import TaskEdit from './TaskEdit.vue'
+import statusesData from '../../data/db.json'
+
 import { useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { onMounted } from 'vue'
-import { Button } from '@/components/ui/button'
-import CountCard from '@/components/ui/card/CountCard.vue'
+
 import { getAllTasks, deleteTask } from '@/api/taskService'
 import { shortenTitle } from '@/lib/utils'
 const tasks = ref([])
@@ -223,7 +219,6 @@ const crudResult = ref({ displayResult: false, result: true, message: '' })
 
 const taskTitle = ref(null)
 const taskId = ref(null)
-const deleteTaskNumber = ref(null)
 
 onMounted(async () => {
   try {
@@ -232,13 +227,6 @@ onMounted(async () => {
     isNull.value = true
   }
 })
-const navigateToAddTask = () => {
-  router.push('/task/add')
-}
-
-const navigateToStatus = () => {
-  router.push('/status')
-}
 
 const checkReceivedStatus = async (response) => {
   crudResult.value.displayResult = true
@@ -275,63 +263,12 @@ const deleteTaskConfirm = async () => {
 const openTaskDetail = async (id) => {
   await router.push(`/task/${id}`)
 }
-const editTask = async (id) => {
-  await router.push(`/task/${id}/edit`)
-}
-
-const getStatusClass = (status) => {
-  switch (status) {
-    case 'NO_STATUS':
-      return 'bg-gray-500'
-    case 'TO_DO':
-      return 'bg-blue-500'
-    case 'DOING':
-      return 'bg-yellow-500'
-    case 'DONE':
-      return 'bg-green-500'
-    default:
-      return ''
-  }
-}
-
-const changeStatusName = (status) => {
-  switch (status) {
-    case 'NO_STATUS':
-      return 'No Status'
-    case 'TO_DO':
-      return 'To Do'
-    case 'DOING':
-      return 'Doing'
-    case 'DONE':
-      return 'Done'
-    default:
-      return ''
-  }
-}
-
-const openDeleteDialog = (title, id, key) => {
-  taskTitle.value = title
-  taskId.value = id
-  deleteTaskNumber.value = key
-}
 
 const displaySidebar = ref(false)
 
 const toggleSidebar = () => {
   displaySidebar.value = !displaySidebar.value
 }
-
-const statusCounts = computed(() => {
-  const counts = {}
-  tasks.value.forEach((task) => {
-    if (counts[task.status]) {
-      counts[task.status]++
-    } else {
-      counts[task.status] = 1
-    }
-  })
-  return counts
-})
 </script>
 
 <style></style>
