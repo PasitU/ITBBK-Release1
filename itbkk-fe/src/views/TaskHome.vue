@@ -126,7 +126,11 @@
                             <v-icon name="fa-edit"></v-icon>Edit
                           </button>
                         </li>
+<<<<<<< Updated upstream
                         <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id, key+1)">
+=======
+                        <li class="flex flex-row" @click="openDeleteDialog(task.title, task.id)">
+>>>>>>> Stashed changes
                           <button
                             class="itbkk-button-delete text-error w-full"
                             onclick="my_modal_1.showModal()"
@@ -148,6 +152,7 @@
           </div>
         </div>
       </ResizablePanel>
+
       <Button
         class="itbkk-button-add bg-blue-700 absolute bottom-8 right-16 text-18 text-red-50 hover:bg-blue-800"
         @click="navigateToAddTask"
@@ -170,7 +175,11 @@
       <div class="modal-box">
         <h3 class="font-bold text-lg">Delete a Task</h3>
         <p class="itbkk-message py-4 break-words">
+<<<<<<< Updated upstream
           Do you want to delete the task number: {{ deleteTaskNumber }} "{{ taskTitle }}"?
+=======
+          Do you want to delete the task "{{ taskTitle }}"?
+>>>>>>> Stashed changes
         </p>
         <div class="modal-action">
           <form method="dialog">
@@ -187,6 +196,11 @@
       </div>
     </dialog>
   </div>
+  <Button
+    class="itbkk-button-add bg-blue-700 absolute bottom-30 right-16 text-18 text-red-50 hover:bg-blue-800"
+    @click="navigateToAddTask"
+    >Add Task</Button
+  >
 </template>
 
 <script setup>
