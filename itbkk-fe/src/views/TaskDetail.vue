@@ -1,12 +1,14 @@
 <template>
-  <div class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800">
+  <div
+    data-theme="light"
+    class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
+  >
     <div class="w-3/5">
       <Card class="items-center self-center w-auto" v-if="isLoading">
         <CardHeader class="flex justify-center items-center">
           <span class="loading loading-spinner loading-lg"></span>
         </CardHeader>
       </Card>
-
       <Card
         class="items-center self-center min-w-full h-full"
         v-if="!fetchError.hasError && !isLoading"
@@ -21,56 +23,54 @@
             </div>
           </div>
         </CardHeader>
-        <CardContent class="flex">
-          <div class="w-1/2">
-            <p>Description:</p>
-            <div class="space-x-5 border p-4 rounded-md">
-              <h1 class="break-words">
-                <p
-                  class="itbkk-description"
-                  :class="task.description.length === 0 ? `italic text-slate-400` : ``"
-                >
-                  {{ task.description || 'No Description Provided' }}
-                </p>
-              </h1>
-            </div>
-            <p>Assignees:</p>
-            <div class="space-x-5 border p-4 rounded-md">
-              <h1 class="break-words">
-                <p
-                  class="itbkk-assignees"
-                  :class="task.assignees.length === 0 ? `italic text-slate-400` : ``"
-                >
-                  {{ task.assignees || 'Unassigned' }}
-                </p>
-              </h1>
-            </div>
-            <p>Status:</p>
-            <select class="select select-bordered w-full pointer-events-none bg-white">
-              <option disabled hidden selected>
-                <p class="itbkk-status">{{ task.status.name }}</p>
-              </option>
-            </select>
+        <CardContent class="flex-col">
+          <p>Description:</p>
+          <div class="space-x-5 border p-4 rounded-md">
+            <h1 class="break-words">
+              <p
+                class="itbkk-description"
+                :class="task.description.length === 0 ? `italic text-slate-400` : ``"
+              >
+                {{ task.description || 'No Description Provided' }}
+              </p>
+            </h1>
           </div>
-          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 bg-white text-slate-700">
-            <div class="stat">
-              <div class="stat-title">CreatedOn</div>
-              <div class="stat-value">
-                <p class="itbkk-created-on">{{ task.createdOn }}</p>
+          <div class="flex gap-5">
+            <div class="w-1/2">
+              <p>Assignees:</p>
+              <div class="space-x-5 border p-3 rounded-md">
+                <h1 class="break-words">
+                  <p
+                    class="itbkk-assignees"
+                    :class="task.assignees.length === 0 ? `italic text-slate-400` : ``"
+                  >
+                    {{ task.assignees || 'Unassigned' }}
+                  </p>
+                </h1>
+              </div>
+              <p>Status:</p>
+              <div class="badge badge-neutral p-3 rounded-md">
+                <p class="itbkk-status">{{ task.status.name }}</p>
               </div>
             </div>
-
-            <div class="stat">
-              <div class="stat-title">UpdatedOn</div>
-              <div class="stat-value">
-                <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
+            <div class="rounded-2xl w-1/2 shadow text-slate-700 mt-5">
+              <div class="stat">
+                <div class="stat-title">CreatedOn</div>
+                <div class="stat-desc">
+                  <p class="itbkk-created-on">{{ task.createdOn }}</p>
+                </div>
               </div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-title">TimeZone</div>
-              <div class="stat-value">
-                <p class="itbkk-timezone">{{ task.timezone }}</p>
+              <div class="stat">
+                <div class="stat-title">UpdatedOn</div>
+                <div class="stat-desc">
+                  <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
+                </div>
+              </div>
+              <div class="stat">
+                <div class="stat-title">TimeZone</div>
+                <div class="stat-desc">
+                  <p class="itbkk-timezone">{{ task.timezone }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -133,21 +133,6 @@ const task = ref({
   updatedOn: '',
   timezone: ''
 })
-
-const changeStatusName = (status) => {
-  switch (status) {
-    case 'NO_STATUS':
-      return 'No Status'
-    case 'TO_DO':
-      return 'To Do'
-    case 'DOING':
-      return 'Doing'
-    case 'DONE':
-      return 'Done'
-    default:
-      return ''
-  }
-}
 
 const taskId = router.currentRoute.value.params.id
 onMounted(async () => {
