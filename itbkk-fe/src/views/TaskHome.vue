@@ -287,7 +287,7 @@ const getStatusClass = (status) => {
     case 'Done':
       return 'bg-green-400'
     default:
-      return 'bg-sky-400'
+      return 'bg-indigo-400'
   }
 }
 

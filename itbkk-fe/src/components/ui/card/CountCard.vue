@@ -34,7 +34,7 @@ function getBorderColor(status) {
     case 'Done':
       return ' border-green-400 bg-green-300' // Green border
     default:
-      return 'border-sky-400 bg-sky-300' // Default border if no status matches
+      return 'border-indigo-400 bg-indigo-300' // Default border if no status matches
   }
 }
 </script>
