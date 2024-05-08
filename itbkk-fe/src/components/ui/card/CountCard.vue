@@ -26,15 +26,15 @@ defineProps({
 function getBorderColor(status) {
   switch (status) {
     case 'No Status':
-      return 'border border-gray-500 bg-grey-200'
+      return 'border border-gray-400 bg-grey-300'
     case 'To Do':
-      return 'border border-blue-500 bg-blue-100'
+      return 'border border-blue-400 bg-blue-300'
     case 'Doing':
-      return 'border border-yellow-500 bg-yellow-100'
+      return 'border border-yellow-400 bg-yellow-300'
     case 'Done':
-      return 'border border-green-500 bg-green-100' // Green border
+      return ' border-green-400 bg-green-300' // Green border
     default:
-      return 'border' // Default border if no status matches
+      return 'border-sky-400 bg-sky-300' // Default border if no status matches
   }
 }
 </script>

@@ -279,32 +279,17 @@ const editTask = async (id) => {
 const getStatusClass = (status) => {
   switch (status.name) {
     case 'No Status':
-      return 'bg-gray-500'
+      return 'bg-gray-400'
     case 'To Do':
-      return 'bg-blue-500'
+      return 'bg-blue-400'
     case 'Doing':
-      return 'bg-yellow-500'
+      return 'bg-yellow-400'
     case 'Done':
-      return 'bg-green-500'
+      return 'bg-green-400'
     default:
-      return 'bg-info'
+      return 'bg-sky-400'
   }
 }
-
-// const changeStatusName = (status) => {
-//   switch (status) {
-//     case 'NO_STATUS':
-//       return 'No Status'
-//     case 'TO_DO':
-//       return 'To Do'
-//     case 'DOING':
-//       return 'Doing'
-//     case 'DONE':
-//       return 'Done'
-//     default:
-//       return ''
-//   }
-// }
 
 const openDeleteDialog = (title, id, key) => {
   taskTitle.value = title
