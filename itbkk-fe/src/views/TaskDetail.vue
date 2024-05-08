@@ -26,7 +26,10 @@
             <p>Description:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-description" :class="task.description.length === 0 ? `italic text-slate-400` : ``">
+                <p
+                  class="itbkk-description"
+                  :class="task.description.length === 0 ? `italic text-slate-400` : ``"
+                >
                   {{ task.description || 'No Description Provided' }}
                 </p>
               </h1>
@@ -34,24 +37,19 @@
             <p>Assignees:</p>
             <div class="space-x-5 border p-4 rounded-md">
               <h1 class="break-words">
-                <p class="itbkk-assignees" :class="task.assignees.length === 0 ? `italic text-slate-400` : ``">
+                <p
+                  class="itbkk-assignees"
+                  :class="task.assignees.length === 0 ? `italic text-slate-400` : ``"
+                >
                   {{ task.assignees || 'Unassigned' }}
                 </p>
               </h1>
             </div>
             <p>Status:</p>
-            <select
-              class="select select-bordered w-full pointer-events-none bg-white"
-              v-model="task.status"
-              :selected="task.status"
-            >
-              <option disabled hidden>
-                <p class="itbkk-status">{{ changeStatusName(task.status) }}</p>
+            <select class="select select-bordered w-full pointer-events-none bg-white">
+              <option disabled hidden selected>
+                <p class="itbkk-status">{{ task.status.name }}</p>
               </option>
-              <option :value="'NO_STATUS'">No Status</option>
-              <option :value="'TO_DO'">To Do</option>
-              <option :value="'DOING'">Doing</option>
-              <option :value="'DONE'">Done</option>
             </select>
           </div>
           <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 bg-white text-slate-700">
@@ -112,9 +110,7 @@
           >
         </CardFooter>
       </Card>
-
     </div>
-
   </div>
 </template>
 
@@ -132,12 +128,11 @@ const task = ref({
   title: '',
   description: '',
   assignees: '',
-  status: '',
+  status: {},
   createdOn: '',
   updatedOn: '',
   timezone: ''
 })
-
 
 const changeStatusName = (status) => {
   switch (status) {

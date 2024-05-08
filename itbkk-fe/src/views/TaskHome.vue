@@ -85,7 +85,7 @@
             </button>
           </div>
 
-          <div class=" w-full px-6 overflow-auto">
+          <div class="w-full px-6 overflow-auto">
             <div class="overflow-y-auto h-[780px] pt-2">
               <!-- Set the height as required -->
               <table class="table mb-6">
@@ -217,6 +217,7 @@ const tasks = ref([])
 const router = useRouter()
 const isNull = ref(false)
 const crudResult = ref({ displayResult: false, result: true, message: '' })
+const statusesList = ref()
 
 const taskTitle = ref(null)
 const taskId = ref(null)
@@ -225,6 +226,7 @@ const deleteTaskNumber = ref(null)
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
+    statusesList.value = await getAllStatuses()
   } catch (error) {
     isNull.value = true
   }

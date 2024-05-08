@@ -46,10 +46,9 @@
               v-model="task.status"
               :selected="task.status"
             >
-              <option :value="'NO_STATUS'">No Status</option>
-              <option :value="'TO_DO'">To Do</option>
-              <option :value="'DOING'">Doing</option>
-              <option :value="'DONE'">Done</option>
+              <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">
+                {{ selectStatus.name }}
+              </option>
             </select>
           </div>
           <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 mt-4 text-slate-700">
@@ -133,6 +132,7 @@ import Button from '@/components/ui/button/Button.vue'
 import { computed, onMounted, ref, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import { getTaskById, updateTask } from '@/api/taskService'
+import { getAllStatuses } from '@/api/statusService'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
 import { shortenTitle } from '@/lib/utils'
@@ -144,7 +144,7 @@ const task = ref({
   title: '',
   description: '',
   assignees: '',
-  status: '',
+  status: {},
   createdOn: '',
   updatedOn: '',
   timezone: ''
@@ -155,12 +155,14 @@ const taskUpdate = ref({
   assignees: '',
   status: ''
 })
+const statusesList = ref()
 
 const taskId = router.currentRoute.value.params.id
 const mount = onMounted(async () => {
   isLoading.value = true
   try {
     task.value = await getTaskById(taskId)
+    statusesList.value = await getAllStatuses()
     taskUpdate.value = { ...task.value }
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
