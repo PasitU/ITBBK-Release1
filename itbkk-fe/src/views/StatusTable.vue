@@ -25,11 +25,11 @@
               </span>
             </h1>
           </div>
-          <div class="flex justify-between text-xl px-9">
+          <div class="flex justify-between text-lg px-11 mb-4">
             <div class="breadcrumbs">
               <ul>
                 <li><a @click="BackToHome" class="text-blue-600">Home</a></li>
-                <li class="text-slate-400">Task Status</li>
+                <li class="">Task Status</li>
               </ul>
             </div>
             <div>
@@ -89,8 +89,8 @@
                 <tr>
                   <th class="font-bold text-[1.5rem]"></th>
                   <th class="font-bold text-[1.5rem]">Name</th>
-                  <th class="font-bold text-[1.5rem]">Description</th>
-                  <th class="font-bold text-[1.5rem]">Action</th>
+                  <th class="font-bold w-1/2 text-[1.5rem]">Description</th>
+                  <th class="font-bold w-1/5 text-[1.5rem]">Action</th>
                 </tr>
               </thead>
 
@@ -98,18 +98,21 @@
                 <tr class="itbkk-item" v-for="(status, key) in statuses" :key="key">
                   <td class="p-5">
                     <div class="flex">
-                      <p class="itbkk-title font-bold">{{ key + 1 }}</p>
+                      <p class="itbkk-id font-bold">{{ key + 1 }}</p>
                     </div>
                   </td>
 
                   <td class="">
-                    <p class="itbkk-title">
+                    <p class="itbkk-name rounded-sm h-6" :class="getStatusClass(status)">
                       {{ status.name }}
                     </p>
                   </td>
                   <td class="">
-                    <p class="itbkk-assignees">
-                      {{ status.description }}
+                    <p
+                      class="itbkk-description"
+                      :class="status.description ? '' : 'italic text-gray-400'"
+                    >
+                      {{ status.description || 'No description provide' }}
                     </p>
                   </td>
 
@@ -118,7 +121,10 @@
                     <button class="itbkk-button-edit text-warning mr-4 btn">
                       <v-icon name="fa-edit"></v-icon>Edit
                     </button>
-                    <button @click="statusRemove(status.id)" class="itbkk-button-delete text-error btn">
+                    <button
+                      @click="statusRemove(status.id)"
+                      class="itbkk-button-delete text-error btn"
+                    >
                       <v-icon name="md-deleteforever"></v-icon>Delete
                     </button>
                   </td>
@@ -175,7 +181,7 @@ const statusRemove = async (id) => {
 }
 
 const checkReceivedStatus = async (response) => {
-  crudAlert.value = {...response}
+  crudAlert.value = { ...response }
   if (crudAlert.value.result) {
     try {
       statuses.value = await getAllStatuses()
@@ -193,6 +199,21 @@ const navigateToAddTask = () => {
 }
 
 const displaySidebar = ref(false)
+
+const getStatusClass = (status) => {
+  switch (status.name) {
+    case 'No Status':
+      return 'badge bg-gray-400'
+    case 'To Do':
+      return 'badge bg-blue-400'
+    case 'Doing':
+      return 'badge bg-yellow-400'
+    case 'Done':
+      return 'badge bg-green-400'
+    default:
+      return 'badge bg-indigo-400'
+  }
+}
 </script>
 
 <style></style>

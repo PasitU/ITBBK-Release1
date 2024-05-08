@@ -48,7 +48,13 @@
                   v-model="task.status"
                   :selected="task.status"
                 >
-                  <option v-for="(selectStatus, key) in statusList" :key="key" :value="selectStatus">{{ selectStatus.name }}</option>
+                  <option
+                    v-for="(selectStatus, key) in statusList"
+                    :key="key"
+                    :value="selectStatus"
+                  >
+                    {{ selectStatus.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -59,14 +65,14 @@
                   <p class="itbkk-created-on">{{ task.createdOn }}</p>
                 </div>
               </div>
-  
+
               <div class="stat">
                 <div class="stat-title">UpdatedOn</div>
                 <div class="stat-desc">
                   <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
                 </div>
               </div>
-  
+
               <div class="stat">
                 <div class="stat-title">TimeZone</div>
                 <div class="stat-desc">
@@ -74,7 +80,6 @@
                 </div>
               </div>
             </div>
-
           </div>
         </CardContent>
         <CardContent class="-mb-3 -mt-3">

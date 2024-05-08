@@ -29,7 +29,9 @@
               class="itbkk-status-add select select-bordered w-full bg-white"
               v-model="newTask.status"
             >
-              <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">{{ selectStatus.name }}</option>
+              <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">
+                {{ selectStatus.name }}
+              </option>
             </select>
           </div>
           <div class="w-1/2 gap-5 ml-10">
@@ -84,7 +86,7 @@ const titleError = computed(() => {
   return newTask.value.title.length === 0
 })
 
-onMounted(async() => {
+onMounted(async () => {
   statusesList.value = await getAllStatuses()
   newTask.value.status = statusesList.value[0]
 })
