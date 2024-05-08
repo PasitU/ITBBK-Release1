@@ -27,12 +27,13 @@
             class="itbkk-button-add-confirm btn btn-success text-white"
             :class="{ 'btn-disabled': newStatus.name.length === 0 }"
             :disabled="newStatus.name.length === 0"
+            @click="createNewStatus"
           >
             Save
           </button>
 
           <button class="itbkk-button-add-cancel btn btn-error text-white" @click="closePage">
-            cancel
+            Cancel
           </button>
         </CardFooter>
       </Card>
@@ -41,12 +42,35 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { useRouter } from 'vue-router'
+import { createStatus } from '@/api/statusService'
+
+const emit = defineEmits(['returnStatus'])
+const newStatus = ref({ name: '', description: '' })
 const router = useRouter()
 
-const newStatus = ref({ name: '', description: '' })
+const createNewStatus = async () => {
+  try {
+    await createStatus(newStatus.value)
+  } catch (error) {
+    emit('returnStatus', {
+      displayResult: true,
+      result: false,
+      message: `An error occurred: ${error.message}`
+    })
+    router.back()
+    return
+  }
+  emit('returnStatus', {
+    displayResult: true,
+    result: true,
+    message: `Status "${newStatus.value.name}" created successfully`
+  })
+  router.back()
+}
+
 const closePage = () => {
   router.back()
 }

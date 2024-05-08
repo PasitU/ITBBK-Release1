@@ -81,7 +81,9 @@
           </div>
         </CardContent>
         <CardFooter>
-          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">Cancel</button>
+          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">
+            Cancel
+          </button>
           <button
             class="itbkk-button-confirm btn btn-success w-20"
             :class="{ 'btn-disabled disabled': isTaskSame || isTitleNull }"
@@ -182,7 +184,7 @@ const isTaskSame = computed(() => {
 })
 
 const isTitleNull = computed(() => {
-  return task.value.title.length === 0 ? "Title can't be empty!" : ""
+  return task.value.title.length === 0 ? "Title can't be empty!" : ''
 })
 
 const saveTask = async () => {

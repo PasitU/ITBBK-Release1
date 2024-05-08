@@ -17,7 +17,7 @@
         :default-size="displaySidebar ? 50 : 20"
         class="h-screen"
       >
-        <div>
+        <div class="overflow-x-scroll">
           <div class="flex justify-center items-center p-6">
             <h1>
               <span class="font-bold text-3xl items-center gap-2 flex"
@@ -41,13 +41,13 @@
             </div>
           </div>
           <div
-            v-if="crudResult.displayResult"
+            v-if="crudAlert.displayResult"
             role="alert"
             class="alert absolute bottom-20 right-3 w-1/3 z-10"
-            :class="crudResult.result ? `alert-success` : `alert-error`"
+            :class="crudAlert.result ? `bg-success` : `bg-error`"
           >
             <svg
-              v-if="crudResult.result"
+              v-if="crudAlert.result"
               xmlns="http://www.w3.org/2000/svg"
               class="stroke-current shrink-0 h-6 w-6"
               fill="none"
@@ -61,7 +61,7 @@
               />
             </svg>
             <svg
-              v-if="!crudResult.result"
+              v-else
               xmlns="http://www.w3.org/2000/svg"
               class="stroke-current shrink-0 h-6 w-6"
               fill="none"
@@ -74,16 +74,16 @@
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span class="itbkk-message">{{ crudResult.message }}</span>
+            <span class="itbkk-message">{{ crudAlert.message }}</span>
             <button
               class="btn btn-xs btn-outline btn-circle"
-              @click="crudResult.displayResult = false"
+              @click="crudAlert.displayResult = false"
             >
               X
             </button>
           </div>
 
-          <div class="h-full w-full px-[3rem] overflow-auto">
+          <div class="h-full w-full px-[3rem]">
             <table class="table mb-30">
               <thead class="text-slate-700">
                 <tr>
@@ -95,7 +95,7 @@
               </thead>
 
               <tbody>
-                <tr class="itbkk-item hover" v-for="(status, key) in statuses" :key="key">
+                <tr class="itbkk-item" v-for="(status, key) in statuses" :key="key">
                   <td class="p-5">
                     <div class="flex">
                       <p class="itbkk-title font-bold">{{ key + 1 }}</p>
@@ -118,7 +118,7 @@
                     <button class="itbkk-button-edit text-warning mr-4 btn">
                       <v-icon name="fa-edit"></v-icon>Edit
                     </button>
-                    <button class="itbkk-button-delete text-error btn">
+                    <button @click="statusRemove(status.id)" class="itbkk-button-delete text-error btn">
                       <v-icon name="md-deleteforever"></v-icon>Delete
                     </button>
                   </td>
@@ -136,18 +136,17 @@
       </ResizablePanel>
     </ResizablePanelGroup>
     <Teleport to="#addmodal" v-if="$route.path === '/status/add'">
-      <StatusAdd></StatusAdd
-    ></Teleport>
+      <StatusAdd @return-status="checkReceivedStatus"></StatusAdd>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 // import statusesData from '../../data/db.json'
-import { getAllStatuses } from '@/api/statusService'
+import { getAllStatuses, deleteStatus } from '@/api/statusService'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import StatusAdd from './StatusAdd.vue'
 
@@ -155,16 +154,36 @@ const statuses = ref([])
 const router = useRouter()
 const cantEdit = ['No Status']
 
-const crudResult = ref({ displayResult: false, result: true, message: '' })
+const crudAlert = ref({ displayResult: false, result: false, message: '' })
 
 onMounted(async () => {
   try {
     statuses.value = await getAllStatuses()
   } catch (error) {
-    crudResult.value = { displayResult: true, result: false, message: error.message }
+    crudAlert.value = { displayResult: true, result: false, message: error.message }
   }
 })
 
+const statusRemove = async (id) => {
+  try {
+    await deleteStatus(id)
+    statuses.value = statuses.value.filter((status) => status.id !== id)
+    crudAlert.value = { displayResult: true, result: true, message: 'Status deleted successfully' }
+  } catch (error) {
+    crudAlert.value = { displayResult: true, result: false, message: error.message }
+  }
+}
+
+const checkReceivedStatus = async (response) => {
+  crudAlert.value = {...response}
+  if (crudAlert.value.result) {
+    try {
+      statuses.value = await getAllStatuses()
+    } catch (error) {
+      crudAlert.value = { displayResult: true, result: false, message: error.message }
+    }
+  }
+}
 const BackToHome = () => {
   router.push('/task')
 }

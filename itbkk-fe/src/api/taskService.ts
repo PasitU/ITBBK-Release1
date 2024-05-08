@@ -4,7 +4,7 @@
 // const BASE_URL = 'http://localhost:3000/tasks'
 const BASE_URL = 'http://localhost:8080/v2/tasks'
 
-export const getAllTasks = async () => {
+export const getAllTasks = async (): Promise<any> => {
   try {
     const response = await fetch(BASE_URL)
     if (!response.ok) {
@@ -16,7 +16,7 @@ export const getAllTasks = async () => {
   }
 }
 
-export const getTaskById = async (id: number) => {
+export const getTaskById = async (id: number): Promise<any> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`)
     if (response.status === 404) {
