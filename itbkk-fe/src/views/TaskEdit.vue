@@ -24,54 +24,57 @@
             :placeholder="taskUpdate.title"
           />
         </CardHeader>
-        <CardContent class="flex">
-          <div class="w-1/2">
-            <p>Description:</p>
-            <textarea
-              class="itbkk-description textarea textarea-bordered h-1/2 w-full"
-              v-model="task.description"
-              :placeholder="taskUpdate.description"
-            >
-            </textarea>
-            <p>Assignees:</p>
-            <input
-              type="text"
-              class="itbkk-assignees input input-bordered w-full space-x-5 border p-4"
-              v-model="task.assignees"
-              :placeholder="taskUpdate.assignees"
-            />
-            <p>Status:</p>
-            <select
-              class="itbkk-status select select-bordered w-full"
-              v-model="task.status"
-              :selected="task.status"
-            >
-              <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">
-                {{ selectStatus.name }}
-              </option>
-            </select>
-          </div>
-          <div class="stats stats-vertical shadow w-1/2 gap-5 ml-10 mt-4 text-slate-700">
-            <div class="stat">
-              <div class="stat-title">CreatedOn</div>
-              <div class="stat-value">
-                <p class="itbkk-created-on">{{ task.createdOn }}</p>
+        <CardContent class="flex-row">
+          <p>Description:</p>
+          <textarea
+            class="itbkk-description textarea textarea-bordered h-44 w-full"
+            v-model="task.description"
+            :placeholder="taskUpdate.description"
+          >
+          </textarea>
+          <div class="flex justify-between">
+            <div class="w-1/2 pr-6">
+              <div class="w-full">
+                <p>Assignees:</p>
+                <input
+                  type="text"
+                  class="itbkk-assignees input input-bordered w-full border"
+                  v-model="task.assignees"
+                  :placeholder="taskUpdate.assignees"
+                />
+                <p>Status:</p>
+                <select
+                  class="itbkk-status select select-bordered w-full"
+                  v-model="task.status"
+                  :selected="task.status"
+                >
+                  <option v-for="(selectStatus, key) in statusList" :key="key" :value="selectStatus">{{ selectStatus.name }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="rounded-2xl w-1/2 shadow text-slate-700 mt-5">
+              <div class="stat">
+                <div class="stat-title">CreatedOn</div>
+                <div class="stat-desc">
+                  <p class="itbkk-created-on">{{ task.createdOn }}</p>
+                </div>
+              </div>
+  
+              <div class="stat">
+                <div class="stat-title">UpdatedOn</div>
+                <div class="stat-desc">
+                  <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
+                </div>
+              </div>
+  
+              <div class="stat">
+                <div class="stat-title">TimeZone</div>
+                <div class="stat-desc">
+                  <p class="itbkk-timezone">{{ task.timezone }}</p>
+                </div>
               </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-title">UpdatedOn</div>
-              <div class="stat-value">
-                <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
-              </div>
-            </div>
-
-            <div class="stat">
-              <div class="stat-title">TimeZone</div>
-              <div class="stat-value">
-                <p class="itbkk-timezone">{{ task.timezone }}</p>
-              </div>
-            </div>
           </div>
         </CardContent>
         <CardContent class="-mb-3 -mt-3">
@@ -140,29 +143,40 @@ const router = useRouter()
 const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)
+
 const task = ref({
   title: '',
   description: '',
   assignees: '',
-  status: {},
+  status: {
+    id: Number,
+    name: '',
+    description: ''
+  },
   createdOn: '',
   updatedOn: '',
   timezone: ''
 })
+
 const taskUpdate = ref({
   title: '',
   description: '',
   assignees: '',
-  status: ''
+  status: {
+    id: Number,
+    name: '',
+    description: ''
+  }
 })
-const statusesList = ref()
+
+const statusList = ref()
 
 const taskId = router.currentRoute.value.params.id
 const mount = onMounted(async () => {
   isLoading.value = true
   try {
     task.value = await getTaskById(taskId)
-    statusesList.value = await getAllStatuses()
+    statusList.value = await getAllStatuses()
     taskUpdate.value = { ...task.value }
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
@@ -181,7 +195,7 @@ const isTaskSame = computed(() => {
     task.value.title === taskUpdate.value.title &&
     task.value.description === taskUpdate.value.description &&
     task.value.assignees === taskUpdate.value.assignees &&
-    task.value.status === taskUpdate.value.status
+    task.value.status.name === taskUpdate.value.status.name
   )
 })
 
