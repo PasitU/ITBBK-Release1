@@ -29,10 +29,7 @@
               class="itbkk-status-add select select-bordered w-full bg-white"
               v-model="newTask.status"
             >
-              <option :value="'NO_STATUS'">No Status</option>
-              <option :value="'TO_DO'">To Do</option>
-              <option :value="'DOING'">Doing</option>
-              <option :value="'DONE'">Done</option>
+              <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">{{ selectStatus.name }}</option>
             </select>
           </div>
           <div class="w-1/2 gap-5 ml-10">
@@ -70,12 +67,14 @@
 import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { createTask } from '@/api/taskService.ts'
-import { ref, defineEmits, computed } from 'vue'
+import { getAllStatuses } from '@/api/statusService'
+import { ref, defineEmits, computed, onMounted } from 'vue'
 import { shortenTitle } from '@/lib/utils'
 
 const warning = ref('')
 const emit = defineEmits(['returnStatus'])
-const newTask = ref({ title: '', description: '', assignees: '', status: 'NO_STATUS' })
+const newTask = ref({ title: '', description: '', assignees: '', status: {} })
+const statusesList = ref()
 const router = useRouter()
 const closePage = () => {
   router.back()
@@ -83,6 +82,11 @@ const closePage = () => {
 
 const titleError = computed(() => {
   return newTask.value.title.length === 0
+})
+
+onMounted(async() => {
+  statusesList.value = await getAllStatuses()
+  newTask.value.status = statusesList.value[0]
 })
 
 const saveNewTask = async () => {

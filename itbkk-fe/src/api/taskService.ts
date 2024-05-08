@@ -1,8 +1,8 @@
 /* eslint-disable no-useless-catch */
-const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
+// const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
-// const BASE_URL = 'http://localhost:8080/v2'
+const BASE_URL = 'http://localhost:8080/v2/tasks'
 
 export const getAllTasks = async () => {
   try {
@@ -91,18 +91,6 @@ export const updateTask = async (id: number, updatedTask: any) => {
     if (!response.ok) {
       throw new Error(`Failed to update task with ID: ${updatedTask.id}.`)
     }
-  } catch (error) {
-    throw error
-  }
-}
-
-export const getAllStatuses = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/v2/statuses')
-    if (!response.ok) {
-      throw new Error('Unable to fetch Status.')
-    }
-    return response.json()
   } catch (error) {
     throw error
   }

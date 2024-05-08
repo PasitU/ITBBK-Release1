@@ -25,11 +25,12 @@
               </span>
             </h1>
           </div>
-          <div class="flex justify-between text-[1.5rem] px-9">
-            <div class="flex gap-4">
-              <p @click="BackToHome" class="text-blue-600 cursor-pointer">Home</p>
-              <span> > </span>
-              <p class="font-bold">Task Status</p>
+          <div class="flex justify-between text-xl px-9">
+            <div class="breadcrumbs">
+              <ul>
+                <li><a @click="BackToHome" class="text-blue-600">Home</a></li>
+                <li class="text-slate-400">Task Status</li>
+              </ul>
             </div>
             <div>
               <Button
@@ -143,7 +144,7 @@
 <script setup>
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 // import statusesData from '../../data/db.json'
-import { getAllStatuses } from '@/api/taskService'
+import { getAllStatuses } from '@/api/statusService'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
@@ -160,7 +161,7 @@ onMounted(async () => {
   try {
     statuses.value = await getAllStatuses()
   } catch (error) {
-    return
+    crudResult.value = { displayResult: true, result: false, message: error.message }
   }
 })
 

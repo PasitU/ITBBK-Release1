@@ -105,7 +105,7 @@
                         <p class="itbkk-title font-bold">{{ key + 1 }}</p>
                       </div>
                     </td>
-                    <td @click="openTaskDetail(task.id)" class="">
+                    <td @click="openTaskDetail(task.id)" class="break-words">
                       <p class="itbkk-title">{{ task.title }}</p>
                     </td>
                     <td @click="openTaskDetail(task.id)" class="">
@@ -119,7 +119,7 @@
                         class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
                         @click.stop="toggleSidebar"
                       >
-                        <p class="itbkk-status">{{ changeStatusName(task.status) }}</p>
+                        <p class="itbkk-status">{{ task.status.name }}</p>
                       </button>
                     </td>
                     <td>
@@ -277,34 +277,34 @@ const editTask = async (id) => {
 }
 
 const getStatusClass = (status) => {
-  switch (status) {
-    case 'NO_STATUS':
+  switch (status.name) {
+    case 'No Status':
       return 'bg-gray-500'
-    case 'TO_DO':
+    case 'To Do':
       return 'bg-blue-500'
-    case 'DOING':
+    case 'Doing':
       return 'bg-yellow-500'
-    case 'DONE':
+    case 'Done':
       return 'bg-green-500'
     default:
-      return ''
+      return 'bg-info'
   }
 }
 
-const changeStatusName = (status) => {
-  switch (status) {
-    case 'NO_STATUS':
-      return 'No Status'
-    case 'TO_DO':
-      return 'To Do'
-    case 'DOING':
-      return 'Doing'
-    case 'DONE':
-      return 'Done'
-    default:
-      return ''
-  }
-}
+// const changeStatusName = (status) => {
+//   switch (status) {
+//     case 'NO_STATUS':
+//       return 'No Status'
+//     case 'TO_DO':
+//       return 'To Do'
+//     case 'DOING':
+//       return 'Doing'
+//     case 'DONE':
+//       return 'Done'
+//     default:
+//       return ''
+//   }
+// }
 
 const openDeleteDialog = (title, id, key) => {
   taskTitle.value = title
@@ -321,10 +321,10 @@ const toggleSidebar = () => {
 const statusCounts = computed(() => {
   const counts = {}
   tasks.value.forEach((task) => {
-    if (counts[task.status]) {
-      counts[task.status]++
+    if (counts[task.status.name]) {
+      counts[task.status.name]++
     } else {
-      counts[task.status] = 1
+      counts[task.status.name] = 1
     }
   })
   return counts

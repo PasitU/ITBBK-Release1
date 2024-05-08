@@ -9,7 +9,7 @@
           <p class="pb-2">Name</p>
           <input
             type="text"
-            placeholder="title is required"
+            placeholder="name is required"
             class="itbkk-title-add input input-bordered w-full bg-white"
             v-model="newStatus.name"
           />

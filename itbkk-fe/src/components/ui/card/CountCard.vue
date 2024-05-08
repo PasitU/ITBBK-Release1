@@ -9,7 +9,7 @@
           getBorderColor(status)
         ]"
       >
-        <p>{{ changeStatusName(status) }}: {{ count }}</p>
+        <p>{{ status }} : {{ count }}</p>
       </div>
     </div>
   </div>
@@ -25,31 +25,16 @@ defineProps({
 
 function getBorderColor(status) {
   switch (status) {
-    case 'NO_STATUS':
+    case 'No Status':
       return 'border border-gray-500 bg-grey-200'
-    case 'TO_DO':
+    case 'To Do':
       return 'border border-blue-500 bg-blue-100'
-    case 'DOING':
+    case 'Doing':
       return 'border border-yellow-500 bg-yellow-100'
-    case 'DONE':
+    case 'Done':
       return 'border border-green-500 bg-green-100' // Green border
     default:
       return 'border' // Default border if no status matches
-  }
-}
-
-const changeStatusName = (status) => {
-  switch (status) {
-    case 'NO_STATUS':
-      return 'No Status'
-    case 'TO_DO':
-      return 'To Do'
-    case 'DOING':
-      return 'Doing'
-    case 'DONE':
-      return 'Done'
-    default:
-      return ''
   }
 }
 </script>
