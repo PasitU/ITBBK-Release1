@@ -212,6 +212,7 @@ import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import CountCard from '@/components/ui/card/CountCard.vue'
 import { getAllTasks, deleteTask } from '@/api/taskService'
+import { getAllStatuses } from '@/api/statusService'
 import { shortenTitle } from '@/lib/utils'
 const tasks = ref([])
 const router = useRouter()
@@ -227,8 +228,9 @@ onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
     statusesList.value = await getAllStatuses()
+    tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
   } catch (error) {
-    isNull.value = true
+    crudResult.value = { displayResult: true, result: false, message: error.message }
   }
 })
 const navigateToAddTask = () => {
