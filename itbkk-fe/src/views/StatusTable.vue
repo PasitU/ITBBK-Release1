@@ -122,7 +122,7 @@
                       <v-icon name="fa-edit"></v-icon>Edit
                     </button>
                     <button
-                      @click="statusRemove(status.id)"
+                      @click="statusRemove(status)"
                       class="itbkk-button-delete text-error btn"
                     >
                       <v-icon name="md-deleteforever"></v-icon>Delete
@@ -133,6 +133,77 @@
               </tbody>
             </table>
 
+            <Teleport to="#modal" v-if="deleteability.showModal">
+              <div class="modal-box" v-if="deleteability.canDelete">
+                <h3 class="font-bold text-lg">Delete a Task</h3>
+                <p class="itbkk-message py-4 break-words">
+                  Do you want to delete the status "{{ deleteability.statusName }}"?
+                </p>
+                <div class="modal-action">
+                  <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button
+                      class="itbkk-button-cancel btn bg-error text-white"
+                      @click="deleteability.showModal = false"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="itbkk-button-confirm btn bg-success text-white ml-2"
+                      @click="confirmDelete(deleteability.statusId)"
+                    >
+                      <p class="itbkk-button">Confirm</p>
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <div class="modal-box" v-else-if="!deleteability.canDelete">
+                <h3 class="font-bold text-lg">Delete a Task</h3>
+                <p class="itbkk-message py-4 break-words">
+                  There is some task associated with the "{{ deleteability.statusName }}" status.
+                </p>
+                <p>
+                  Transfer to
+                  <select class="select select-bordered w-full max-w-xs" v-model="transferStatus">
+                    <option
+                      v-for="(selectStatus, key) in statuses"
+                      :key="key"
+                      :hidden="deleteability.statusName === selectStatus.name"
+                      :value="selectStatus"
+                    >
+                      {{ selectStatus.name }}
+                    </option>
+                  </select>
+                </p>
+                <p class="text-red-600" v-show="showTransferError">Please select status to transfer to before proceeding</p>
+                <div class="modal-action">
+                  <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button
+                      class="itbkk-button-cancel btn bg-error text-white"
+                      @click="deleteability.showModal = false"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="itbkk-button-confirm btn bg-success text-white ml-2"
+                      @click="
+                        () => {
+                          if (transferStatus === '') {
+                            showTransferError = true;
+                            return
+                          }
+                          confirmDelete(deleteability.statusId, transferStatus)
+                        }
+                      "
+                    >
+                      <p class="itbkk-button">Confirm</p>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </Teleport>
             <!-- <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
               {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}
             </button>
@@ -150,7 +221,7 @@
 <script setup>
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 // import statusesData from '../../data/db.json'
-import { getAllStatuses, deleteStatus } from '@/api/statusService'
+import { getAllStatuses, deleteStatus, checkCanBeDeleted } from '@/api/statusService'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
@@ -159,8 +230,10 @@ import StatusAdd from './StatusAdd.vue'
 const statuses = ref([])
 const router = useRouter()
 const cantEdit = ['No Status']
-
+const deleteability = ref({ statusId: '', statusName: '', showModal: false, canDelete: false })
+const transferStatus = ref('')
 const crudAlert = ref({ displayResult: false, result: false, message: '' })
+const showTransferError = ref(false)
 
 onMounted(async () => {
   try {
@@ -170,14 +243,35 @@ onMounted(async () => {
   }
 })
 
-const statusRemove = async (id) => {
+const statusRemove = async (status) => {
   try {
-    await deleteStatus(id)
-    statuses.value = statuses.value.filter((status) => status.id !== id)
+    let canBeDeleted = await checkCanBeDeleted(status.id)
+    deleteability.value.statusId = status.id
+    deleteability.value.statusName = status.name
+    if (canBeDeleted) {
+      deleteability.value.canDelete = true
+    } else {
+      deleteability.value.canDelete = false
+    }
+    deleteability.value.showModal = true
+  } catch (error) {
+    crudAlert.value = { displayResult: true, result: false, message: error.message }
+  }
+}
+
+const confirmDelete = async (statusId, newStatus = null) => {
+  try {
+    if (newStatus !== null) {
+      await deleteStatus(statusId, newStatus.id)
+    } else {
+      await deleteStatus(statusId)
+    }
+    statuses.value = statuses.value.filter((status) => status.id !== statusId)
     crudAlert.value = { displayResult: true, result: true, message: 'Status deleted successfully' }
   } catch (error) {
     crudAlert.value = { displayResult: true, result: false, message: error.message }
   }
+  deleteability.value.showModal = false
 }
 
 const checkReceivedStatus = async (response) => {
