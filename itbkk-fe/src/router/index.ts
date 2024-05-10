@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/status/:id/edit',
     name: 'statusEdit',
-    component: StatusEdit
+    component: StatusTable  
   }
 ]
 

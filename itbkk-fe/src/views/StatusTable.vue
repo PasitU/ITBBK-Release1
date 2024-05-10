@@ -217,6 +217,9 @@
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
+    <Teleport to="#modal" v-if="$route.params.id > 0 && $route.path.includes('edit')">
+      <StatusEdit @status-updated="handleStatusUpdate"></StatusEdit>
+    </Teleport>
     <Teleport to="#addmodal" v-if="$route.path === '/status/add'">
       <StatusAdd @return-status="checkReceivedStatus"></StatusAdd>
     </Teleport>
@@ -231,8 +234,13 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import StatusAdd from './StatusAdd.vue'
+import StatusEdit from './StatusEdit.vue'
 
-const statuses = ref([])
+const statuses = ref({
+  id: Number,
+  name: '',
+  description: ''
+})
 const router = useRouter()
 const cantEdit = ['No Status']
 const deleteability = ref({ statusId: '', statusName: '', showModal: false, canDelete: false })
@@ -293,6 +301,14 @@ const BackToHome = () => {
   router.push('/task')
 }
 
+const handleStatusUpdate = (updatedStatus) => {
+  const index = statuses.value.findIndex((s) => s.id === updatedStatus.id)
+  if (index !== -1) {
+    statuses.value[index] = updatedStatus
+  } else {
+    statuses.value.push(updatedStatus)
+  }
+}
 const navigateToAddTask = () => {
   router.push('/status/add')
 }

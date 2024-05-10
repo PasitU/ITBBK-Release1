@@ -5,14 +5,6 @@
       class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
     >
       <div class="w-3/5">
-        <!-- <Card class="items-center self-center w-auto" v-if="isLoading">
-               <CardHeader class="flex justify-center items-center">
-               <span class="loading loading-spinner loading-lg"></span>
-               </CardHeader>
-          </Card> -->
-
-        <!-- v-if="!fetchError.hasError && !isLoading" -->
-
         <Card class="items-center self-center min-w-full h-full">
           <CardHeader>
             Status name :
@@ -55,6 +47,7 @@ import { ref, onMounted, computed } from 'vue'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { useRouter } from 'vue-router'
 import { getStatusById, updateStatus } from '@/api/statusService'
+const emits = defineEmits(['status-updated'])
 const router = useRouter()
 const statuses = ref({
   id: Number,
@@ -81,25 +74,25 @@ onMounted(async () => {
     statuses.value = { ...fetchedStatus }
   } catch (error) {
     router.push('/status')
-    return
   }
+})
+
+const isDirty = computed(() => {
+  return JSON.stringify(statusUpdate.value) !== JSON.stringify(statuses.value)
 })
 
 const saveStatus = async () => {
   if (isDirty.value) {
     try {
       await updateStatus(statusId, statuses.value)
+      emits('status-updated', statuses.value)
       alert('Status updated successfully!')
-      router.push('/status') // Redirect after successful update
+      router.push('/status')
     } catch (error) {
       alert('Failed to update status.')
     }
   }
 }
-
-const isDirty = computed(() => {
-  return JSON.stringify(statusUpdate.value) !== JSON.stringify(statuses.value)
-})
 
 const closePage = () => {
   router.back()
