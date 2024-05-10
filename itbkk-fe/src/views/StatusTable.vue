@@ -137,75 +137,79 @@
             </table>
 
             <Teleport to="#modal" v-if="deleteability.showModal">
-              <div class="modal-box" v-if="deleteability.canDelete">
-                <h3 class="font-bold text-lg">Delete a Task</h3>
-                <p class="itbkk-message py-4 break-words">
-                  Do you want to delete the status "{{ deleteability.statusName }}"?
-                </p>
-                <div class="modal-action">
-                  <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
-                    <button
-                      class="itbkk-button-cancel btn bg-error text-white"
-                      @click="deleteability.showModal = false"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      class="itbkk-button-confirm btn bg-success text-white ml-2"
-                      @click="confirmDelete(deleteability.statusId)"
-                    >
-                      <p class="itbkk-button">Confirm</p>
-                    </button>
-                  </form>
+              <div
+                data-theme="light"
+                class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
+              >
+                <div class="modal-box absolute" v-if="deleteability.canDelete">
+                  <h3 class="font-bold text-lg">Delete a Task</h3>
+                  <p class="itbkk-message py-4 break-words">
+                    Do you want to delete the status "{{ deleteability.statusName }}"?
+                  </p>
+                  <div class="modal-action">
+                    <form method="dialog">
+                      <!-- if there is a button in form, it will close the modal -->
+                      <button
+                        class="itbkk-button-cancel btn bg-error text-white"
+                        @click="deleteability.showModal = false"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        class="itbkk-button-confirm btn bg-success text-white ml-2"
+                        @click="confirmDelete(deleteability.statusId)"
+                      >
+                        <p class="itbkk-button">Confirm</p>
+                      </button>
+                    </form>
+                  </div>
                 </div>
-              </div>
-
-              <div class="modal-box" v-else-if="!deleteability.canDelete">
-                <h3 class="font-bold text-lg">Delete a Task</h3>
-                <p class="itbkk-message py-4 break-words">
-                  There is some task associated with the "{{ deleteability.statusName }}" status.
-                </p>
-                <p>
-                  Transfer to
-                  <select class="select select-bordered w-full max-w-xs" v-model="transferStatus">
-                    <option
-                      v-for="(selectStatus, key) in statuses"
-                      :key="key"
-                      :hidden="deleteability.statusName === selectStatus.name"
-                      :value="selectStatus"
-                    >
-                      {{ selectStatus.name }}
-                    </option>
-                  </select>
-                </p>
-                <p class="text-red-600" v-show="showTransferError">
-                  Please select status to transfer to before proceeding
-                </p>
-                <div class="modal-action">
-                  <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
-                    <button
-                      class="itbkk-button-cancel btn bg-error text-white"
-                      @click="deleteability.showModal = false"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      class="itbkk-button-confirm btn bg-success text-white ml-2"
-                      @click="
-                        () => {
-                          if (transferStatus === '') {
-                            showTransferError = true
-                            return
+                <div class="modal-box" v-else-if="!deleteability.canDelete">
+                  <h3 class="font-bold text-lg">Delete a Task</h3>
+                  <p class="itbkk-message py-4 break-words">
+                    There is some task associated with the "{{ deleteability.statusName }}" status.
+                  </p>
+                  <p>
+                    Transfer to
+                    <select class="select select-bordered w-full max-w-xs" v-model="transferStatus">
+                      <option
+                        v-for="(selectStatus, key) in statuses"
+                        :key="key"
+                        :hidden="deleteability.statusName === selectStatus.name"
+                        :value="selectStatus"
+                      >
+                        {{ selectStatus.name }}
+                      </option>
+                    </select>
+                  </p>
+                  <p class="text-red-600" v-show="showTransferError">
+                    Please select status to transfer to before proceeding
+                  </p>
+                  <div class="modal-action">
+                    <form method="dialog">
+                      <!-- if there is a button in form, it will close the modal -->
+                      <button
+                        class="itbkk-button-cancel btn bg-error text-white"
+                        @click="deleteability.showModal = false"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        class="itbkk-button-confirm btn bg-success text-white ml-2"
+                        @click="
+                          () => {
+                            if (transferStatus === '') {
+                              showTransferError = true
+                              return
+                            }
+                            confirmDelete(deleteability.statusId, transferStatus)
                           }
-                          confirmDelete(deleteability.statusId, transferStatus)
-                        }
-                      "
-                    >
-                      <p class="itbkk-button">Confirm</p>
-                    </button>
-                  </form>
+                        "
+                      >
+                        <p class="itbkk-button">Confirm</p>
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             </Teleport>
