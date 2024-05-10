@@ -217,7 +217,7 @@
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
-    <Teleport to="#modal" v-if="$route.params.id > 0 && $route.path.includes('edit')">
+    <Teleport to="#modal" v-if="$route.params.id > 1 && $route.path.includes('edit')">
       <StatusEdit @status-updated="handleStatusUpdate"></StatusEdit>
     </Teleport>
     <Teleport to="#addmodal" v-if="$route.path === '/status/add'">

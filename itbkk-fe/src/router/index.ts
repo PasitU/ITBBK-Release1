@@ -40,7 +40,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/status/:id/edit',
     name: 'statusEdit',
-    component: StatusTable  
+    component: StatusTable,
+    beforeEnter: (to, from, next) => {
+      // Check if the ID is 1
+      if (to.params.id === '1') {
+        // Redirect to the status list
+        next({ path: '/status' })
+      } else {
+        // Otherwise, proceed with the original route
+        next()
+      }
+    }
   }
 ]
 

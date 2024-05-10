@@ -55,7 +55,7 @@ const statuses = ref({
   description: ''
 })
 
-const statusUpdate = ref({
+const statusOrg = ref({
   id: Number,
   name: '',
   description: ''
@@ -65,12 +65,16 @@ const statusId = router.currentRoute.value.params.id
 
 onMounted(async () => {
   try {
+    if (statusId === 1) {
+      router.push('/status')
+      return
+    }
     const fetchedStatus = await getStatusById(statusId)
     if (!fetchedStatus) {
       router.push('/status')
       return
     }
-    statusUpdate.value = { ...fetchedStatus }
+    statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
   } catch (error) {
     router.push('/status')
@@ -78,7 +82,7 @@ onMounted(async () => {
 })
 
 const isDirty = computed(() => {
-  return JSON.stringify(statusUpdate.value) !== JSON.stringify(statuses.value)
+  return JSON.stringify(statusOrg.value) !== JSON.stringify(statuses.value)
 })
 
 const saveStatus = async () => {
