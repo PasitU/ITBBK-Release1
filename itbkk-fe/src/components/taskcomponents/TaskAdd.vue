@@ -104,7 +104,6 @@ const saveNewTask = async () => {
     })
     router.back()
   } catch (error) {
-    console.log(error)
     emit('returnStatus', {
       status: false,
       message: `An error occured: task "${shortenTitle(newTask.value.title)}" couldn't be saved, Please try again later`
