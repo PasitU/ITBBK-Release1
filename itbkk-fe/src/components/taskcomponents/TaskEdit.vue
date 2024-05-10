@@ -9,48 +9,53 @@
           <span class="loading loading-spinner loading-lg"></span>
         </CardHeader>
       </Card>
+
       <Card
         class="items-center self-center min-w-full h-full"
         v-if="!fetchError.hasError && !isLoading"
       >
         <CardHeader>
           Title
-          <div>
-            <div class="space-x-5 rounded-md border p-4">
-              <p class="itbkk-title">
-                {{ task.title }}
-              </p>
-            </div>
-          </div>
+          <input
+            type="text"
+            class="itbkk-title input input-bordered w-full space-x-5 border p-4 mt-2"
+            v-model="task.title"
+            :class="isTitleNull ? `input-error` : ``"
+            :placeholder="taskUpdate.title"
+          />
         </CardHeader>
-        <CardContent class="flex-col">
+        <CardContent class="flex-row">
           <p>Description:</p>
-          <div class="space-x-5 border p-4 rounded-md">
-            <h1 class="break-words">
-              <p
-                class="itbkk-description"
-                :class="task.description.length === 0 ? `italic text-slate-400` : ``"
-              >
-                {{ task.description || 'No Description Provided' }}
-              </p>
-            </h1>
-          </div>
-          <div class="flex gap-5">
-            <div class="w-1/2">
-              <p>Assignees:</p>
-              <div class="space-x-5 border p-3 rounded-md">
-                <h1 class="break-words">
-                  <p
-                    class="itbkk-assignees"
-                    :class="task.assignees.length === 0 ? `italic text-slate-400` : ``"
+          <textarea
+            class="itbkk-description textarea textarea-bordered h-44 w-full"
+            v-model="task.description"
+            :placeholder="taskUpdate.description"
+          >
+          </textarea>
+          <div class="flex justify-between">
+            <div class="w-1/2 pr-6">
+              <div class="w-full">
+                <p>Assignees:</p>
+                <input
+                  type="text"
+                  class="itbkk-assignees input input-bordered w-full border"
+                  v-model="task.assignees"
+                  :placeholder="taskUpdate.assignees"
+                />
+                <p>Status:</p>
+                <select
+                  class="itbkk-status select select-bordered w-full"
+                  v-model="task.status"
+                  :selected="task.status"
+                >
+                  <option
+                    v-for="(selectStatus, key) in statusList"
+                    :key="key"
+                    :value="selectStatus"
                   >
-                    {{ task.assignees || 'Unassigned' }}
-                  </p>
-                </h1>
-              </div>
-              <p>Status:</p>
-              <div class="badge badge-neutral p-3 rounded-md">
-                <p class="itbkk-status">{{ task.status.name }}</p>
+                    {{ selectStatus.name }}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="rounded-2xl w-1/2 shadow text-slate-700 mt-5">
@@ -60,12 +65,14 @@
                   <p class="itbkk-created-on">{{ task.createdOn }}</p>
                 </div>
               </div>
+
               <div class="stat">
                 <div class="stat-title">UpdatedOn</div>
                 <div class="stat-desc">
                   <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
                 </div>
               </div>
+
               <div class="stat">
                 <div class="stat-title">TimeZone</div>
                 <div class="stat-desc">
@@ -75,8 +82,22 @@
             </div>
           </div>
         </CardContent>
+        <CardContent class="-mb-3 -mt-3">
+          <div v-if="isTitleNull" class="gap-3 text-red-600">
+            {{ isTitleNull }}
+          </div>
+        </CardContent>
         <CardFooter>
-          <Button class="justify-between content-between" @click="closePage">Close</Button>
+          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">
+            Cancel
+          </button>
+          <button
+            class="itbkk-button-confirm btn btn-success w-20"
+            :class="{ 'btn-disabled disabled': isTaskSame || isTitleNull }"
+            @click="saveTask"
+          >
+            Save
+          </button>
         </CardFooter>
       </Card>
 
@@ -115,30 +136,53 @@
 </template>
 
 <script setup>
-import Button from '@/components/ui/button/Button.vue'
-import { onMounted, ref } from 'vue'
+import Button from '../ui/button/Button.vue'
+import { computed, onMounted, ref, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
-import { getTaskById } from '@/api/taskService'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter'
+import { getTaskById, updateTask } from '@/api/taskService.ts'
+import { getAllStatuses } from '@/api/statusService.ts'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
+import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter.ts'
+import { shortenTitle } from '@/lib/utils.ts'
 const router = useRouter()
+const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)
+
 const task = ref({
   title: '',
   description: '',
   assignees: '',
-  status: {},
+  status: {
+    id: Number,
+    name: '',
+    description: ''
+  },
   createdOn: '',
   updatedOn: '',
   timezone: ''
 })
 
+const taskUpdate = ref({
+  title: '',
+  description: '',
+  assignees: '',
+  status: {
+    id: Number,
+    name: '',
+    description: ''
+  }
+})
+
+const statusList = ref()
+
 const taskId = router.currentRoute.value.params.id
-onMounted(async () => {
+const mount = onMounted(async () => {
   isLoading.value = true
   try {
     task.value = await getTaskById(taskId)
+    statusList.value = await getAllStatuses()
+    taskUpdate.value = { ...task.value }
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
     isLoading.value = false
@@ -146,12 +190,43 @@ onMounted(async () => {
     return
   }
   isLoading.value = false
-  task.value.title = task.value.title ? task.value.title : 'No title'
-  task.value.status = task.value.status ? task.value.status : 'No_status'
   task.value.createdOn = task.value.createdOn ? UTCtoLocalFormat(task.value.createdOn) : 'No Data'
   task.value.updatedOn = task.value.updatedOn ? UTCtoLocalFormat(task.value.updatedOn) : 'No Data'
   task.value.timezone = getUserTimeZoneId()
 })
+
+const isTaskSame = computed(() => {
+  return (
+    task.value.title === taskUpdate.value.title &&
+    task.value.description === taskUpdate.value.description &&
+    task.value.assignees === taskUpdate.value.assignees &&
+    task.value.status.name === taskUpdate.value.status.name
+  )
+})
+
+const isTitleNull = computed(() => {
+  return task.value.title.length === 0 ? "Title can't be empty!" : ''
+})
+
+const saveTask = async () => {
+  try {
+    taskUpdate.value = { ...task.value }
+    await updateTask(taskId, taskUpdate.value)
+    mount()
+  } catch (error) {
+    emit('returnStatus', {
+      status: false,
+      message: `An error occured: task "${shortenTitle(taskUpdate.value.title)}" couldn't be updated, Please try again later`
+    })
+    router.back()
+    return
+  }
+  emit('returnStatus', {
+    status: true,
+    message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
+  })
+  router.back()
+}
 
 const closePage = () => {
   router.back()

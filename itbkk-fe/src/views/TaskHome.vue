@@ -203,9 +203,9 @@
 
 <script setup>
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import TaskDetail from './TaskDetail.vue'
-import TaskAdd from './TaskAdd.vue'
-import TaskEdit from './TaskEdit.vue'
+import TaskDetail from '../components/taskcomponents/TaskDetail.vue'
+import TaskAdd from '../components/taskcomponents/TaskAdd.vue'
+import TaskEdit from '../components/taskcomponents/TaskEdit.vue'
 import { useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import { onMounted } from 'vue'
@@ -245,6 +245,9 @@ const checkReceivedStatus = async (response) => {
   crudResult.value.displayResult = true
   crudResult.value.result = response.status
   crudResult.value.message = response.message
+  console.log(response)
+  console.log(crudResult)
+  console.log("0000000")
   if (crudResult.value.result) {
     try {
       tasks.value = await getAllTasks()

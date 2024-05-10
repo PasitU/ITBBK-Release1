@@ -44,9 +44,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { useRouter } from 'vue-router'
-import { getStatusById, updateStatus } from '@/api/statusService'
+import { getStatusById, updateStatus } from '@/api/statusService.ts'
 const emits = defineEmits(['status-updated'])
 const router = useRouter()
 const statuses = ref({

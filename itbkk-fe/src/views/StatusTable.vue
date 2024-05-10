@@ -237,8 +237,8 @@ import { getAllStatuses, deleteStatus, checkCanBeDeleted } from '@/api/statusSer
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
-import StatusAdd from './StatusAdd.vue'
-import StatusEdit from './StatusEdit.vue'
+import StatusAdd from '../components/statuscomponents/StatusAdd.vue'
+import StatusEdit from '../components/statuscomponents/StatusEdit.vue'
 
 const statuses = ref({
   id: Number,

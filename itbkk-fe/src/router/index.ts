@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import TaskHome from '@/views/TaskHome.vue'
-import TaskEdit from '@/views/TaskEdit.vue'
+import TaskEdit from '@/components/taskcomponents/TaskEdit.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 import StatusTable from '@/views/StatusTable.vue'
-import StatusAdd from '@/views/StatusAdd.vue'
-import StatusEdit from '@/views/StatusEdit.vue'
+import StatusAdd from '@/components/statuscomponents/StatusAdd.vue'
+import StatusEdit from '@/components/statuscomponents/StatusEdit.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 
 const routes: Array<RouteRecordRaw> = [

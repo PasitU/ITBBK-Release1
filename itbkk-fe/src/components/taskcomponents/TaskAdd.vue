@@ -67,11 +67,11 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { createTask } from '@/api/taskService.ts'
-import { getAllStatuses } from '@/api/statusService'
+import { getAllStatuses } from '@/api/statusService.ts'
 import { ref, defineEmits, computed, onMounted } from 'vue'
-import { shortenTitle } from '@/lib/utils'
+import { shortenTitle } from '@/lib/utils.ts'
 
 const warning = ref('')
 const emit = defineEmits(['returnStatus'])

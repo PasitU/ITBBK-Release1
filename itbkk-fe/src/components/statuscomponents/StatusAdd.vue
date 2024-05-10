@@ -43,9 +43,9 @@
 
 <script setup>
 import { ref, defineEmits } from 'vue'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { useRouter } from 'vue-router'
-import { createStatus } from '@/api/statusService'
+import { createStatus } from '@/api/statusService.ts'
 
 const emit = defineEmits(['returnStatus'])
 const newStatus = ref({ name: '', description: '' })
