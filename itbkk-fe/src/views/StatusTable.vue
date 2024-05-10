@@ -306,11 +306,16 @@ const BackToHome = () => {
 }
 
 const handleStatusUpdate = (updatedStatus) => {
-  const index = statuses.value.findIndex((s) => s.id === updatedStatus.id)
+  const index = statuses.value.findIndex((s) => s.id === updatedStatus.newStatus.id)
   if (index !== -1) {
-    statuses.value[index] = updatedStatus
+    statuses.value[index] = updatedStatus.newStatus
+    crudAlert.value.displayResult = true
+    crudAlert.value.result = updatedStatus.result
+    crudAlert.value.message = updatedStatus.message
   } else {
-    statuses.value.push(updatedStatus)
+    crudAlert.value.displayResult = true
+    crudAlert.value.result = false
+    crudAlert.value.message = updatedStatus.message
   }
 }
 const navigateToAddTask = () => {

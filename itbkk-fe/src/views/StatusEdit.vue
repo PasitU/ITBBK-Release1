@@ -89,11 +89,21 @@ const saveStatus = async () => {
   if (isDirty.value) {
     try {
       await updateStatus(statusId, statuses.value)
-      emits('status-updated', statuses.value)
-      alert('Status updated successfully!')
+      emits('status-updated', {
+        newStatus: statuses.value,
+        displayResult: true,
+        result: true,
+        message: `Status "${statuses.value.name}" updated successfully`
+      })
+      // alert('Status updated successfully!')
       router.push('/status')
     } catch (error) {
-      alert('Failed to update status.')
+      emits('status-updated', {
+        displayResult: true,
+        result: false,
+        message: `An error occurred: ${error.message}`
+      })
+      // alert('Failed to update status.')
     }
   }
 }
