@@ -104,6 +104,7 @@ const saveStatus = async () => {
         message: `An error occurred: ${error.message}`
       })
       // alert('Failed to update status.')
+      router.push('/status')
     }
   }
 }

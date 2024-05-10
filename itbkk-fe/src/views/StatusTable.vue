@@ -306,15 +306,15 @@ const BackToHome = () => {
 }
 
 const handleStatusUpdate = (updatedStatus) => {
-  const index = statuses.value.findIndex((s) => s.id === updatedStatus.newStatus.id)
-  if (index !== -1) {
+  if (updatedStatus.result) {
+    const index = statuses.value.findIndex((s) => s.id === updatedStatus.newStatus.id)
     statuses.value[index] = updatedStatus.newStatus
     crudAlert.value.displayResult = true
     crudAlert.value.result = updatedStatus.result
     crudAlert.value.message = updatedStatus.message
   } else {
     crudAlert.value.displayResult = true
-    crudAlert.value.result = false
+    crudAlert.value.result = updatedStatus.result
     crudAlert.value.message = updatedStatus.message
   }
 }
