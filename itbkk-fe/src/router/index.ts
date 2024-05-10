@@ -4,6 +4,7 @@ import TaskEdit from '@/views/TaskEdit.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 import StatusTable from '@/views/StatusTable.vue'
 import StatusAdd from '@/views/StatusAdd.vue'
+import StatusEdit from '@/views/StatusEdit.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -18,23 +19,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/task/:id?',
-    name: 'Home',
+    name: 'home',
     component: TaskHome
   },
   {
     path: '/task/:id?/edit',
-    name: 'Edit',
+    name: 'edit',
     component: TaskEdit
   },
   {
     path: '/status',
-    name: 'Status',
+    name: 'status',
     component: StatusTable
   },
   {
     path: '/status/add',
     name: 'statusAdd',
     component: StatusTable
+  },
+  {
+    path: '/status/:id/edit',
+    name: 'statusEdit',
+    component: StatusEdit
   }
 ]
 

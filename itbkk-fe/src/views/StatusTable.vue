@@ -118,7 +118,10 @@
 
                   <!-- Check the correct status property for condition -->
                   <td class="" v-if="!cantEdit.includes(status.name)">
-                    <button class="itbkk-button-edit text-warning mr-4 btn">
+                    <button
+                      @click="editStatus(status.id)"
+                      class="itbkk-button-edit text-warning mr-4 btn"
+                    >
                       <v-icon name="fa-edit"></v-icon>Edit
                     </button>
                     <button
@@ -176,7 +179,9 @@
                     </option>
                   </select>
                 </p>
-                <p class="text-red-600" v-show="showTransferError">Please select status to transfer to before proceeding</p>
+                <p class="text-red-600" v-show="showTransferError">
+                  Please select status to transfer to before proceeding
+                </p>
                 <div class="modal-action">
                   <form method="dialog">
                     <!-- if there is a button in form, it will close the modal -->
@@ -191,7 +196,7 @@
                       @click="
                         () => {
                           if (transferStatus === '') {
-                            showTransferError = true;
+                            showTransferError = true
                             return
                           }
                           confirmDelete(deleteability.statusId, transferStatus)
@@ -307,6 +312,10 @@ const getStatusClass = (status) => {
     default:
       return 'badge bg-indigo-400'
   }
+}
+
+const editStatus = async (id) => {
+  await router.push(`/status/${id}/edit`)
 }
 </script>
 

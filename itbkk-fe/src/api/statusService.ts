@@ -14,6 +14,19 @@ export const getAllStatuses = async () => {
   }
 }
 
+// TypeScript function to fetch a Status by its ID
+export const getStatusById = async (id: number): Promise<any> => {
+  try {
+    const response = await fetch(`${BASE_URL}/${id}`)
+    if (!response.ok) {
+      throw new Error(`Unable to fetch Status with ID ${id}.`)
+    }
+    return response.json()
+  } catch (error) {
+    throw error
+  }
+}
+
 export const createStatus = async (newStatus: any): Promise<any> => {
   try {
     const response = await fetch(BASE_URL, {
@@ -61,6 +74,27 @@ export const checkCanBeDeleted = async (statusId) => {
       throw new Error(`Unable to get usage of status "${statusId}"`)
     }
     return response.json()
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateStatus = async (
+  statusId: number,
+  statusData: { name: string; description: string }
+): Promise<any> => {
+  try {
+    const response = await fetch(`${BASE_URL}/${statusId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(statusData)
+    })
+    if (!response.ok) {
+      throw new Error(`Unable to update the status with id "${statusId}".`)
+    }
+    return response.json() // Assuming the server responds with the updated status object
   } catch (error) {
     throw error
   }
