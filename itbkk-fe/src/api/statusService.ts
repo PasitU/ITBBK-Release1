@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 
-const BASE_URL = 'http://localhost:8080/v2/statuses'
+const BASE_URL = import.meta.env.VITE_STATUS_URL
 
 export const getAllStatuses = async () => {
   try {

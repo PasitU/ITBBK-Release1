@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/task/:id?/edit',
     name: 'edit',
-    component: TaskEdit
+    component: TaskHome
   },
   {
     path: '/status',
@@ -55,7 +55,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 

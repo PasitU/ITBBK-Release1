@@ -2,7 +2,7 @@
 // const BASE_URL = 'http://ip23sy1.sit.kmutt.ac.th:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
-const BASE_URL = 'http://localhost:8080/v2/tasks'
+const BASE_URL = import.meta.env.VITE_TASK_URL
 
 export const getAllTasks = async (): Promise<any> => {
   try {
