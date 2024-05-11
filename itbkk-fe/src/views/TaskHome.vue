@@ -245,14 +245,11 @@ const checkReceivedStatus = async (response) => {
   crudResult.value.displayResult = true
   crudResult.value.result = response.status
   crudResult.value.message = response.message
-  console.log(response)
-  console.log(crudResult)
-  console.log("0000000")
   if (crudResult.value.result) {
     try {
       tasks.value = await getAllTasks()
     } catch (error) {
-      console.log(error)
+      crudResult.value = { displayResult: true, result: false, message: error.message }
     }
   }
 }

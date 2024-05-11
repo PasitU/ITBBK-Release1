@@ -240,11 +240,7 @@ import { Button } from '@/components/ui/button'
 import StatusAdd from '../components/statuscomponents/StatusAdd.vue'
 import StatusEdit from '../components/statuscomponents/StatusEdit.vue'
 
-const statuses = ref({
-  id: Number,
-  name: '',
-  description: ''
-})
+const statuses = ref([])
 const router = useRouter()
 const cantEdit = ['No Status']
 const deleteability = ref({ statusId: '', statusName: '', showModal: false, canDelete: false })

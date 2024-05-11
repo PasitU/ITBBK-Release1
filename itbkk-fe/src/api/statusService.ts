@@ -27,7 +27,7 @@ export const getStatusById = async (id: number): Promise<any> => {
   }
 }
 
-export const createStatus = async (newStatus: any): Promise<any> => {
+export const createStatus = async (newStatus: status): Promise<any> => {
   try {
     const response = await fetch(BASE_URL, {
       method: 'POST',
@@ -49,7 +49,7 @@ export const createStatus = async (newStatus: any): Promise<any> => {
 
 export const deleteStatus = async (statusId: number, newStatusId: number = null): Promise<any> => {
   try {
-    let response
+    let response: Response
     if (newStatusId != null) {
       response = await fetch(`${BASE_URL}/${statusId}/${newStatusId}`, {
         method: 'DELETE'
@@ -67,7 +67,7 @@ export const deleteStatus = async (statusId: number, newStatusId: number = null)
   }
 }
 
-export const checkCanBeDeleted = async (statusId) => {
+export const checkCanBeDeleted = async (statusId: number) => {
   try {
     const response = await fetch(`${BASE_URL}/check-usage/${statusId}`)
     if (!response.ok) {
@@ -81,7 +81,7 @@ export const checkCanBeDeleted = async (statusId) => {
 
 export const updateStatus = async (
   statusId: number,
-  statusData: { name: string; description: string }
+  statusData: status
 ): Promise<any> => {
   try {
     const response = await fetch(`${BASE_URL}/${statusId}`, {

@@ -64,8 +64,6 @@ export const deleteTask = async (id: number): Promise<void> => {
     if (!response.ok) {
       throw new Error(`Unable to delete task ID: ${id}`)
     }
-
-    console.log('Task deleted successfully')
   } catch (error) {
     throw error
   }
