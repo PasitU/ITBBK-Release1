@@ -66,18 +66,18 @@ const statusId = router.currentRoute.value.params.id
 onMounted(async () => {
   try {
     if (statusId === 1) {
-      router.push('/status')
+      router.push({name:"status"})
       return
     }
     const fetchedStatus = await getStatusById(statusId)
     if (!fetchedStatus) {
-      router.push('/status')
+      router.push({name:"status"})
       return
     }
     statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
   } catch (error) {
-    router.push('/status')
+    router.push({name:"status"})
   }
 })
 
@@ -96,7 +96,7 @@ const saveStatus = async () => {
         message: `Status "${statuses.value.name}" updated successfully`
       })
       // alert('Status updated successfully!')
-      router.push('/status')
+      router.push({name:"status"})
     } catch (error) {
       emits('status-updated', {
         displayResult: true,
@@ -104,7 +104,7 @@ const saveStatus = async () => {
         message: `An error occurred: ${error.message}`
       })
       // alert('Failed to update status.')
-      router.push('/status')
+      router.push({name:"status"})
     }
   }
 }

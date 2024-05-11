@@ -234,11 +234,11 @@ onMounted(async () => {
   }
 })
 const navigateToAddTask = () => {
-  router.push('/task/add')
+  router.push({name:"add"})
 }
 
 const navigateToStatus = () => {
-  router.push('/status')
+  router.push({name:"status"})
 }
 
 const checkReceivedStatus = async (response) => {
@@ -277,10 +277,10 @@ const deleteTaskConfirm = async () => {
 }
 
 const openTaskDetail = async (id) => {
-  await router.push(`/task/${id}`)
+  await router.push({name:"home", params:{id: id}})
 }
 const editTask = async (id) => {
-  await router.push(`/task/${id}/edit`)
+  await router.push({name:"edit", params:{id: id}})
 }
 
 const getStatusClass = (status) => {

@@ -35,7 +35,7 @@
             <div>
               <Button
                 class="itbkk-button-add bg-blue-700 text-18 text-red-50 hover:bg-blue-800"
-                @click="navigateToAddTask"
+                @click="navigateToAddStatus"
                 >Add Status</Button
               >
             </div>
@@ -302,7 +302,7 @@ const checkReceivedStatus = async (response) => {
   }
 }
 const BackToHome = () => {
-  router.push('/task')
+  router.push({name:"home"})
 }
 
 const handleStatusUpdate = (updatedStatus) => {
@@ -318,8 +318,8 @@ const handleStatusUpdate = (updatedStatus) => {
     crudAlert.value.message = updatedStatus.message
   }
 }
-const navigateToAddTask = () => {
-  router.push('/status/add')
+const navigateToAddStatus = () => {
+  router.push({name:"statusAdd"})
 }
 
 const displaySidebar = ref(false)
@@ -340,7 +340,7 @@ const getStatusClass = (status) => {
 }
 
 const editStatus = async (id) => {
-  await router.push(`/status/${id}/edit`)
+  await router.push({name:"statusEdit", params: {id: id}})
 }
 </script>
 

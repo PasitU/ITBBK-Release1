@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/task/add', // Moved up to ensure it matches before /task/:id?
-    name: 'Add',
+    name: 'add',
     component: TaskHome
   },
   {
