@@ -20,9 +20,9 @@
         <div>
           <div class="flex justify-center items-center p-6">
             <h1>
-              <span class="font-bold text-3xl items-center gap-2 flex"
-                >INTEGRATED PROJECT ITBKK-SY-1
-              </span>
+              <p class="font-bold text-3xl items-center gap-2 flex tracking-in-expand-fwd-top">
+                INTEGRATED PROJECT ITBKK-SY-1
+              </p>
             </h1>
           </div>
           <div class="absolute top-10 right-10">
@@ -234,11 +234,11 @@ onMounted(async () => {
   }
 })
 const navigateToAddTask = () => {
-  router.push({name:"add"})
+  router.push({ name: 'add' })
 }
 
 const navigateToStatus = () => {
-  router.push({name:"status"})
+  router.push({ name: 'status' })
 }
 
 const checkReceivedStatus = async (response) => {
@@ -274,10 +274,10 @@ const deleteTaskConfirm = async () => {
 }
 
 const openTaskDetail = async (id) => {
-  await router.push({name:"home", params:{id: id}})
+  await router.push({ name: 'home', params: { id: id } })
 }
 const editTask = async (id) => {
-  await router.push({name:"edit", params:{id: id}})
+  await router.push({ name: 'edit', params: { id: id } })
 }
 
 const getStatusClass = (status) => {
@@ -320,4 +320,24 @@ const statusCounts = computed(() => {
 })
 </script>
 
-<style></style>
+<style>
+.tracking-in-expand-fwd-top {
+  animation: tracking-in-expand-fwd-top 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+}
+
+
+@keyframes tracking-in-expand-fwd-top {
+  0% {
+    letter-spacing: -0.5em;
+    transform: translateZ(-700px) translateY(-500px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateZ(0) translateY(0);
+    opacity: 1;
+  }
+}
+</style>
