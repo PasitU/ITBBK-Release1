@@ -39,7 +39,7 @@
           </div>
 
           <div class="flex items-center justify-evenly">
-            <CountCard :statusCounts="statusCounts"></CountCard>
+            <CountCard  :statusCounts="statusCounts"></CountCard>
           </div>
 
           <div
@@ -85,7 +85,7 @@
             </button>
           </div>
 
-          <div class="w-full px-6 overflow-auto">
+          <div class="w-full px-6 overflow-auto slide-in-left">
             <div class="overflow-y-auto h-[780px] pt-2">
               <!-- Set the height as required -->
               <table class="table mb-6">
@@ -340,4 +340,36 @@ const statusCounts = computed(() => {
     opacity: 1;
   }
 }
+
+.slide-in-left {
+	-webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+
+@-webkit-keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+            transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+            transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 </style>
