@@ -28,7 +28,7 @@
           <div class="absolute top-10 right-10">
             <Button
               @click="navigateToStatus()"
-              class="itbkk-button-add bg-green-700 text-18 text-red-50 hover:bg-green-800 mr-2"
+              class="itbkk-manage-status bg-green-700 text-18 text-red-50 hover:bg-green-800 mr-2"
               >Manage Status</Button
             >
             <Button

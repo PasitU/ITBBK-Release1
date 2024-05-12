@@ -28,7 +28,7 @@ function getBorderColor(status) {
     case 'No Status':
       return 'border border-gray-400 bg-grey-300'
     case 'To Do':
-      return 'border border-blue-400 bg-blue-300'
+      return 'border border-blue-400 bg-sky-200'
     case 'Doing':
       return 'border border-yellow-400 bg-yellow-300'
     case 'Done':

@@ -4,20 +4,20 @@
       data-theme="light"
       class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
     >
-      <div class="w-3/5">
+      <div class="itbkk-modal-status w-3/5">
         <Card class="items-center self-center min-w-full h-full">
           <CardHeader>
             Status name :
             <input
               type="text"
-              class="itbkk-title input input-bordered w-full space-x-5 border p-4 mt-2"
+              class="itbkk-status-name input input-bordered w-full space-x-5 border p-4 mt-2"
               v-model="statuses.name"
             />
           </CardHeader>
           <CardContent class="flex-row">
             <p>Description:</p>
             <textarea
-              class="itbkk-description textarea textarea-bordered h-44 w-full"
+              class="itbkk-status-description textarea textarea-bordered h-44 w-full"
               v-model="statuses.description"
             >
             </textarea>

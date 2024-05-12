@@ -28,7 +28,7 @@
           <div class="flex justify-between text-lg px-11 mb-4">
             <div class="breadcrumbs">
               <ul>
-                <li><a @click="BackToHome" class="text-blue-600">Home</a></li>
+                <li><a @click="BackToHome" class="itbkk-button-home text-blue-600">Home</a></li>
                 <li class="">Task Status</li>
               </ul>
             </div>
@@ -103,13 +103,13 @@
                   </td>
 
                   <td class="">
-                    <p class="itbkk-name rounded-sm h-6" :class="getStatusClass(status)">
+                    <p class="itbkk-status-name rounded-sm h-6" :class="getStatusClass(status)">
                       {{ status.name }}
                     </p>
                   </td>
                   <td class="">
                     <p
-                      class="itbkk-description"
+                      class="itbkk-status-description"
                       :class="status.description ? '' : 'italic text-gray-400'"
                     >
                       {{ status.description || 'No description provide' }}
@@ -171,7 +171,10 @@
                   </p>
                   <p>
                     Transfer to
-                    <select class="select select-bordered w-full max-w-xs" v-model="transferStatus">
+                    <select
+                      class="itbkk-status select select-bordered w-full max-w-xs"
+                      v-model="transferStatus"
+                    >
                       <option
                         v-for="(selectStatus, key) in statuses"
                         :key="key"
@@ -213,10 +216,6 @@
                 </div>
               </div>
             </Teleport>
-            <!-- <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
-              {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}
-            </button>
-            {{ displaySidebar ? 'Sidebar is on' : 'Sidebar is off' }} -->
           </div>
         </div>
       </ResizablePanel>
@@ -298,7 +297,7 @@ const checkReceivedStatus = async (response) => {
   }
 }
 const BackToHome = () => {
-  router.push({name:"home"})
+  router.push({ name: 'home' })
 }
 
 const handleStatusUpdate = (updatedStatus) => {
@@ -315,7 +314,7 @@ const handleStatusUpdate = (updatedStatus) => {
   }
 }
 const navigateToAddStatus = () => {
-  router.push({name:"statusAdd"})
+  router.push({ name: 'statusAdd' })
 }
 
 const displaySidebar = ref(false)
@@ -336,7 +335,7 @@ const getStatusClass = (status) => {
 }
 
 const editStatus = async (id) => {
-  await router.push({name:"statusEdit", params: {id: id}})
+  await router.push({ name: 'statusEdit', params: { id: id } })
 }
 </script>
 

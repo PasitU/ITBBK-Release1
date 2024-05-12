@@ -3,28 +3,28 @@
     theme-data="light"
     class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
   >
-    <div class="w-3/5">
+    <div class="itbkk-modal-status w-3/5">
       <Card class="items-center self-center min-w-full h-full">
         <CardHeader>
           <p class="pb-2">Name</p>
           <input
             type="text"
             placeholder="name is required"
-            class="itbkk-title-add input input-bordered w-full bg-white"
+            class="itbkk-status-name input input-bordered w-full bg-white"
             v-model="newStatus.name"
           />
         </CardHeader>
         <CardContent class="flex flex-col">
           <p class="pb-2">Description:</p>
           <textarea
-            class="itbkk-description-add textarea textarea-bordered min-h-[8rem] w-full bg-white"
+            class="itbkk-status-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
             placeholder="enter description here"
             v-model="newStatus.description"
           ></textarea>
         </CardContent>
         <CardFooter class="gap-3">
           <button
-            class="itbkk-button-add-confirm btn btn-success text-white"
+            class="itbkk-button-confirm btn btn-success text-white"
             :class="{ 'btn-disabled': newStatus.name.length === 0 }"
             :disabled="newStatus.name.length === 0"
             @click="createNewStatus"
@@ -32,7 +32,7 @@
             Save
           </button>
 
-          <button class="itbkk-button-add-cancel btn btn-error text-white" @click="closePage">
+          <button class="itbkk-button-cancel btn btn-error text-white" @click="closePage">
             Cancel
           </button>
         </CardFooter>
