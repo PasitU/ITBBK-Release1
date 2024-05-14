@@ -112,7 +112,7 @@
                       class="itbkk-status-description"
                       :class="status.description ? '' : 'italic text-gray-400'"
                     >
-                      {{ status.description || 'No description provide' }}
+                      {{ status.description || 'No description provided' }}
                     </p>
                   </td>
 
