@@ -206,7 +206,7 @@
 </template>
 
 <script setup>
-import { getAllStatuses, deleteStatus, checkCanBeDeleted } from '@/api/statusService'
+import { getAllStatuses, deleteStatus, checkTaskDepend, getStatusById } from '@/api/statusService'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
@@ -231,7 +231,8 @@ onMounted(async () => {
 
 const statusRemove = async (status) => {
   try {
-    let canBeDeleted = await checkCanBeDeleted(status.id)
+    await getStatusById(status.id)
+    let canBeDeleted = (await checkTaskDepend(status.id) === 0)
     deleteability.value.statusId = status.id
     deleteability.value.statusName = status.name
     if (canBeDeleted) {
@@ -242,6 +243,7 @@ const statusRemove = async (status) => {
     deleteability.value.showModal = true
   } catch (error) {
     crudAlert.value = { displayResult: true, result: false, message: error.message }
+    statuses.value = await getAllStatuses()
   }
 }
 
