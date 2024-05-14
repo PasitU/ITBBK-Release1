@@ -74,12 +74,35 @@
                 <th class="font-bold text-[1.5rem]"></th>
                 <th class="font-bold text-[1.5rem]">Title</th>
                 <th class="font-bold text-[1.5rem]">Assignees</th>
-                <th class="font-bold text-[1.5rem]">Status</th>
+                <th class="font-bold text-[1.5rem]">
+                  Status
+                  <v-icon
+                    v-if="currentIcon === 'defaultSort'"
+                    name="co-sort-alpha-down"
+                    @click="nextIcon"
+                    class="text-stone-400"
+                    scale="1.5"
+                  ></v-icon>
+                  <v-icon
+                    v-if="currentIcon === 'ascSort'"
+                    name="co-sort-alpha-down"
+                    @click="nextIcon"
+                    class="text-blue-400"
+                    scale="1.5"
+                  ></v-icon>
+                  <v-icon
+                    v-if="currentIcon === 'descSort'"
+                    name="co-sort-alpha-up"
+                    @click="nextIcon"
+                    class="text-blue-400"
+                    scale="1.5"
+                  ></v-icon>
+                </th>
                 <th class="font-bold text-[1.5rem]">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
+              <tr class="itbkk-item hover" v-for="(task, key) in sortedTasks" :key="key">
                 <td class="p-5">
                   <div class="flex">
                     <p class="itbkk-title font-bold">{{ key + 1 }}</p>
@@ -192,6 +215,7 @@ const router = useRouter()
 const isNull = ref(false)
 const crudResult = ref({ displayResult: false, result: true, message: '' })
 const statusesList = ref()
+const currentIcon = ref('defaultSort')
 
 const taskTitle = ref(null)
 const taskId = ref(null)
@@ -200,6 +224,7 @@ const deleteTaskNumber = ref(null)
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
+    console.log(tasks.value)
     statusesList.value = await getAllStatuses()
     tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
   } catch (error) {
@@ -209,6 +234,29 @@ onMounted(async () => {
 const navigateToAddTask = () => {
   router.push({ name: 'add' })
 }
+
+const nextIcon = () => {
+  switch (currentIcon.value) {
+    case 'defaultSort':
+      currentIcon.value = 'ascSort'
+      break
+    case 'ascSort':
+      currentIcon.value = 'descSort'
+      break
+    case 'descSort':
+      currentIcon.value = 'defaultSort'
+      break
+  }
+}
+
+const sortedTasks = computed(() => {
+  if (currentIcon.value === 'descSort') {
+    return tasks.value.slice().sort((a, b) => b.status.name.localeCompare(a.status.name))
+  } else if (currentIcon.value === 'ascSort') {
+    return tasks.value.slice().sort((a, b) => a.status.name.localeCompare(b.status.name))
+  }
+  return tasks.value.slice()
+})
 
 const navigateToStatus = () => {
   router.push({ name: 'status' })
