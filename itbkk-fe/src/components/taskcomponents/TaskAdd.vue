@@ -4,13 +4,13 @@
     class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
   >
     <div class="w-3/5">
-      <Card class="items-center self-center min-w-full h-full">
+      <Card class="itbkk-modal-task light items-center self-center min-w-full h-full light">
         <CardHeader>
           <p class="pb-2">Title</p>
           <input
             type="text"
             placeholder="title is required"
-            class="itbkk-title-add input input-bordered w-full bg-white"
+            class="itbkk-title input input-bordered w-full bg-white"
             :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
           />
@@ -21,12 +21,12 @@
             <input
               type="text"
               placeholder="enter assignees here"
-              class="itbkk-assignees-add input input-bordered w-full bg-white"
+              class="itbkk-assignees input input-bordered w-full bg-white"
               v-model="newTask.assignees"
             />
             <p>Status:</p>
             <select
-              class="itbkk-status-add select select-bordered w-full bg-white"
+              class="itbkk-status select select-bordered w-full bg-white"
               v-model="newTask.status"
             >
               <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">
@@ -37,7 +37,7 @@
           <div class="w-1/2 gap-5 ml-10">
             <p class="pb-2">Description:</p>
             <textarea
-              class="itbkk-description-add textarea textarea-bordered min-h-[8rem] w-full bg-white"
+              class="itbkk-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
               placeholder="enter description here"
               v-model="newTask.description"
             ></textarea>
@@ -50,13 +50,13 @@
         </CardContent>
         <CardFooter class="gap-3">
           <button
-            class="itbkk-button-add-confirm btn btn-success text-white"
+            class="itbkk-button-confirm btn btn-success text-white"
             :class="titleError ? 'disabled btn-disabled' : ''"
             @click="saveNewTask"
           >
             save
           </button>
-          <button class="itbkk-button-add-cancel btn btn-error text-white" @click="closePage">
+          <button class="itbkk-button-cancel btn btn-error text-white" @click="closePage">
             cancel
           </button>
         </CardFooter>

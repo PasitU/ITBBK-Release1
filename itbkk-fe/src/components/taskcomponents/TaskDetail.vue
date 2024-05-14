@@ -10,7 +10,7 @@
         </CardHeader>
       </Card>
       <Card
-        class="items-center self-center min-w-full h-full"
+        class="itbkk-modal-task light items-center self-center min-w-full h-full"
         v-if="!fetchError.hasError && !isLoading"
       >
         <CardHeader>

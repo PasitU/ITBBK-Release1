@@ -5,7 +5,7 @@
       class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
     >
       <div class="itbkk-modal-status w-3/5">
-        <Card class="items-center self-center min-w-full h-full">
+        <Card class="items-center light self-center min-w-full h-full">
           <CardHeader>
             Status name :
             <input
@@ -66,18 +66,19 @@ const statusId = router.currentRoute.value.params.id
 onMounted(async () => {
   try {
     if (statusId === 1) {
-      router.push({name:"status"})
+      router.push({ name: 'status' })
       return
     }
     const fetchedStatus = await getStatusById(statusId)
-    if (!fetchedStatus) {
-      router.push({name:"status"})
-      return
-    }
     statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
   } catch (error) {
-    router.push({name:"status"})
+    emits('status-updated', {
+      displayResult: true,
+      result: false,
+      message: `An error has occurred, the status does not exist`
+    })
+    router.push({ name: 'status' })
   }
 })
 
@@ -96,7 +97,7 @@ const saveStatus = async () => {
         message: `Status "${statuses.value.name}" updated successfully`
       })
       // alert('Status updated successfully!')
-      router.push({name:"status"})
+      router.push({ name: 'status' })
     } catch (error) {
       emits('status-updated', {
         displayResult: true,
@@ -104,7 +105,7 @@ const saveStatus = async () => {
         message: `An error occurred: ${error.message}`
       })
       // alert('Failed to update status.')
-      router.push({name:"status"})
+      router.push({ name: 'status' })
     }
   }
 }

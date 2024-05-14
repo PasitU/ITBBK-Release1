@@ -27,8 +27,8 @@ describe(`TC-PBI7-EDIT-STATUS-3\n
         cy.wait(100) ;
 
         cy.visit('/status/1000/edit')
-        cy.wait(100) ;
-        cy.get('.itbkk-message',"An error has occurred, the status does not exist") 
+        cy.wait(300) ;
+        cy.get('.itbkk-message').contains("An error has occurred, the status does not exist") 
         cy.wait(100)
 
         cy.url().should('contain','/status')

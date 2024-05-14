@@ -1,171 +1,145 @@
 <template>
   <div data-theme="light">
-    <ResizablePanelGroup direction="horizontal" class="w-24 h-screen rounded-lg">
-      <ResizablePanel
-        v-show="displaySidebar"
-        id="handle-demo-panel-3"
-        :default-size="displaySidebar ? 10 : 0"
+    <div class="h-screen w-screen">
+      <div class="flex justify-center items-center p-6">
+        <h1>
+          <p class="font-bold text-3xl items-center gap-2 flex tracking-in-expand-fwd-top">
+            INTEGRATED PROJECT ITBKK-SY-1
+          </p>
+        </h1>
+      </div>
+      <div class="absolute top-10 right-10">
+        <Button
+          @click="navigateToStatus()"
+          class="itbkk-manage-status bg-green-700 text-18 text-red-50 hover:bg-green-800 mr-2"
+          >Manage Status</Button
+        >
+        <Button
+          class="itbkk-button-add bg-blue-700 text-18 text-red-50 hover:bg-blue-800"
+          @click="navigateToAddTask"
+          >Add Task</Button
+        >
+      </div>
+
+      <div class="flex items-center justify-evenly">
+        <CountCard :statusCounts="statusCounts"></CountCard>
+      </div>
+
+      <div
+        v-if="crudResult.displayResult"
+        role="alert"
+        class="alert absolute bottom-20 right-3 w-1/3 z-10"
+        :class="crudResult.result ? `alert-success` : `alert-error`"
       >
-        <div class="flex h-full items-center justify-center p-6">
-          <span class="font-semibold">Sidebar {{ $route.params.id }} </span>
-        </div>
-      </ResizablePanel>
-      <ResizableHandle id="handle-demo-handle-1" with-handle />
+        <svg
+          v-if="crudResult.result"
+          xmlns="http://www.w3.org/2000/svg"
+          class="stroke-current shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <svg
+          v-if="!crudResult.result"
+          xmlns="http://www.w3.org/2000/svg"
+          class="stroke-current shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span class="itbkk-message">{{ crudResult.message }}</span>
+        <button class="btn btn-xs btn-outline btn-circle" @click="crudResult.displayResult = false">
+          X
+        </button>
+      </div>
 
-      <ResizablePanel
-        id="handle-demo-panel-1"
-        :default-size="displaySidebar ? 50 : 20"
-        class="h-screen"
-      >
-        <div>
-          <div class="flex justify-center items-center p-6">
-            <h1>
-              <p class="font-bold text-3xl items-center gap-2 flex tracking-in-expand-fwd-top">
-                INTEGRATED PROJECT ITBKK-SY-1
-              </p>
-            </h1>
-          </div>
-          <div class="absolute top-10 right-10">
-            <Button
-              @click="navigateToStatus()"
-              class="itbkk-manage-status bg-green-700 text-18 text-red-50 hover:bg-green-800 mr-2"
-              >Manage Status</Button
-            >
-            <Button
-              class="itbkk-button-add bg-blue-700 text-18 text-red-50 hover:bg-blue-800"
-              @click="navigateToAddTask"
-              >Add Task</Button
-            >
-          </div>
-
-          <div class="flex items-center justify-evenly">
-            <CountCard  :statusCounts="statusCounts"></CountCard>
-          </div>
-
-          <div
-            v-if="crudResult.displayResult"
-            role="alert"
-            class="alert absolute bottom-20 right-3 w-1/3 z-10"
-            :class="crudResult.result ? `alert-success` : `alert-error`"
-          >
-            <svg
-              v-if="crudResult.result"
-              xmlns="http://www.w3.org/2000/svg"
-              class="stroke-current shrink-0 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <svg
-              v-if="!crudResult.result"
-              xmlns="http://www.w3.org/2000/svg"
-              class="stroke-current shrink-0 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span class="itbkk-message">{{ crudResult.message }}</span>
-            <button
-              class="btn btn-xs btn-outline btn-circle"
-              @click="crudResult.displayResult = false"
-            >
-              X
-            </button>
-          </div>
-
-          <div class="w-full px-6 overflow-auto slide-in-left">
-            <div class="overflow-y-auto h-[780px] pt-2">
-              <!-- Set the height as required -->
-              <table class="table mb-6">
-                <thead class="text-slate-700">
-                  <tr>
-                    <th class="font-bold text-[1.5rem]"></th>
-                    <th class="font-bold text-[1.5rem]">Title</th>
-                    <th class="font-bold text-[1.5rem]">Assignees</th>
-                    <th class="font-bold text-[1.5rem]">Status</th>
-                    <th class="font-bold text-[1.5rem]">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
-                    <td class="p-5">
-                      <div class="flex">
-                        <p class="itbkk-title font-bold">{{ key + 1 }}</p>
-                      </div>
-                    </td>
-                    <td @click="openTaskDetail(task.id)" class="break-words">
-                      <p class="itbkk-title">{{ task.title }}</p>
-                    </td>
-                    <td @click="openTaskDetail(task.id)" class="">
-                      <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
-                        {{ task.assignees || 'Unassigned' }}
-                      </p>
-                    </td>
-                    <td @click="openTaskDetail(task.id)" class="">
-                      <button
-                        :class="getStatusClass(task.status)"
-                        class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
-                        @click.stop="toggleSidebar"
-                      >
-                        <p class="itbkk-status">{{ task.status.name }}</p>
-                      </button>
-                    </td>
-                    <td>
-                      <div class="dropdown itbkk-button-action">
-                        <div tabindex="0" role="button" class="btn m-1">
-                          <v-icon name="co-settings" tabindex="0" role="button"></v-icon>
-                        </div>
-                        <ul
-                          tabindex="0"
-                          class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
+      <div class="w-full px-6 overflow-auto slide-in-left">
+        <div class="overflow-y-auto h-[780px] pt-2">
+          <!-- Set the height as required -->
+          <table class="table mb-6">
+            <thead class="text-slate-700">
+              <tr>
+                <th class="font-bold text-[1.5rem]"></th>
+                <th class="font-bold text-[1.5rem]">Title</th>
+                <th class="font-bold text-[1.5rem]">Assignees</th>
+                <th class="font-bold text-[1.5rem]">Status</th>
+                <th class="font-bold text-[1.5rem]">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="itbkk-item hover" v-for="(task, key) in tasks" :key="key">
+                <td class="p-5">
+                  <div class="flex">
+                    <p class="itbkk-title font-bold">{{ key + 1 }}</p>
+                  </div>
+                </td>
+                <td @click="openTaskDetail(task.id)" class="break-words">
+                  <p class="itbkk-title">{{ task.title }}</p>
+                </td>
+                <td @click="openTaskDetail(task.id)" class="">
+                  <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                    {{ task.assignees || 'Unassigned' }}
+                  </p>
+                </td>
+                <td @click="openTaskDetail(task.id)" class="">
+                  <button
+                    :class="getStatusClass(task.status)"
+                    class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
+                  >
+                    <p class="itbkk-status">{{ task.status.name }}</p>
+                  </button>
+                </td>
+                <td>
+                  <div class="dropdown itbkk-button-action">
+                    <div tabindex="0" role="button" class="btn m-1">
+                      <v-icon name="co-settings" tabindex="0" role="button"></v-icon>
+                    </div>
+                    <ul
+                      tabindex="0"
+                      class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
+                    >
+                      <li class="flex flex-row">
+                        <button
+                          class="itbkk-button-edit text-warning w-full"
+                          @click="editTask(task.id)"
                         >
-                          <li class="flex flex-row">
-                            <button
-                              class="itbkk-button-edit text-warning w-full"
-                              @click="editTask(task.id)"
-                            >
-                              <v-icon name="fa-edit"></v-icon>Edit
-                            </button>
-                          </li>
-                          <li
-                            class="flex flex-row"
-                            @click="openDeleteDialog(task.title, task.id, key + 1)"
-                          >
-                            <button
-                              class="itbkk-button-delete text-error w-full"
-                              onclick="my_modal_1.showModal()"
-                            >
-                              <v-icon name="md-deleteforever"></v-icon>Delete
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
-            <button class="btn h-[1rem] min-h-[1.8rem]" @click="toggleSidebar">
-              {{ displaySidebar ? 'Close sidebar' : 'Open sidebar' }}
-            </button>
-            {{ displaySidebar ? 'Sidebar is on' : 'Sidebar is off' }}
-          </div>
+                          <v-icon name="fa-edit"></v-icon>Edit
+                        </button>
+                      </li>
+                      <li
+                        class="flex flex-row"
+                        @click="openDeleteDialog(task.title, task.id, key + 1)"
+                      >
+                        <button
+                          class="itbkk-button-delete text-error w-full"
+                          onclick="my_modal_1.showModal()"
+                        >
+                          <v-icon name="md-deleteforever"></v-icon>Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+        <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
+      </div>
+    </div>
+
     <Teleport to="#modal" v-if="$route.params.id > 0 && !$route.path.includes('edit')">
       <TaskDetail></TaskDetail>
     </Teleport>
@@ -202,7 +176,6 @@
 </template>
 
 <script setup>
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import TaskDetail from '../components/taskcomponents/TaskDetail.vue'
 import TaskAdd from '../components/taskcomponents/TaskAdd.vue'
 import TaskEdit from '../components/taskcomponents/TaskEdit.vue'
@@ -301,12 +274,6 @@ const openDeleteDialog = (title, id, key) => {
   deleteTaskNumber.value = key
 }
 
-const displaySidebar = ref(false)
-
-const toggleSidebar = () => {
-  displaySidebar.value = !displaySidebar.value
-}
-
 const statusCounts = computed(() => {
   const counts = {}
   tasks.value.forEach((task) => {
@@ -325,7 +292,6 @@ const statusCounts = computed(() => {
   animation: tracking-in-expand-fwd-top 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) both;
 }
 
-
 @keyframes tracking-in-expand-fwd-top {
   0% {
     letter-spacing: -0.5em;
@@ -342,34 +308,32 @@ const statusCounts = computed(() => {
 }
 
 .slide-in-left {
-	-webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	        animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  -webkit-animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-in-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
-
 
 @-webkit-keyframes slide-in-left {
   0% {
     -webkit-transform: translateX(-1000px);
-            transform: translateX(-1000px);
+    transform: translateX(-1000px);
     opacity: 0;
   }
   100% {
     -webkit-transform: translateX(0);
-            transform: translateX(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
 @keyframes slide-in-left {
   0% {
     -webkit-transform: translateX(-1000px);
-            transform: translateX(-1000px);
+    transform: translateX(-1000px);
     opacity: 0;
   }
   100% {
     -webkit-transform: translateX(0);
-            transform: translateX(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
-
 </style>
