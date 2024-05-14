@@ -22,9 +22,8 @@
       </div>
 
       <div class="flex items-center justify-evenly">
-        <CountCard :statusCounts="statusCounts"></CountCard>
+        <CountCard :statusCounts="statusCounts" @filter-status="statusesFilter"></CountCard>
       </div>
-
       <div
         v-if="crudResult.displayResult"
         role="alert"
@@ -64,17 +63,28 @@
           X
         </button>
       </div>
-
       <div class="w-full px-6 overflow-auto slide-in-left">
         <div class="overflow-y-auto h-[780px] pt-2">
           <!-- Set the height as required -->
           <table class="table mb-6">
             <thead class="text-slate-700">
               <tr>
-                <th class="font-bold text-[1.5rem]"></th>
+                <th class="font-bold text-[1.5rem]">
+                  <div class="dropdown dropdown-bottom">
+                    <div tabindex="0" role="button" class="btn m-1">Filter</div>
+                    <ul
+                      tabindex="0"
+                      class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                    >
+                      <li v-for="(status, key) in statusesList" :key="key">
+                        <a class="break-all" @click="filterStatus(status.name)">{{ status.name }}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
                 <th class="font-bold text-[1.5rem]">Title</th>
                 <th class="font-bold text-[1.5rem]">Assignees</th>
-                <th class="font-bold text-[1.5rem]">
+                <th class="font-bold text-[1.5rem] cursor-pointer" @click="nextIcon">
                   Status
                   <v-icon
                     v-if="currentIcon === 'defaultSort'"
@@ -109,10 +119,10 @@
                   </div>
                 </td>
                 <td @click="openTaskDetail(task.id)" class="break-words">
-                  <p class="itbkk-title">{{ task.title }}</p>
+                  <p class="itbkk-title break-all">{{ task.title }}</p>
                 </td>
                 <td @click="openTaskDetail(task.id)" class="">
-                  <p class="itbkk-assignees" :class="{ italic: !task.assignees }">
+                  <p class="itbkk-assignees" :class="!task.assignees ? 'italic text-gray-400' : ''">
                     {{ task.assignees || 'Unassigned' }}
                   </p>
                 </td>
@@ -207,10 +217,11 @@ import { ref, computed } from 'vue'
 import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import CountCard from '@/components/ui/card/CountCard.vue'
-import { getAllTasks, deleteTask } from '@/api/taskService'
+import { getAllTasks, getAllTasksInStatus, deleteTask } from '@/api/taskService'
 import { getAllStatuses } from '@/api/statusService'
 import { shortenTitle } from '@/lib/utils'
 const tasks = ref([])
+const allTasks = ref([]) //this name is suck but my brain is suck too
 const router = useRouter()
 const isNull = ref(false)
 const crudResult = ref({ displayResult: false, result: true, message: '' })
@@ -221,9 +232,12 @@ const taskTitle = ref(null)
 const taskId = ref(null)
 const deleteTaskNumber = ref(null)
 
+const selectedStatus = ref([])
+
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
+    allTasks.value = tasks.value
     console.log(tasks.value)
     statusesList.value = await getAllStatuses()
     tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
@@ -249,6 +263,33 @@ const nextIcon = () => {
   }
 }
 
+const filterStatus = async (statusName) => {
+  if (selectedStatus.value.includes(statusName)) {
+    selectedStatus.value = selectedStatus.value.filter((s) => s !== statusName)
+  } else {
+    selectedStatus.value.push(statusName)
+  }
+  // try {
+  //   const select = selectedStatus.value.join(',')
+  //   tasks.value = await getAllTasksInStatus(select)
+  //   tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
+  // } catch (error) {
+  //   crudResult.value = { displayResult: true, result: false, message: error.message }
+  // }
+  statusesFilter(selectedStatus.value)
+}
+
+const statusesFilter = async (selected) => {
+  selectedStatus.value = selected
+  try {
+    const select = selectedStatus.value.join(',')
+    tasks.value = await getAllTasksInStatus(select)
+    tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
+  } catch (error) {
+    crudResult.value = { displayResult: true, result: false, message: error.message }
+  }
+}
+
 const sortedTasks = computed(() => {
   if (currentIcon.value === 'descSort') {
     return tasks.value.slice().sort((a, b) => b.status.name.localeCompare(a.status.name))
@@ -269,6 +310,7 @@ const checkReceivedStatus = async (response) => {
   if (crudResult.value.result) {
     try {
       tasks.value = await getAllTasks()
+      allTasks.value = tasks.value
     } catch (error) {
       crudResult.value = { displayResult: true, result: false, message: error.message }
     }
@@ -285,6 +327,7 @@ const deleteTaskConfirm = async () => {
       })
       // my_modal_1.closeModal()
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
+      allTasks.value = allTasks.value.filter((task) => task.id !== taskId.value)
     } catch (error) {
       await checkReceivedStatus({
         status: false,
@@ -324,7 +367,7 @@ const openDeleteDialog = (title, id, key) => {
 
 const statusCounts = computed(() => {
   const counts = {}
-  tasks.value.forEach((task) => {
+  allTasks.value.forEach((task) => {
     if (counts[task.status.name]) {
       counts[task.status.name]++
     } else {

@@ -83,13 +83,16 @@
               </td>
 
               <td class="">
-                <p class="itbkk-status-name rounded-sm break-words" :class="getStatusClass(status)">
+                <p
+                  class="itbkk-status-name rounded-sm break-before-all"
+                  :class="getStatusClass(status)"
+                >
                   {{ status.name }}
                 </p>
               </td>
               <td class="">
                 <p
-                  class="itbkk-status-description break-words"
+                  class="itbkk-status-description break-all"
                   :class="status.description ? '' : 'italic text-gray-400'"
                 >
                   {{ status.description || 'No description is provided' }}
@@ -232,7 +235,7 @@ onMounted(async () => {
 const statusRemove = async (status) => {
   try {
     await getStatusById(status.id)
-    let canBeDeleted = (await checkTaskDepend(status.id) === 0)
+    let canBeDeleted = (await checkTaskDepend(status.id)) === 0
     deleteability.value.statusId = status.id
     deleteability.value.statusName = status.name
     if (canBeDeleted) {

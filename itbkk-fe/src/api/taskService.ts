@@ -3,14 +3,22 @@
 // const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
 const BASE_URL = import.meta.env.VITE_TASK_URL
+import axios from 'axios';
 
 export const getAllTasks = async (): Promise<any> => {
   try {
-    const response = await fetch(BASE_URL)
-    if (!response.ok) {
-      throw new Error('Unable to fetch tasks.')
-    }
-    return response.json()
+    const response = await axios.get<Task[]>(BASE_URL)
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+// you can combine getAllTasksInStatus to getAllTasks but am not cuz i'll go to sleep
+export const getAllTasksInStatus = async (filterStatuses: any): Promise<any> => {
+  try {
+    const response = await axios.get<Task[]>(`${BASE_URL}?filterStatuses=${filterStatuses}`)
+    return response.data
   } catch (error) {
     throw error
   }

@@ -8,7 +8,8 @@ import {
   FaEdit,
   MdDeleteforever,
   CoSortAlphaDown,
-  CoSortAlphaUp
+  CoSortAlphaUp,
+  OiCheck
 } from 'oh-vue-icons/icons'
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 addIcons(CoSettings, FaEdit, MdDeleteforever, CoSortAlphaDown, CoSortAlphaUp)
