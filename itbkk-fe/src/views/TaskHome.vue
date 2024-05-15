@@ -22,7 +22,11 @@
       </div>
 
       <div class="flex items-center justify-evenly">
-        <CountCard :statusCounts="statusCounts" @filter-status="statusesFilter"></CountCard>
+        <CountCard :statusCounts="statusCounts" @filter-status="(statusName) => {
+          if(!selectedStatus.includes(statusName)){
+            selectedStatus.push(statusName)
+          }
+        }"></CountCard>
       </div>
       <div
         v-if="crudResult.displayResult"
@@ -63,19 +67,48 @@
           X
         </button>
       </div>
-      <div class="px-9 h-screen">
-        <div class="h-full">
+      <div class="flex">
+        <div class="dropdown dropdown-bottom ml-3">
+          <div class="border h-8 rounded-md min-w-52 items-center flex " role="button" tabindex="0">
+            <span v-if="selectedStatus.length < 1" class="ml-1 leading-8 text-base"
+              >Filter by status(es)</span
+            >
+            <span v-else v-for="status in selectedStatus" :key="status.id" class="ml-0.5 mr-3"><StatusCard @remove-status-filter="(statusName) => {
+              let delIndex = selectedStatus.find((stat) => stat === statusName)
+              selectedStatus.splice(delIndex, 1)
+            }" :status="status"></StatusCard> </span>
+          </div>
+          <ul
+            tabindex="0"
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li v-for="(status, key) in statusesList" :key="key">
+              <a class="break-all" @click="selectedStatus.push(status.name)" v-if="!selectedStatus.includes(status.name)">{{ status.name }}</a>
+            </li>
+          </ul>
+        </div>
+        <button class="btn btn-sm btn-neutral" @click="selectedStatus.length = 0">X</button>
+      </div>
+      <div class="w-full px-6 overflow-auto slide-in-left">
+        <div class="overflow-y-auto h-[780px] pt-2">
           <!-- Set the height as required -->
           <p>Selected Status: {{ selectedStatus }}</p>
           <table class="table">
             <thead class="text-slate-700">
               <tr>
-                <th class="font-bold text-[1.5rem]"></th>
+
+                <th class="font-bold text-[1.5rem]">No.</th>
                 <th class="font-bold text-[1.5rem]">Title</th>
                 <th class="font-bold text-[1.5rem]">Assignees</th>
-                <th class="font-bold text-[1.5rem] cursor-pointer" @click="nextIcon">
+                <th class="font-bold text-[1.5rem] cursor-pointer">
                   Status
                   <v-icon
+                    @click="nextIcon"
+                    :class="currentIcon === 'descSort' || currentIcon === 'ascSort' ? 'text-blue-400' : 'text-stone-400' "
+                    :name="currentIcon === 'defaultSort' || currentIcon === 'ascSort' ? 'co-sort-alpha-down' : 'co-sort-alpha-up'"
+                    scale="1.5"
+                  ></v-icon>
+                  <!-- <v-icon
                     v-if="currentIcon === 'defaultSort'"
                     name="co-sort-alpha-down"
                     @click="nextIcon"
@@ -95,7 +128,7 @@
                     @click="nextIcon"
                     class="text-blue-400"
                     scale="1.5"
-                  ></v-icon>
+                  ></v-icon> -->
                 </th>
                 <th class="font-bold text-[1.5rem]">
                   <div class="dropdown dropdown-end">
@@ -134,7 +167,7 @@
                 </td>
                 <td @click="openTaskDetail(task.id)" class="">
                   <button
-                    :class="getStatusClass(task.status)"
+                    :class="getStatusClass(task.status.name)"
                     class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
                   >
                     <p class="itbkk-status">{{ task.status.name }}</p>
@@ -219,13 +252,14 @@ import TaskDetail from '../components/taskcomponents/TaskDetail.vue'
 import TaskAdd from '../components/taskcomponents/TaskAdd.vue'
 import TaskEdit from '../components/taskcomponents/TaskEdit.vue'
 import { useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import CountCard from '@/components/ui/card/CountCard.vue'
 import { getAllTasks, getAllTasksInStatus, deleteTask } from '@/api/taskService'
 import { getAllStatuses } from '@/api/statusService'
-import { shortenTitle } from '@/lib/utils'
+import { shortenTitle, getStatusClass } from '@/lib/utils'
+import StatusCard from '../components/statuscomponents/StatusCard.vue'
 const tasks = ref([])
 const allTasks = ref([]) //this name is suck but my brain is suck too
 const router = useRouter()
@@ -244,7 +278,7 @@ onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
     allTasks.value = tasks.value
-    console.log(tasks.value)
+    // console.log(tasks.value)
     statusesList.value = await getAllStatuses()
     tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
   } catch (error) {
@@ -269,22 +303,10 @@ const nextIcon = () => {
   }
 }
 
-const filterStatus = async (statusName) => {
-  if (selectedStatus.value.includes(statusName)) {
-    selectedStatus.value = selectedStatus.value.filter((s) => s !== statusName)
-  } else {
-    selectedStatus.value.push(statusName)
-  }
-  // try {
-  //   const select = selectedStatus.value.join(',')
-  //   tasks.value = await getAllTasksInStatus(select)
-  //   tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
-  // } catch (error) {
-  //   crudResult.value = { displayResult: true, result: false, message: error.message }
-  // }
+watch(selectedStatus.value, async () => {
   statusesFilter(selectedStatus.value)
 }
-
+)
 const statusesFilter = async (selected) => {
   selectedStatus.value = selected
   try {
@@ -297,10 +319,10 @@ const statusesFilter = async (selected) => {
 }
 
 const sortedTasks = computed(() => {
-  if (currentIcon.value === 'descSort') {
-    return tasks.value.slice().sort((a, b) => b.status.name.localeCompare(a.status.name))
-  } else if (currentIcon.value === 'ascSort') {
+  if (currentIcon.value === 'ascSort') {
     return tasks.value.slice().sort((a, b) => a.status.name.localeCompare(b.status.name))
+  } else if (currentIcon.value === 'descSort') {
+    return tasks.value.slice().sort((a, b) => b.status.name.localeCompare(a.status.name))
   }
   return tasks.value.slice()
 })
@@ -350,20 +372,7 @@ const editTask = async (id) => {
   await router.push({ name: 'edit', params: { id: id } })
 }
 
-const getStatusClass = (status) => {
-  switch (status.name) {
-    case 'No Status':
-      return 'bg-gray-400'
-    case 'To Do':
-      return 'bg-blue-400'
-    case 'Doing':
-      return 'bg-yellow-400'
-    case 'Done':
-      return 'bg-green-400'
-    default:
-      return 'bg-indigo-400'
-  }
-}
+
 
 const openDeleteDialog = (title, id, key) => {
   taskTitle.value = title

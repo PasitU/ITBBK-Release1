@@ -29,7 +29,7 @@
             <h1 class="break-words">
               <p
                 class="itbkk-description"
-                :class="task.description.length === 0 ? `italic text-slate-400` : ``"
+                :class=" task.description === null || task.description.length === 0  ? `italic text-slate-400` : ``"
               >
                 {{ task.description || 'No Description Provided' }}
               </p>
@@ -42,7 +42,7 @@
                 <h1 class="break-words">
                   <p
                     class="itbkk-assignees"
-                    :class="task.assignees.length === 0 ? `italic text-slate-400` : ``"
+                    :class="task.description === null || task.assignees.length === 0 ? `italic text-slate-400` : ``"
                   >
                     {{ task.assignees || 'Unassigned' }}
                   </p>
