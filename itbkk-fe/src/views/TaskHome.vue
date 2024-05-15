@@ -92,7 +92,6 @@
       <div class="w-full px-6 overflow-auto slide-in-left">
         <div class="overflow-y-auto h-[780px] pt-2">
           <!-- Set the height as required -->
-          <p>Selected Status: {{ selectedStatus }}</p>
           <table class="table">
             <thead class="text-slate-700">
               <tr>
