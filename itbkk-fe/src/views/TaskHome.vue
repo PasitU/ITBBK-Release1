@@ -71,13 +71,16 @@
               <tr>
                 <th class="font-bold text-[1.5rem]">
                   <div class="dropdown dropdown-bottom">
+                    <p>Selected Status: {{ selectedStatus }}</p>
                     <div tabindex="0" role="button" class="btn m-1">Filter</div>
                     <ul
                       tabindex="0"
                       class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                     >
                       <li v-for="(status, key) in statusesList" :key="key">
-                        <a class="break-all" @click="filterStatus(status.name)">{{ status.name }}</a>
+                        <a class="break-all" @click="filterStatus(status.name)">{{
+                          status.name
+                        }}</a>
                       </li>
                     </ul>
                   </div>
