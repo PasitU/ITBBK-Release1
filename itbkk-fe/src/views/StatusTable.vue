@@ -218,7 +218,7 @@ import StatusEdit from '../components/statuscomponents/StatusEdit.vue'
 
 const statuses = ref([])
 const router = useRouter()
-const cantEdit = ['No Status']
+const cantEdit = ['No Status','Done']
 const deleteability = ref({ statusId: '', statusName: '', showModal: false, canDelete: false })
 const transferStatus = ref('')
 const crudAlert = ref({ displayResult: false, result: false, message: '' })

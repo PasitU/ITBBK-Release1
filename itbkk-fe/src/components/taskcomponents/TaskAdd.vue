@@ -5,14 +5,19 @@
   >
     <div class="w-3/5">
       <Card class="itbkk-modal-task light items-center self-center min-w-full h-full light">
-        <CardHeader>
-          <p class="pb-2">Title</p>
+        <CardHeader
+          ><div class="flex gap-1">
+            <p class="pb-2">Title</p>
+            <p class="text-gray-500">({{ taskLengths.titleLength }}/100)</p>
+          </div>
+
           <input
             type="text"
             placeholder="title is required"
             class="itbkk-title input input-bordered w-full bg-white"
             :class="titleError ? `input-error` : ``"
             v-model="newTask.title"
+            maxlength="100"
           />
         </CardHeader>
         <CardContent class="flex">
@@ -35,11 +40,16 @@
             </select>
           </div>
           <div class="w-1/2 gap-5 ml-10">
-            <p class="pb-2">Description:</p>
+            <div class="flex gap-1">
+              <p class="pb-2">Description:</p>
+              <p class="text-gray-500">({{ taskLengths.descriptionLength }}/500)</p>
+            </div>
+
             <textarea
               class="itbkk-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
               placeholder="enter description here"
               v-model="newTask.description"
+              maxlength="500"
             ></textarea>
           </div>
         </CardContent>
@@ -81,6 +91,11 @@ const router = useRouter()
 const closePage = () => {
   router.back()
 }
+
+const taskLengths = computed(() => ({
+  titleLength: newTask.value.title.length,
+  descriptionLength: newTask.value.description.length
+}))
 
 const titleError = computed(() => {
   return newTask.value.title.length === 0

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-center items-center flex-row gap-3">
-      <div 
+      <div
         v-for="(count, status) in statusCounts"
         :key="status"
         :class="[
