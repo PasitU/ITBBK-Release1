@@ -1,6 +1,6 @@
 <template>
   <div data-theme="light">
-    <div class="h-screen w-screen">
+    <div class="w-full h-full">
       <div class="flex justify-center items-center p-6">
         <h1>
           <p class="font-bold text-3xl items-center gap-2 flex tracking-in-expand-fwd-top">
@@ -63,28 +63,14 @@
           X
         </button>
       </div>
-      <div class="w-full px-6 overflow-auto slide-in-left">
-        <div class="overflow-y-auto h-[780px] pt-2">
+      <div class="px-9 h-screen">
+        <div class="h-full">
           <!-- Set the height as required -->
-          <table class="table mb-6">
+          <p>Selected Status: {{ selectedStatus }}</p>
+          <table class="table">
             <thead class="text-slate-700">
               <tr>
-                <th class="font-bold text-[1.5rem]">
-                  <div class="dropdown dropdown-bottom">
-                    <p>Selected Status: {{ selectedStatus }}</p>
-                    <div tabindex="0" role="button" class="btn m-1">Filter</div>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                    >
-                      <li v-for="(status, key) in statusesList" :key="key">
-                        <a class="break-all" @click="filterStatus(status.name)">{{
-                          status.name
-                        }}</a>
-                      </li>
-                    </ul>
-                  </div>
-                </th>
+                <th class="font-bold text-[1.5rem]"></th>
                 <th class="font-bold text-[1.5rem]">Title</th>
                 <th class="font-bold text-[1.5rem]">Assignees</th>
                 <th class="font-bold text-[1.5rem] cursor-pointer" @click="nextIcon">
@@ -111,14 +97,31 @@
                     scale="1.5"
                   ></v-icon>
                 </th>
-                <th class="font-bold text-[1.5rem]">Action</th>
+                <th class="font-bold text-[1.5rem]">
+                  <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btm-nav-xs text-[1.5rem]">Filter</div>
+                    <ul
+                      tabindex="0"
+                      class="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-52"
+                    >
+                      <li v-for="(status, key) in statusesList" :key="key">
+                        <a
+                          class="break-all mb-1"
+                          :class="selectedStatus.includes(status.name) ? 'bg-zinc-100 text-info' : '' "
+                          @click="filterStatus(status.name)"
+                          >{{ status.name }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr class="itbkk-item hover" v-for="(task, key) in sortedTasks" :key="key">
-                <td class="p-5">
+                <td class="pl-5">
                   <div class="flex">
-                    <p class="itbkk-title font-bold">{{ key + 1 }}</p>
+                    <p class="itbkk-title font-bold text-[1rem]">{{ key + 1 }}</p>
                   </div>
                 </td>
                 <td @click="openTaskDetail(task.id)" class="break-words">
@@ -171,8 +174,8 @@
               </tr>
             </tbody>
           </table>
+          <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
         </div>
-        <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
       </div>
     </div>
 
