@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     component: StatusTable,
     beforeEnter: (to, from, next) => {
       // Check if the ID is 1
-      if (to.params.id === '1') {
+      if (to.params.id === '1' || to.params.id === '4') {
         // Redirect to the status list
         next({ path: '/status' })
       } else {

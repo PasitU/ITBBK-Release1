@@ -15,21 +15,30 @@
         v-if="!fetchError.hasError && !isLoading"
       >
         <CardHeader>
-          Title
+          <div class="flex gap-1">
+            <p class="pb-2">Title</p>
+            <p class="text-gray-500">({{ taskLengths.titleLength }}/100)</p>
+          </div>
           <input
             type="text"
             class="itbkk-title input input-bordered w-full space-x-5 border p-4 mt-2"
             v-model="task.title"
             :class="isTitleNull ? `input-error` : ``"
             :placeholder="taskUpdate.title"
+            maxlength="100"
           />
         </CardHeader>
         <CardContent class="flex-row">
-          <p>Description:</p>
+          <div class="flex gap-1">
+            <p>Description:</p>
+            <p class="text-gray-500">({{ taskLengths.descriptionLength }}/500)</p>
+          </div>
+
           <textarea
             class="itbkk-description textarea textarea-bordered h-44 w-full"
             v-model="task.description"
             :placeholder="taskUpdate.description"
+            maxlength="500"
           >
           </textarea>
           <div class="flex justify-between">
@@ -194,6 +203,11 @@ const mount = onMounted(async () => {
   task.value.updatedOn = task.value.updatedOn ? UTCtoLocalFormat(task.value.updatedOn) : 'No Data'
   task.value.timezone = getUserTimeZoneId()
 })
+
+const taskLengths = computed(() => ({
+  titleLength: task.value.title.length,
+  descriptionLength: task.value.description.length
+}))
 
 const isTaskSame = computed(() => {
   return (

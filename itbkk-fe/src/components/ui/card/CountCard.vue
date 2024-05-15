@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="flex justify-center items-center flex-row gap-3">
-      <div 
+      <div
         v-for="(count, status) in statusCounts"
         :key="status"
         :class="[
-          'bg-gray-100 text-black text-center rounded-lg p-2 border-2 ',
+          'bg-gray-100 text-black text-center rounded-lg p-2 border-2 cursor-pointer ',
           getBorderColor(status)
         ]"
         @click="changeStatus(status)"
