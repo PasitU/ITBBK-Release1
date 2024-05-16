@@ -209,8 +209,8 @@ const mount = onMounted(async () => {
 
 const taskLengths = computed(() => ({
   titleLength: task.value.title.length,
-  descriptionLength: task.value.description.length,
-  assigneesLength: task.value.assignees.length
+  descriptionLength: task.value.description?.length,
+  assigneesLength: task.value.assignees?.length
 }))
 
 const isTaskSame = computed(() => {
