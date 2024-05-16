@@ -1,5 +1,5 @@
 <template>
-  <div
+  <div data-theme="light"
     v-if="crudAlert.displayResult"
     role="alert"
     class="alert absolute bottom-20 right-3 w-1/3 z-10 "

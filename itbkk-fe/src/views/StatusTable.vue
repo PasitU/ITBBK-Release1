@@ -1,6 +1,7 @@
 <template>
   <div data-theme="light">
     <CrudResponseAlert
+      v-show="!transferStatus?.limitEnabled"
       class="z-100"
       :crudAlert="crudAlert"
       @update-displayResult="handleDisplayResult"
@@ -36,7 +37,8 @@
             <tr>
               <th class="font-bold text-[1.5rem]"></th>
               <th class="font-bold text-[1.5rem]">Name</th>
-              <th class="font-bold w-1/2 text-[1.5rem]">Description</th>
+              <th class="font-bold w-1/3 text-[1.5rem]">Description</th>
+              <th class="font-bold text-[1.5rem]">Limit</th>
               <th class="font-bold w-1/5 text-[1.5rem]">Action</th>
             </tr>
           </thead>
@@ -65,7 +67,9 @@
                   {{ status.description || 'No description is provided' }}
                 </p>
               </td>
-
+              <td class="">{{ status.limitEnabled ? 'Enabled' : 'Disabled' }}
+                <v-icon :class="status.limitEnabled ? 'scale-110': 'scale-150'" :name="status.limitEnabled ? 'oi-check': 'bi-x'"></v-icon>
+              </td>
               <!-- Check the correct status property for condition -->
               <td class="" v-if="status.customizable">
                 <button
@@ -139,7 +143,7 @@
                   <!-- if there is a button in form, it will close the modal -->
                   <button
                     class="itbkk-button-cancel btn bg-error text-white"
-                    @click="deleteability.showModal = false"
+                    @click="(deleteability.showModal = false), (crudAlert.displayResult = false)"
                   >
                     Cancel
                   </button>
