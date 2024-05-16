@@ -23,45 +23,9 @@
           >
         </div>
       </div>
-      <div
-        v-if="crudAlert.displayResult"
-        role="alert"
-        class="alert absolute bottom-20 right-3 w-1/3 z-10"
-        :class="crudAlert.result ? `bg-success` : `bg-error`"
-      >
-        <svg
-          v-if="crudAlert.result"
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <svg
-          v-else
-          xmlns="http://www.w3.org/2000/svg"
-          class="stroke-current shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <span class="itbkk-message">{{ crudAlert.message }}</span>
-        <button class="btn btn-xs btn-outline btn-circle" @click="crudAlert.displayResult = false">
-          X
-        </button>
-      </div>
+
+      <CrudResponseAlert :crudAlert="crudAlert" @update-displayResult="handleDisplayResult">
+      </CrudResponseAlert>
 
       <div class="px-[3rem]">
         <table class="table mb-30">
@@ -184,10 +148,10 @@
                           showTransferError = true
                           return
                         }
-                        if (transferStatus.limitEnabled) {
+                        if (!transferStatus.limitEnabled) {
                           confirmDelete(deleteability.statusId, transferStatus)
                         } else {
-                          confirmDeleteWithLimit(deleteability.statusId, transferStatus)
+                          confirmDeleteWithLimit(deleteability.statusId, selectStatus)
                         }
                       }
                     "
@@ -213,22 +177,27 @@
 
 <script setup>
 import { getAllStatuses, deleteStatus, checkTaskDepend, getStatusById } from '@/api/statusService'
+import { getConstants } from '@/api/constantService'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import StatusAdd from '../components/statuscomponents/StatusAdd.vue'
 import StatusEdit from '../components/statuscomponents/StatusEdit.vue'
+import CrudResponseAlert from '../components/ui/CrudResponseAlert.vue'
 
 const statuses = ref([])
 const router = useRouter()
 const deleteability = ref({ statusId: '', statusName: '', showModal: false, canDelete: false })
-const transferStatus = ref('')
+const transferStatus = ref()
 const crudAlert = ref({ displayResult: false, result: false, message: '' })
 const showTransferError = ref(false)
-console.log(transferStatus.value)
+const constLimit = ref(0)
+
 onMounted(async () => {
   try {
     statuses.value = await getAllStatuses()
+    constLimit.value = await getConstants('GStatLim')
+    console.log(constLimit.value)
     console.log(statuses.value)
   } catch (error) {
     crudAlert.value = { displayResult: true, result: false, message: error.message }
@@ -268,6 +237,22 @@ const confirmDelete = async (statusId, newStatus = null) => {
   deleteability.value.showModal = false
 }
 
+const confirmDeleteWithLimit = async (deleteStatus, newStatus) => {
+  const numTasksInStatus1 = await checkTaskDepend(deleteStatus)
+  const numTasksInStatus2 = await checkTaskDepend(transferStatus.value.id)
+  if (numTasksInStatus1 + numTasksInStatus2 > constLimit.value) {
+    crudAlert.value = {
+      displayResult: true,
+      result: false,
+      message: `Cannot transfer to ${transferStatus.value.name} status since it will exceed the limit
+      Please choose another status to transfer to.`
+    }
+    return
+  } else {
+    confirmDelete(deleteStatus, newStatus)
+  }
+}
+
 const checkReceivedStatus = async (response) => {
   crudAlert.value = { ...response }
   if (crudAlert.value.result) {
@@ -282,8 +267,8 @@ const BackToHome = () => {
   router.push({ name: 'home' })
 }
 
-const confirmDeleteWithLimit = ()=>{
-
+const handleDisplayResult = (displayResult) => {
+  crudAlert.value.displayResult = displayResult
 }
 
 const handleStatusUpdate = (updatedStatus) => {

@@ -1,8 +1,8 @@
 const BASE_URL = import.meta.env.VITE_CONSTANT_URL
 
-export const getConstants = async (): Promise<any> => {
+export const getConstants = async (name: string): Promise<any> => {
   try {
-    const response = await fetch(`${BASE_URL}/GStatLim`)
+    const response = await fetch(`${BASE_URL}/${name}`)
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }

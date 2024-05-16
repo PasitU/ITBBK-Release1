@@ -59,29 +59,32 @@ const emits = defineEmits(['status-updated'])
 const router = useRouter()
 const statuses = ref({
   id: Number,
-  name: '',
-  description: '',
-  limitEnabled: ''
+  name: String,
+  description: String,
+  limitEnabled: Boolean,
+  customizable: Boolean
 })
 
 const statusOrg = ref({
   id: Number,
-  name: '',
-  description: '',
-  limitEnabled: ''
+  name: String,
+  description: String,
+  limitEnabled: Boolean,
+  customizable: Boolean
 })
 
 const statusId = router.currentRoute.value.params.id
 
 onMounted(async () => {
   try {
-    if (statusId === 1) {
-      router.push({ name: 'status' })
-      return
-    }
+    // if (statusId === 1) {
+    //   router.push({ name: 'status' })
+    //   return
+    // }
     const fetchedStatus = await getStatusById(statusId)
     statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
+    console.log(statuses.value);
   } catch (error) {
     emits('status-updated', {
       displayResult: true,
@@ -104,7 +107,7 @@ const statusLength = computed(() => ({
 const saveStatus = async () => {
   if (isDirty.value) {
     try {
-      await updateStatus(statusId, statuses.value)
+      await updateStatus(statuses.value.id, statuses.value)
       emits('status-updated', {
         newStatus: statuses.value,
         displayResult: true,

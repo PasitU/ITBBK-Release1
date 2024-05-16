@@ -92,7 +92,7 @@ export const updateStatus = async (
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(statusData)
+      body: JSON.stringify({...statusData})
     })
     if (!response.ok) {
       throw new Error(`Unable to update the status with id "${statusId}".`)

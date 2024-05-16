@@ -10,6 +10,8 @@ type status = {
     id: number | undefined;
     name: string;
     description: string;
+    customizable: boolean;
+    limitEnabled: boolean;
 }
 
 type Tasks = Task[]
