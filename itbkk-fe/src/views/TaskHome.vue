@@ -22,11 +22,16 @@
       </div>
 
       <div class="flex items-center justify-evenly">
-        <CountCard :statusCounts="statusCounts" @filter-status="(statusName) => {
-          if(!selectedStatus.includes(statusName)){
-            selectedStatus.push(statusName)
-          }
-        }"></CountCard>
+        <CountCard
+          :statusCounts="statusCounts"
+          @filter-status="
+            (statusName) => {
+              if (!selectedStatus.includes(statusName)) {
+                selectedStatus.push(statusName)
+              }
+            }
+          "
+        ></CountCard>
       </div>
       <div
         v-if="crudResult.displayResult"
@@ -67,23 +72,32 @@
           X
         </button>
       </div>
-      <div class="flex">
+      <div class="flex gap-2">
         <div class="dropdown dropdown-bottom ml-3">
-          <div class="border h-8 rounded-md min-w-52 items-center flex " role="button" tabindex="0">
+          <div class="border h-8 rounded-md min-w-52 items-center flex" role="button" tabindex="0">
             <span v-if="selectedStatus.length < 1" class="ml-1 leading-8 text-base"
               >Filter by status(es)</span
             >
-            <span v-else v-for="status in selectedStatus" :key="status.id" class="ml-0.5 mr-3"><StatusCard @remove-status-filter="(statusName) => {
-              let delIndex = selectedStatus.find((stat) => stat === statusName)
-              selectedStatus.splice(delIndex, 1)
-            }" :status="status"></StatusCard> </span>
+            <span v-else v-for="status in selectedStatus" :key="status.id" class="ml-0.5 mr-3"
+              ><StatusCard
+                @remove-status-filter="
+                  (statusName) => {
+                    let delIndex = selectedStatus.find((stat) => stat === statusName)
+                    selectedStatus.splice(delIndex, 1)
+                  }
+                "
+                :status="status"
+              ></StatusCard>
+            </span>
           </div>
-          <ul
-            tabindex="0"
-            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-          >
+          <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 w-52">
             <li v-for="(status, key) in statusesList" :key="key">
-              <a class="break-all" @click="selectedStatus.push(status.name)" v-if="!selectedStatus.includes(status.name)">{{ status.name }}</a>
+              <a
+                class="break-all"
+                @click="selectedStatus.push(status.name)"
+                v-if="!selectedStatus.includes(status.name)"
+                >{{ status.name }}</a
+              >
             </li>
           </ul>
         </div>
@@ -95,7 +109,6 @@
           <table class="table">
             <thead class="text-slate-700">
               <tr>
-
                 <th class="font-bold text-[1.5rem]">No.</th>
                 <th class="font-bold text-[1.5rem]">Title</th>
                 <th class="font-bold text-[1.5rem]">Assignees</th>
@@ -103,8 +116,16 @@
                   Status
                   <v-icon
                     @click="nextIcon"
-                    :class="currentIcon === 'descSort' || currentIcon === 'ascSort' ? 'text-blue-400' : 'text-stone-400' "
-                    :name="currentIcon === 'defaultSort' || currentIcon === 'ascSort' ? 'co-sort-alpha-down' : 'co-sort-alpha-up'"
+                    :class="
+                      currentIcon === 'descSort' || currentIcon === 'ascSort'
+                        ? 'text-blue-400'
+                        : 'text-stone-400'
+                    "
+                    :name="
+                      currentIcon === 'defaultSort' || currentIcon === 'ascSort'
+                        ? 'co-sort-alpha-down'
+                        : 'co-sort-alpha-up'
+                    "
                     scale="1.5"
                   ></v-icon>
                   <!-- <v-icon
@@ -131,15 +152,16 @@
                 </th>
                 <th class="font-bold text-[1.5rem]">
                   <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btm-nav-xs text-[1.5rem]">Filter</div>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-52"
-                    >
+                    <div tabindex="0" role="button" class="btn btm-nav-xs text-[1.5rem]">
+                      Filter
+                    </div>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu shadow bg-base-100 w-52">
                       <li v-for="(status, key) in statusesList" :key="key">
                         <a
                           class="break-all mb-1"
-                          :class="selectedStatus.includes(status.name) ? 'bg-zinc-100 text-info' : '' "
+                          :class="
+                            selectedStatus.includes(status.name) ? 'bg-zinc-100 text-info' : ''
+                          "
                           @click="filterStatus(status.name)"
                           >{{ status.name }}
                         </a>
@@ -304,8 +326,7 @@ const nextIcon = () => {
 
 watch(selectedStatus.value, async () => {
   statusesFilter(selectedStatus.value)
-}
-)
+})
 const statusesFilter = async (selected) => {
   selectedStatus.value = selected
   try {
@@ -370,8 +391,6 @@ const openTaskDetail = async (id) => {
 const editTask = async (id) => {
   await router.push({ name: 'edit', params: { id: id } })
 }
-
-
 
 const openDeleteDialog = (title, id, key) => {
   taskTitle.value = title
