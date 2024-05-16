@@ -130,22 +130,7 @@
                   ></v-icon> -->
                 </th>
                 <th class="font-bold text-[1.5rem]">
-                  <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btm-nav-xs text-[1.5rem]">Filter</div>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content z-[1] menu shadow bg-base-100 rounded-box w-52"
-                    >
-                      <li v-for="(status, key) in statusesList" :key="key">
-                        <a
-                          class="break-all mb-1"
-                          :class="selectedStatus.includes(status.name) ? 'bg-zinc-100 text-info' : '' "
-                          @click="filterStatus(status.name)"
-                          >{{ status.name }}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                  Action
                 </th>
               </tr>
             </thead>
@@ -217,7 +202,6 @@
     <Teleport to="#modal" v-if="$route.params.id > 0 && $route.path.includes('edit')">
       <TaskEdit @return-status="checkReceivedStatus"></TaskEdit>
     </Teleport>
-
     <Teleport to="#addmodal" v-if="$route.path === '/task/add'">
       <TaskAdd @return-status="checkReceivedStatus"></TaskAdd>
     </Teleport>
