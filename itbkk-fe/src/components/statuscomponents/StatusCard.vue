@@ -2,13 +2,13 @@
 import { shortenTitle, getStatusClass } from '../../lib/utils.ts'
 import { defineEmits } from 'vue'
 
-let props = defineProps({
+defineProps({
   status: {
     type: String,
     require: true
   }
 })
-const emit = defineEmits(['removeStatusFilter'])
+defineEmits(['removeStatusFilter'])
 </script>
 
 <template>

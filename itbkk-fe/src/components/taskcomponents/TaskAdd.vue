@@ -22,12 +22,16 @@
         </CardHeader>
         <CardContent class="flex">
           <div class="w-1/2">
-            <p class="pb-2">Assignees:</p>
+            <div class="flex gap-1">
+              <p class="pb-2">Assignees</p>
+              <p class="text-gray-500">({{ taskLengths.assigneesLength }}/30)</p>
+            </div>
             <input
               type="text"
               placeholder="enter assignees here"
               class="itbkk-assignees input input-bordered w-full bg-white"
               v-model="newTask.assignees"
+              maxlength="30"
             />
             <p>Status:</p>
             <select
@@ -41,7 +45,7 @@
           </div>
           <div class="w-1/2 gap-5 ml-10">
             <div class="flex gap-1">
-              <p class="pb-2">Description:</p>
+              <p class="pb-2">Description</p>
               <p class="text-gray-500">({{ taskLengths.descriptionLength }}/500)</p>
             </div>
 
@@ -94,7 +98,8 @@ const closePage = () => {
 
 const taskLengths = computed(() => ({
   titleLength: newTask.value.title.length,
-  descriptionLength: newTask.value.description.length
+  descriptionLength: newTask.value.description.length,
+  assigneesLength: newTask.value.assignees.length
 }))
 
 const titleError = computed(() => {

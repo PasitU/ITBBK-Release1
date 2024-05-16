@@ -30,7 +30,7 @@
         </CardHeader>
         <CardContent class="flex-row">
           <div class="flex gap-1">
-            <p>Description:</p>
+            <p>Description</p>
             <p class="text-gray-500">({{ taskLengths.descriptionLength }}/500)</p>
           </div>
 
@@ -44,7 +44,10 @@
           <div class="flex justify-between">
             <div class="w-1/2 pr-6">
               <div class="w-full">
-                <p>Assignees:</p>
+                <div class="flex gap-1">
+                  <p class="pb-2">Assignees</p>
+                  <p class="text-gray-500">({{ taskLengths.assigneesLength }}/30)</p>
+                </div>
                 <input
                   type="text"
                   class="itbkk-assignees input input-bordered w-full border"
@@ -206,7 +209,8 @@ const mount = onMounted(async () => {
 
 const taskLengths = computed(() => ({
   titleLength: task.value.title.length,
-  descriptionLength: task.value.description.length
+  descriptionLength: task.value.description.length,
+  assigneesLength: task.value.assignees.length
 }))
 
 const isTaskSame = computed(() => {
