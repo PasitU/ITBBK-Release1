@@ -1,6 +1,6 @@
 <template>
   <div data-theme="light">
-    <div class="w-full h-full">
+    <div class="w-screen h-screen overflow-scroll">
       <div class="flex justify-center items-center p-6">
         <h1>
           <p class="font-bold text-3xl items-center gap-2 flex tracking-in-expand-fwd-top">
@@ -74,7 +74,7 @@
       </div>
       <div class="flex gap-2">
         <div class="dropdown dropdown-bottom ml-3">
-          <div class="border h-8 rounded-md min-w-52 items-center flex" role="button" tabindex="0">
+          <div class="border h-8 rounded-md min-w-52 items-center flex pr-6" role="button" tabindex="0">
             <span v-if="selectedStatus.length < 1" class="ml-1 leading-8 text-base"
               >Filter by status(es)</span
             >
@@ -89,6 +89,7 @@
                 :status="status"
               ></StatusCard>
             </span>
+            <button class="btn btn-ghost btn-sm scale-75 btn-neutral absolute right-0" @click="selectedStatus.length = 0">X</button>
           </div>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 w-52">
             <div v-for="(status, key) in statusesList" :key="key">
@@ -98,12 +99,12 @@
             </div>
           </ul>
         </div>
-        <button class="btn btn-sm btn-neutral" @click="selectedStatus.length = 0">X</button>
       </div>
-      <div class="w-full px-6 overflow-auto slide-in-left">
-        <div class="overflow-y-auto h-[780px] pt-2">
+
+      <div class="px-6 slide-in-left">
+        <!-- <div class="overflow-y-auto h-[780px] pt-2"> -->
           <!-- Set the height as required -->
-          <table class="table">
+          <table class="table mb-30">
             <thead class="text-slate-700">
               <tr>
                 <th class="font-bold text-[1.5rem]">No.</th>
@@ -125,27 +126,6 @@
                     "
                     scale="1.5"
                   ></v-icon>
-                  <!-- <v-icon
-                    v-if="currentIcon === 'defaultSort'"
-                    name="co-sort-alpha-down"
-                    @click="nextIcon"
-                    class="text-stone-400"
-                    scale="1.5"
-                  ></v-icon>
-                  <v-icon
-                    v-if="currentIcon === 'ascSort'"
-                    name="co-sort-alpha-down"
-                    @click="nextIcon"
-                    class="text-blue-400"
-                    scale="1.5"
-                  ></v-icon>
-                  <v-icon
-                    v-if="currentIcon === 'descSort'"
-                    name="co-sort-alpha-up"
-                    @click="nextIcon"
-                    class="text-blue-400"
-                    scale="1.5"
-                  ></v-icon> -->
                 </th>
                 <th class="font-bold text-[1.5rem]">Action</th>
               </tr>
@@ -209,7 +189,7 @@
           </table>
           <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
         </div>
-      </div>
+      
     </div>
 
     <Teleport to="#modal" v-if="$route.params.id > 0 && !$route.path.includes('edit')">
