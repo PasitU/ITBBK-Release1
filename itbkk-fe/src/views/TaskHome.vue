@@ -91,14 +91,11 @@
             </span>
           </div>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 w-52">
-            <li v-for="(status, key) in statusesList" :key="key">
-              <a
-                class="break-all"
-                @click="selectedStatus.push(status.name)"
-                v-if="!selectedStatus.includes(status.name)"
-                >{{ status.name }}</a
-              >
-            </li>
+            <div v-for="(status, key) in statusesList" :key="key">
+              <li v-if="!selectedStatus.includes(status.name)">
+                <a class="break-all" @click="selectedStatus.push(status.name)">{{ status.name }}</a>
+              </li>
+            </div>
           </ul>
         </div>
         <button class="btn btn-sm btn-neutral" @click="selectedStatus.length = 0">X</button>
