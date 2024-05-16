@@ -3,7 +3,7 @@
 // const BASE_URL = 'http://localhost:8080/v1/tasks'
 // const BASE_URL = 'http://localhost:3000/tasks'
 const BASE_URL = import.meta.env.VITE_TASK_URL
-import axios from 'axios'
+
 
 export const getAllTasks = async (): Promise<any> => {
   try {
