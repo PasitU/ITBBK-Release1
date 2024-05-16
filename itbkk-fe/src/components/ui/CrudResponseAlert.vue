@@ -2,8 +2,8 @@
   <div
     v-if="crudAlert.displayResult"
     role="alert"
-    class="alert absolute bottom-20 right-3 w-1/3 z-10"
-    :class="crudAlert.result ? 'bg-success' : 'bg-error'"
+    class="alert absolute bottom-20 right-3 w-1/3 z-10 "
+    :class="crudAlert.result ? 'bg-success border-success' : 'bg-error border-error'"
   >
     <svg
       v-if="crudAlert.result"

@@ -1,5 +1,11 @@
 <template>
   <div data-theme="light">
+    <CrudResponseAlert
+      class="z-100"
+      :crudAlert="crudAlert"
+      @update-displayResult="handleDisplayResult"
+    >
+    </CrudResponseAlert>
     <div class="overflow-x-scroll w-screen h-screen">
       <div class="flex justify-center items-center p-6">
         <h1>
@@ -23,9 +29,6 @@
           >
         </div>
       </div>
-
-      <CrudResponseAlert :crudAlert="crudAlert" @update-displayResult="handleDisplayResult">
-      </CrudResponseAlert>
 
       <div class="px-[3rem]">
         <table class="table mb-30">
@@ -162,6 +165,12 @@
               </div>
             </div>
           </div>
+          <CrudResponseAlert
+            class="z-100"
+            :crudAlert="crudAlert"
+            @update-displayResult="handleDisplayResult"
+          >
+          </CrudResponseAlert>
         </Teleport>
       </div>
     </div>
