@@ -21,6 +21,8 @@
               v-model="statuses.description"
             >
             </textarea>
+            <p class="pb-2">Enable Limit:</p>
+          <input type="checkbox" class="toggle" v-model="statuses.limitEnabled"/>
           </CardContent>
 
           <CardFooter>
@@ -52,13 +54,15 @@ const router = useRouter()
 const statuses = ref({
   id: Number,
   name: '',
-  description: ''
+  description: '',
+  limitEnabled: ''
 })
 
 const statusOrg = ref({
   id: Number,
   name: '',
-  description: ''
+  description: '',
+  limitEnabled: ''
 })
 
 const statusId = router.currentRoute.value.params.id
