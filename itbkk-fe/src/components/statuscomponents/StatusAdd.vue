@@ -21,6 +21,8 @@
             placeholder="enter description here"
             v-model="newStatus.description"
           ></textarea>
+          <p class="pb-2">Enable Limit:</p>
+          <input type="checkbox" class="toggle" v-model="newStatus.limitEnabled"/>
         </CardContent>
         <CardFooter class="gap-3">
           <button
@@ -48,7 +50,7 @@ import { useRouter } from 'vue-router'
 import { createStatus } from '@/api/statusService.ts'
 
 const emit = defineEmits(['returnStatus'])
-const newStatus = ref({ name: '', description: '' })
+const newStatus = ref({ name: '', description: '', limitEnabled: false })
 const router = useRouter()
 
 const createNewStatus = async () => {

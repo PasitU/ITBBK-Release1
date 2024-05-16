@@ -100,7 +100,7 @@
               </td>
 
               <!-- Check the correct status property for condition -->
-              <td class="" v-if="!cantEdit.includes(status.name)">
+              <td class="" v-if="status.customizable">
                 <button
                   @click="editStatus(status.id)"
                   class="itbkk-button-edit text-warning mr-4 btn"
@@ -218,7 +218,6 @@ import StatusEdit from '../components/statuscomponents/StatusEdit.vue'
 
 const statuses = ref([])
 const router = useRouter()
-const cantEdit = ['No Status','Done']
 const deleteability = ref({ statusId: '', statusName: '', showModal: false, canDelete: false })
 const transferStatus = ref('')
 const crudAlert = ref({ displayResult: false, result: false, message: '' })
