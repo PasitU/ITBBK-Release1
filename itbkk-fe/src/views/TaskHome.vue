@@ -150,9 +150,7 @@
                     scale="1.5"
                   ></v-icon> -->
                 </th>
-                <th class="font-bold text-[1.5rem]">
-                  Action
-                </th>
+                <th class="font-bold text-[1.5rem]">Action</th>
               </tr>
             </thead>
             <tbody>

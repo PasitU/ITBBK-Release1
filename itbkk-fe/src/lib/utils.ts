@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function shortenTitle(title, maxSize = 20){
-  if(title.length > maxSize){
+export function shortenTitle(title, maxSize = 20) {
+  if (title.length > maxSize) {
     return `${title.slice(-maxSize)}...`
   }
   return title

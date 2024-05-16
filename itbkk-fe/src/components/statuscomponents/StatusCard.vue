@@ -17,7 +17,9 @@ const emit = defineEmits(['removeStatusFilter'])
     :class="getStatusClass(status)"
   >
     <span>{{ shortenTitle(status, 10) }}</span>
-    <span class="translate-y-[0.08rem]"><v-icon name="md-cancel"  @click="$emit('removeStatusFilter', status)"></v-icon></span>
+    <span class="translate-y-[0.08rem]"
+      ><v-icon name="md-cancel" @click="$emit('removeStatusFilter', status)"></v-icon
+    ></span>
   </div>
 </template>
 

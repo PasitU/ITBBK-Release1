@@ -7,7 +7,10 @@
       <div class="itbkk-modal-status w-3/5">
         <Card class="items-center light self-center min-w-full h-full">
           <CardHeader>
-            Status name :
+            <div class="flex gap-1">
+              <p class="pb-2">Status name :</p>
+              <p class="text-gray-500">({{ statusLength.nameLength }}/50)</p>
+            </div>
             <input
               type="text"
               class="itbkk-status-name input input-bordered w-full space-x-5 border p-4 mt-2"
@@ -15,14 +18,17 @@
             />
           </CardHeader>
           <CardContent class="flex-row">
-            <p>Description:</p>
+            <div class="flex gap-1">
+              <p class="pb-2">Description :</p>
+              <p class="text-gray-500">({{ statusLength.descriptionLength }}/200)</p>
+            </div>
             <textarea
               class="itbkk-status-description textarea textarea-bordered h-44 w-full"
               v-model="statuses.description"
             >
             </textarea>
             <p class="pb-2">Enable Limit:</p>
-          <input type="checkbox" class="toggle" v-model="statuses.limitEnabled"/>
+            <input type="checkbox" class="toggle" v-model="statuses.limitEnabled" />
           </CardContent>
 
           <CardFooter>
@@ -89,6 +95,11 @@ onMounted(async () => {
 const isDirty = computed(() => {
   return JSON.stringify(statusOrg.value) !== JSON.stringify(statuses.value)
 })
+
+const statusLength = computed(() => ({
+  nameLength: statuses.value.name.length,
+  descriptionLength: statuses.value.description.length
+}))
 
 const saveStatus = async () => {
   if (isDirty.value) {

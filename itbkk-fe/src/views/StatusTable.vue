@@ -226,7 +226,7 @@ const showTransferError = ref(false)
 onMounted(async () => {
   try {
     statuses.value = await getAllStatuses()
-    console.log(statuses.value);
+    console.log(statuses.value)
   } catch (error) {
     crudAlert.value = { displayResult: true, result: false, message: error.message }
   }
