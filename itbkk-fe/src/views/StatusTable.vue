@@ -184,7 +184,11 @@
                           showTransferError = true
                           return
                         }
-                        confirmDelete(deleteability.statusId, transferStatus)
+                        if (transferStatus.limitEnabled) {
+                          confirmDelete(deleteability.statusId, transferStatus)
+                        } else {
+                          confirmDeleteWithLimit(deleteability.statusId, transferStatus)
+                        }
                       }
                     "
                   >
@@ -221,7 +225,7 @@ const deleteability = ref({ statusId: '', statusName: '', showModal: false, canD
 const transferStatus = ref('')
 const crudAlert = ref({ displayResult: false, result: false, message: '' })
 const showTransferError = ref(false)
-
+console.log(transferStatus.value)
 onMounted(async () => {
   try {
     statuses.value = await getAllStatuses()
@@ -276,6 +280,10 @@ const checkReceivedStatus = async (response) => {
 }
 const BackToHome = () => {
   router.push({ name: 'home' })
+}
+
+const confirmDeleteWithLimit = ()=>{
+
 }
 
 const handleStatusUpdate = (updatedStatus) => {
