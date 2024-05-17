@@ -152,7 +152,8 @@ import Button from '../ui/button/Button.vue'
 import { computed, onMounted, ref, defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import { getTaskById, updateTask } from '@/api/taskService.ts'
-import { getAllStatuses } from '@/api/statusService.ts'
+import { getAllStatuses, checkTaskDepend } from '@/api/statusService.ts'
+import { getConstants } from '@/api/constantService'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter.ts'
 import { shortenTitle } from '@/lib/utils.ts'
@@ -160,6 +161,7 @@ const router = useRouter()
 const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)
+const limitNumber = ref()
 
 const task = ref({
   title: '',
@@ -167,8 +169,9 @@ const task = ref({
   assignees: '',
   status: {
     id: Number,
-    name: '',
-    description: ''
+    name: String,
+    description: String,
+    limitEnabled: Boolean
   },
   createdOn: '',
   updatedOn: '',
@@ -181,8 +184,9 @@ const taskUpdate = ref({
   assignees: '',
   status: {
     id: Number,
-    name: '',
-    description: ''
+    name: String,
+    description: String,
+    limitEnabled: Boolean
   }
 })
 
@@ -194,6 +198,7 @@ const mount = onMounted(async () => {
   try {
     task.value = await getTaskById(taskId)
     statusList.value = await getAllStatuses()
+    limitNumber.value = await getConstants('GStatLim')
     taskUpdate.value = { ...task.value }
   } catch (error) {
     fetchError.value = { hasError: true, message: error.message }
@@ -222,30 +227,34 @@ const isTaskSame = computed(() => {
   )
 })
 
-const isTitleNull = computed(() => {
-  return task.value.title.length === 0 ? "Title can't be empty!" : ''
-})
-
 const saveTask = async () => {
+  if (task.value.status.limitEnabled) {
+    const dependsNum = await checkTaskDepend(task.value.status.id)
+    if (dependsNum >= limitNumber.value) {
+      emit('returnStatus', {
+        status: false,
+        message: `The task "${shortenTitle(task.value.status.name)}" has reached the limit`
+      })
+      router.back()
+      return // Exit the function if limit is reached
+    }
+  }
   try {
     taskUpdate.value = { ...task.value }
-    await updateTask(taskId, taskUpdate.value)
+    await updateTask(task.value.id, taskUpdate.value) // Assuming task.value.id contains the taskId
     mount()
+    emit('returnStatus', {
+      status: true,
+      message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
+    })
   } catch (error) {
     emit('returnStatus', {
       status: false,
-      message: `An error occured: task "${shortenTitle(taskUpdate.value.title)}" couldn't be updated, Please try again later`
+      message: `An error occurred: task "${shortenTitle(taskUpdate.value.title)}" couldn't be updated, Please try again later`
     })
     router.back()
-    return
   }
-  emit('returnStatus', {
-    status: true,
-    message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
-  })
-  router.back()
 }
-
 const closePage = () => {
   router.back()
 }
