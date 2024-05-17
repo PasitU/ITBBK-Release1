@@ -20,8 +20,7 @@ export const getStatusById = async (id: number): Promise<any> => {
     const response = await fetch(`${BASE_URL}/${id}`)
     if (response.status === 404) {
       throw new Error(`Status with ID ${id} does not exist.`)
-    }
-    else if (!response.ok) {
+    } else if (!response.ok) {
       throw new Error(`Unable to fetch Status with ID ${id}.`)
     }
     return response.json()
@@ -82,17 +81,14 @@ export const checkTaskDepend = async (statusId: number) => {
   }
 }
 
-export const updateStatus = async (
-  statusId: number,
-  statusData: status
-): Promise<any> => {
+export const updateStatus = async (statusId: number, statusData: status): Promise<any> => {
   try {
     const response = await fetch(`${BASE_URL}/${statusId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({...statusData})
+      body: JSON.stringify({ ...statusData })
     })
     if (!response.ok) {
       throw new Error(`Unable to update the status with id "${statusId}".`)

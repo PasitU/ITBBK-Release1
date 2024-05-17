@@ -34,14 +34,26 @@
               maxlength="30"
             />
             <p>Status:</p>
-            <select
-              class="itbkk-status select select-bordered w-full bg-white"
-              v-model="newTask.status"
-            >
-              <option v-for="(selectStatus, key) in statusesList" :key="key" :value="selectStatus">
-                {{ selectStatus.name }}
-              </option>
-            </select>
+            <div class="flex gap-2">
+              <select
+                class="itbkk-status select select-bordered w-full bg-white"
+                v-model="newTask.status"
+              >
+                <option
+                  v-for="(selectStatus, key) in statusesList"
+                  :key="key"
+                  :value="selectStatus"
+                >
+                  <p>{{ shortenTitle(selectStatus.name) }}</p>
+                </option>
+              </select>
+              <p
+                class="badge rounded-md w-1/4 h-12"
+                :class="newTask.status.limitEnabled ? 'badge-warning' : 'badge-outline'"
+              >
+                {{ newTask.status.limitEnabled ? 'Limit : ON' : 'Limit : Off' }}
+              </p>
+            </div>
           </div>
           <div class="w-1/2 gap-5 ml-10">
             <div class="flex gap-1">
@@ -83,15 +95,28 @@
 import { useRouter } from 'vue-router'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { createTask } from '@/api/taskService.ts'
-import { getAllStatuses } from '@/api/statusService.ts'
+import { getAllStatuses, checkTaskDepend } from '@/api/statusService.ts'
+import { getConstants } from '@/api/constantService.ts'
 import { ref, defineEmits, computed, onMounted } from 'vue'
 import { shortenTitle } from '@/lib/utils.ts'
 
 const warning = ref('')
 const emit = defineEmits(['returnStatus'])
-const newTask = ref({ title: '', description: '', assignees: '', status: {} })
+const newTask = ref({
+  title: '',
+  description: '',
+  assignees: '',
+  status: {
+    id: Number,
+    name: String,
+    description: String,
+    limitEnabled: Boolean
+  }
+})
 const statusesList = ref()
 const router = useRouter()
+const constLimit = ref()
+
 const closePage = () => {
   router.back()
 }
@@ -108,6 +133,7 @@ const titleError = computed(() => {
 
 onMounted(async () => {
   statusesList.value = await getAllStatuses()
+  constLimit.value = await getConstants('GStatLim')
   newTask.value.status = statusesList.value[0]
 })
 
@@ -115,6 +141,13 @@ const saveNewTask = async () => {
   if (newTask.value.title.length === 0) {
     warning.value = "Title can't be empty!"
     return
+  }
+  if (newTask.value.status.limitEnabled) {
+    const dependsNum = await checkTaskDepend(newTask.value.status.id)
+    if (dependsNum >= constLimit.value) {
+      warning.value = `The status "${shortenTitle(newTask.value.status.name)}" will have too many tasks. Please make progress and update status of existing tasks first.`
+      return
+    }
   }
   try {
     await createTask(newTask.value)

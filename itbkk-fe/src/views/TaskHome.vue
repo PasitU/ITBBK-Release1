@@ -74,7 +74,11 @@
       </div>
       <div class="flex gap-2">
         <div class="dropdown dropdown-bottom ml-3">
-          <div class="border h-8 rounded-md min-w-52 items-center flex pr-6" role="button" tabindex="0">
+          <div
+            class="border h-8 rounded-md min-w-52 items-center flex pr-6"
+            role="button"
+            tabindex="0"
+          >
             <span v-if="selectedStatus.length < 1" class="ml-1 leading-8 text-base"
               >Filter by status(es)</span
             >
@@ -89,7 +93,12 @@
                 :status="status"
               ></StatusCard>
             </span>
-            <button class="btn btn-ghost btn-sm scale-75 btn-neutral absolute right-0" @click="selectedStatus.length = 0">X</button>
+            <button
+              class="btn btn-ghost btn-sm scale-75 btn-neutral absolute right-0"
+              @click="selectedStatus.length = 0"
+            >
+              X
+            </button>
           </div>
           <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 w-52">
             <div v-for="(status, key) in statusesList" :key="key">
@@ -103,93 +112,92 @@
 
       <div class="px-6 slide-in-left">
         <!-- <div class="overflow-y-auto h-[780px] pt-2"> -->
-          <!-- Set the height as required -->
-          <table class="table mb-30">
-            <thead class="text-slate-700">
-              <tr>
-                <th class="font-bold text-[1.5rem]">No.</th>
-                <th class="font-bold text-[1.5rem]">Title</th>
-                <th class="font-bold text-[1.5rem]">Assignees</th>
-                <th class="font-bold text-[1.5rem] cursor-pointer">
-                  Status
-                  <v-icon
-                    @click="nextIcon"
-                    :class="
-                      currentIcon === 'descSort' || currentIcon === 'ascSort'
-                        ? 'text-blue-400'
-                        : 'text-stone-400'
-                    "
-                    :name="
-                      currentIcon === 'defaultSort' || currentIcon === 'ascSort'
-                        ? 'co-sort-alpha-down'
-                        : 'co-sort-alpha-up'
-                    "
-                    scale="1.5"
-                  ></v-icon>
-                </th>
-                <th class="font-bold text-[1.5rem]">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="itbkk-item hover" v-for="(task, key) in sortedTasks" :key="key">
-                <td class="pl-5">
-                  <div class="flex">
-                    <p class="itbkk-title font-bold text-[1rem]">{{ key + 1 }}</p>
+        <!-- Set the height as required -->
+        <table class="table mb-30">
+          <thead class="text-slate-700">
+            <tr>
+              <th class="font-bold text-[1.5rem]">No.</th>
+              <th class="font-bold text-[1.5rem]">Title</th>
+              <th class="font-bold text-[1.5rem]">Assignees</th>
+              <th class="font-bold text-[1.5rem] cursor-pointer">
+                Status
+                <v-icon
+                  @click="nextIcon"
+                  :class="
+                    currentIcon === 'descSort' || currentIcon === 'ascSort'
+                      ? 'text-blue-400'
+                      : 'text-stone-400'
+                  "
+                  :name="
+                    currentIcon === 'defaultSort' || currentIcon === 'ascSort'
+                      ? 'co-sort-alpha-down'
+                      : 'co-sort-alpha-up'
+                  "
+                  scale="1.5"
+                ></v-icon>
+              </th>
+              <th class="font-bold text-[1.5rem]">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="itbkk-item hover" v-for="(task, key) in sortedTasks" :key="key">
+              <td class="pl-5">
+                <div class="flex">
+                  <p class="itbkk-title font-bold text-[1rem]">{{ key + 1 }}</p>
+                </div>
+              </td>
+              <td @click="openTaskDetail(task.id)" class="break-words">
+                <p class="itbkk-title break-all">{{ task.title }}</p>
+              </td>
+              <td @click="openTaskDetail(task.id)" class="">
+                <p class="itbkk-assignees" :class="!task.assignees ? 'italic text-gray-400' : ''">
+                  {{ task.assignees || 'Unassigned' }}
+                </p>
+              </td>
+              <td @click="openTaskDetail(task.id)" class="">
+                <button
+                  :class="getStatusClass(task.status.name)"
+                  class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
+                >
+                  <p class="itbkk-status">{{ task.status.name }}</p>
+                </button>
+              </td>
+              <td>
+                <div class="dropdown itbkk-button-action">
+                  <div tabindex="0" role="button" class="btn m-1">
+                    <v-icon name="co-settings" tabindex="0" role="button"></v-icon>
                   </div>
-                </td>
-                <td @click="openTaskDetail(task.id)" class="break-words">
-                  <p class="itbkk-title break-all">{{ task.title }}</p>
-                </td>
-                <td @click="openTaskDetail(task.id)" class="">
-                  <p class="itbkk-assignees" :class="!task.assignees ? 'italic text-gray-400' : ''">
-                    {{ task.assignees || 'Unassigned' }}
-                  </p>
-                </td>
-                <td @click="openTaskDetail(task.id)" class="">
-                  <button
-                    :class="getStatusClass(task.status.name)"
-                    class="btn btn-active h-[1rem] min-h-[1.8rem] text-black"
+                  <ul
+                    tabindex="0"
+                    class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
                   >
-                    <p class="itbkk-status">{{ task.status.name }}</p>
-                  </button>
-                </td>
-                <td>
-                  <div class="dropdown itbkk-button-action">
-                    <div tabindex="0" role="button" class="btn m-1">
-                      <v-icon name="co-settings" tabindex="0" role="button"></v-icon>
-                    </div>
-                    <ul
-                      tabindex="0"
-                      class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-36"
-                    >
-                      <li class="flex flex-row">
-                        <button
-                          class="itbkk-button-edit text-warning w-full"
-                          @click="editTask(task.id)"
-                        >
-                          <v-icon name="fa-edit"></v-icon>Edit
-                        </button>
-                      </li>
-                      <li
-                        class="flex flex-row"
-                        @click="openDeleteDialog(task.title, task.id, key + 1)"
+                    <li class="flex flex-row">
+                      <button
+                        class="itbkk-button-edit text-warning w-full"
+                        @click="editTask(task.id)"
                       >
-                        <button
-                          class="itbkk-button-delete text-error w-full"
-                          onclick="my_modal_1.showModal()"
-                        >
-                          <v-icon name="md-deleteforever"></v-icon>Delete
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
-        </div>
-      
+                        <v-icon name="fa-edit"></v-icon>Edit
+                      </button>
+                    </li>
+                    <li
+                      class="flex flex-row"
+                      @click="openDeleteDialog(task.title, task.id, key + 1)"
+                    >
+                      <button
+                        class="itbkk-button-delete text-error w-full"
+                        onclick="my_modal_1.showModal()"
+                      >
+                        <v-icon name="md-deleteforever"></v-icon>Delete
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p v-if="isNull" class="w-full p-6 text-center text-red-500">No tasks found</p>
+      </div>
     </div>
 
     <Teleport to="#modal" v-if="$route.params.id > 0 && !$route.path.includes('edit')">
@@ -285,6 +293,7 @@ const nextIcon = () => {
 watch(selectedStatus.value, async () => {
   statusesFilter(selectedStatus.value)
 })
+
 const statusesFilter = async (selected) => {
   selectedStatus.value = selected
   try {
