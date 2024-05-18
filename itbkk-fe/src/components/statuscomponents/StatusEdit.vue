@@ -77,14 +77,17 @@ const statusId = router.currentRoute.value.params.id
 
 onMounted(async () => {
   try {
-    // if (statusId === 1) {
-    //   router.push({ name: 'status' })
-    //   return
-    // }
     const fetchedStatus = await getStatusById(statusId)
     statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
-    console.log(statuses.value);
+    if (!statuses.value.customizable) {
+      emits('status-updated', {
+        displayResult: true,
+        result: false,
+        message: `Cannot edit status "${statuses.value.name}".`
+      })
+      router.push({ name: 'status' })
+    }
   } catch (error) {
     emits('status-updated', {
       displayResult: true,

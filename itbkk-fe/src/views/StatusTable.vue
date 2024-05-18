@@ -185,18 +185,22 @@
     <Teleport to="#addmodal" v-if="$route.path === '/status/add'">
       <StatusAdd @return-status="checkReceivedStatus"></StatusAdd>
     </Teleport>
+    <Teleport to="#addmodal" v-if="exceededStat !== null">
+      <StatusTasksTransfer :statusToTransfer="exceededStat" @cancel-limit="disabledLimit" @crud-alert="handleExceed"></StatusTasksTransfer>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { getAllStatuses, deleteStatus, checkTaskDepend, getStatusById } from '@/api/statusService'
+import { getAllStatuses, deleteStatus, checkTaskDepend, getStatusById, updateStatus } from '@/api/statusService'
 import { getConstants } from '@/api/constantService'
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect } from 'vue'
 import { Button } from '@/components/ui/button'
 import StatusAdd from '../components/statuscomponents/StatusAdd.vue'
 import StatusEdit from '../components/statuscomponents/StatusEdit.vue'
 import CrudResponseAlert from '../components/ui/CrudResponseAlert.vue'
+import StatusTasksTransfer from '../components/statuscomponents/StatusTasksTransfer.vue'
 
 const statuses = ref([])
 const router = useRouter()
@@ -205,15 +209,29 @@ const transferStatus = ref()
 const crudAlert = ref({ displayResult: false, result: false, message: '' })
 const showTransferError = ref(false)
 const constLimit = ref(0)
+const exceededStat = ref(null)
 
 onMounted(async () => {
   try {
     statuses.value = await getAllStatuses()
     constLimit.value = await getConstants('GStatLim')
-    console.log(constLimit.value)
-    console.log(statuses.value)
   } catch (error) {
     crudAlert.value = { displayResult: true, result: false, message: error.message }
+  }
+})
+
+watchEffect(async() => {
+  if (statuses.value.length > 0) {
+    const limitStatus = statuses.value.find((status) => status.limitEnabled === true)
+    console.log(limitStatus);
+    let isExceeded = (await checkTaskDepend(limitStatus.id) > constLimit.value)
+    console.log(isExceeded);
+    if (isExceeded) {
+      exceededStat.value = limitStatus
+    } else {
+      exceededStat.value = null
+    }
+    console.log(exceededStat.value);
   }
 })
 
@@ -314,6 +332,23 @@ const getStatusClass = (status) => {
     default:
       return 'badge bg-indigo-400'
   }
+}
+
+const disabledLimit = async (id) => {
+  console.log(id);
+  let status = statuses.value.find((status) => status.id === id)
+  console.log(status);
+  try {
+    await updateStatus(id, { ...status, limitEnabled: false })
+    statuses.value = await getAllStatuses()
+  } catch (error) {
+    crudAlert.value = { displayResult: true, result: false, message: error.message }
+  }
+}
+
+const handleExceed = (response) => {
+  crudAlert.value = { ...response }
+  exceededStat.value = null
 }
 
 const editStatus = async (id) => {

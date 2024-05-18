@@ -247,6 +247,7 @@ const saveTask = async () => {
       status: true,
       message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
     })
+    router.back()
   } catch (error) {
     emit('returnStatus', {
       status: false,
