@@ -4,7 +4,6 @@
 // const BASE_URL = 'http://localhost:3000/tasks'
 const BASE_URL = import.meta.env.VITE_TASK_URL
 
-
 export const getAllTasks = async (): Promise<any> => {
   try {
     const response = await fetch(BASE_URL)

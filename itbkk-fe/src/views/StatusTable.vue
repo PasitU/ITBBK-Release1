@@ -67,8 +67,12 @@
                   {{ status.description || 'No description is provided' }}
                 </p>
               </td>
-              <td class="">{{ status.limitEnabled ? 'Enabled' : 'Disabled' }}
-                <v-icon :class="status.limitEnabled ? 'scale-110': 'scale-150'" :name="status.limitEnabled ? 'oi-check': 'bi-x'"></v-icon>
+              <td class="">
+                {{ status.limitEnabled ? 'Enabled' : 'Disabled' }}
+                <v-icon
+                  :class="status.limitEnabled ? 'scale-110' : 'scale-150'"
+                  :name="status.limitEnabled ? 'oi-check' : 'bi-x'"
+                ></v-icon>
               </td>
               <!-- Check the correct status property for condition -->
               <td class="" v-if="status.customizable">
@@ -186,13 +190,23 @@
       <StatusAdd @return-status="checkReceivedStatus"></StatusAdd>
     </Teleport>
     <Teleport to="#addmodal" v-if="exceededStat !== null">
-      <StatusTasksTransfer :statusToTransfer="exceededStat" @cancel-limit="disabledLimit" @crud-alert="handleExceed"></StatusTasksTransfer>
+      <StatusTasksTransfer
+        :statusToTransfer="exceededStat"
+        @cancel-limit="disabledLimit"
+        @crud-alert="handleExceed"
+      ></StatusTasksTransfer>
     </Teleport>
   </div>
 </template>
 
 <script setup>
-import { getAllStatuses, deleteStatus, checkTaskDepend, getStatusById, updateStatus } from '@/api/statusService'
+import {
+  getAllStatuses,
+  deleteStatus,
+  checkTaskDepend,
+  getStatusById,
+  updateStatus
+} from '@/api/statusService'
 import { getConstants } from '@/api/constantService'
 import { useRouter } from 'vue-router'
 import { ref, onMounted, watchEffect } from 'vue'
@@ -220,18 +234,15 @@ onMounted(async () => {
   }
 })
 
-watchEffect(async() => {
+watchEffect(async () => {
   if (statuses.value.length > 0) {
     const limitStatus = statuses.value.find((status) => status.limitEnabled === true)
-    console.log(limitStatus);
-    let isExceeded = (await checkTaskDepend(limitStatus.id) > constLimit.value)
-    console.log(isExceeded);
+    let isExceeded = (await checkTaskDepend(limitStatus.id)) > constLimit.value
     if (isExceeded) {
       exceededStat.value = limitStatus
     } else {
       exceededStat.value = null
     }
-    console.log(exceededStat.value);
   }
 })
 
@@ -335,9 +346,7 @@ const getStatusClass = (status) => {
 }
 
 const disabledLimit = async (id) => {
-  console.log(id);
   let status = statuses.value.find((status) => status.id === id)
-  console.log(status);
   try {
     await updateStatus(id, { ...status, limitEnabled: false })
     statuses.value = await getAllStatuses()

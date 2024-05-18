@@ -265,7 +265,6 @@ onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
     allTasks.value = tasks.value
-    // console.log(tasks.value)
     statusesList.value = await getAllStatuses()
     tasks.value.length === 0 ? (isNull.value = true) : (isNull.value = false)
   } catch (error) {
