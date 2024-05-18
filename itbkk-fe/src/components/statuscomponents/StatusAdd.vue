@@ -30,7 +30,7 @@
             maxlength="200"
           ></textarea>
           <p class="pb-2">Enable Limit:</p>
-          <input type="checkbox" class="toggle" v-model="newStatus.limitEnabled" />
+          <input type="checkbox" class="toggle toggle-warning" v-model="newStatus.limitEnabled" />
         </CardContent>
         <CardFooter class="gap-3">
           <button

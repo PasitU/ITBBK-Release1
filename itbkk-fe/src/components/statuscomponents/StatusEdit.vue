@@ -28,7 +28,7 @@
             >
             </textarea>
             <p class="pb-2">Enable Limit:</p>
-            <input type="checkbox" class="toggle" v-model="statuses.limitEnabled" />
+            <input type="checkbox" class="toggle toggle-warning" v-model="statuses.limitEnabled" />
           </CardContent>
 
           <CardFooter>
