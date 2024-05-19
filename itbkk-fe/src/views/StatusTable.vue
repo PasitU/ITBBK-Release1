@@ -184,7 +184,7 @@
     </div>
 
     <Teleport to="#modal" v-if="$route.params.id > 1 && $route.path.includes('edit')">
-      <StatusEdit @status-updated="handleStatusUpdate"></StatusEdit>
+      <StatusEdit :statusess="statuses" @status-updated="handleStatusUpdate"></StatusEdit>
     </Teleport>
     <Teleport to="#addmodal" v-if="$route.path === '/status/add'">
       <StatusAdd :statuses="statuses" @return-status="checkReceivedStatus"></StatusAdd>

@@ -15,7 +15,11 @@
               type="text"
               class="itbkk-status-name input input-bordered w-full space-x-5 border p-4 mt-2"
               v-model="statuses.name"
+              maxlength="50"
             />
+            <p v-show="isNotUniqueName" class="shake-horizontal text-error mt-2">
+              Status name must be unique, please choose another name.
+            </p>
           </CardHeader>
           <CardContent class="flex-row">
             <div class="flex gap-1">
@@ -25,6 +29,7 @@
             <textarea
               class="itbkk-status-description textarea textarea-bordered h-44 w-full"
               v-model="statuses.description"
+              maxlength="200"
             >
             </textarea>
             <p class="pb-2">Enable Limit:</p>
@@ -98,6 +103,19 @@ onMounted(async () => {
   }
 })
 
+const props = defineProps({
+  statusess: {
+    type: Array,
+    require: true
+  }
+})
+
+const isNotUniqueName = computed(() => {
+  return props.statusess.some(
+    (status) => status.name.toLowerCase() === statuses.value.name.toLowerCase()
+  )
+})
+
 const isDirty = computed(() => {
   return JSON.stringify(statusOrg.value) !== JSON.stringify(statuses.value)
 })
@@ -136,4 +154,66 @@ const closePage = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.shake-horizontal {
+  -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
+@-webkit-keyframes shake-horizontal {
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  80% {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+  90% {
+    -webkit-transform: translateX(-8px);
+    transform: translateX(-8px);
+  }
+}
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  80% {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+  90% {
+    -webkit-transform: translateX(-8px);
+    transform: translateX(-8px);
+  }
+}
+</style>
