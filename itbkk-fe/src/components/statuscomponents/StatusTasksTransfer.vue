@@ -24,9 +24,9 @@
                 <th></th>
                 <th>Title:</th>
                 <th>Status:</th>
+                <th>Original</th>
                 <th></th>
-                <th></th>
-                <th></th>
+                <th>Transfer to</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +50,8 @@
                 </td>
                 <td>{{ TaskCount }}/10</td>
                 <td><v-icon name="co-arrow-right" /></td>
-                <td>{{ getStatusValue(task.status.id)  }}/10</td>
+                <td v-if="task.status.limitEnabled">{{ getStatusValue(task.status.id) }}/10</td>
+                <td v-else>Unlimited</td>
               </tr>
             </tbody>
           </table>
@@ -62,7 +63,7 @@
           <button
             @click="saveAll"
             class="btn w-1/2"
-            :class="TaskCount > 10 ? 'btn-disabled' : 'btn-success'"
+            :class="TaskCount > 10 ?  'btn-disabled' : 'btn-success'"
           >
             Save
           </button>
@@ -104,7 +105,7 @@ onMounted(async () => {
 
 const tasks = ref([])
 const statusesList = ref([])
-const currentUsage = ref([])
+const currentUsage = ref({})
 
 
 const TaskCount = computed(() => {
@@ -117,11 +118,28 @@ const TaskCount = computed(() => {
   return count
 })
 
+
 const getStatusValue = (statusId) => {
-  return currentUsage.value[statusId] || 'Unknown'
+  let statusValue = 0
+  if(props.statusToTransfer.id === statusId){
+    return TaskCount
+  }
+  tasks.value.forEach((task) => {
+    if (task.status.id === statusId) {
+      statusValue++
+    }
+  })
+  return currentUsage.value[statusId] + statusValue || 'Unknown'
 }
 
-
+// const getStatusValue = (statusId) => {
+//   // Increment the value in currentUsage and return it
+//   if (currentUsage.value.statusId !== undefined) {
+//     return currentUsage.value[statusId]
+//   } else {
+//     return 'Unknown'
+//   }
+// }
 
 const saveAll = async () => {
   try {
