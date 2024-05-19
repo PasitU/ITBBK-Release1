@@ -187,7 +187,7 @@
       <StatusEdit @status-updated="handleStatusUpdate"></StatusEdit>
     </Teleport>
     <Teleport to="#addmodal" v-if="$route.path === '/status/add'">
-      <StatusAdd @return-status="checkReceivedStatus"></StatusAdd>
+      <StatusAdd :statuses="statuses" @return-status="checkReceivedStatus"></StatusAdd>
     </Teleport>
     <Teleport to="#addmodal" v-if="exceededStat !== null">
       <StatusTasksTransfer
