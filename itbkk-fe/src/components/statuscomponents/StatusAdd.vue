@@ -37,8 +37,8 @@
         <CardFooter class="gap-3">
           <button
             class="itbkk-button-confirm btn btn-success text-white"
-            :class="{ 'btn-disabled': newStatus.name.length === 0 }"
-            :disabled="newStatus.name.length === 0"
+            :class="{ 'btn-disabled': newStatus.name.length === 0 || isNotUniqueName }"
+            :disabled="newStatus.name.length === 0 || isNotUniqueName"
             @click="createNewStatus"
           >
             Save

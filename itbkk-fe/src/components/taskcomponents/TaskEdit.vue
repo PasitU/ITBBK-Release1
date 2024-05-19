@@ -53,6 +53,7 @@
                   class="itbkk-assignees input input-bordered w-full border"
                   v-model="task.assignees"
                   :placeholder="taskUpdate.assignees"
+                  maxlength="30"
                 />
                 <p>Status:</p>
                 <select

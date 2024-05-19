@@ -14,6 +14,7 @@
             <input
               type="text"
               class="itbkk-status-name input input-bordered w-full space-x-5 border p-4 mt-2"
+              :class="{ 'shake-horizontal input-error': isNotUniqueName }"
               v-model="statuses.name"
               maxlength="50"
             />
@@ -42,7 +43,7 @@
             </button>
             <button
               class="itbkk-button-confirm btn btn-success w-20"
-              :class="{ 'btn-disabled': !isDirty }"
+              :class="{ 'btn-disabled': !isDirty || isNotUniqueName }"
               @click="saveStatus"
               :disabled="!isDirty"
             >
@@ -59,7 +60,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { useRouter } from 'vue-router'
-import { getStatusById, updateStatus } from '@/api/statusService.ts'
+import { getAllStatuses, getStatusById, updateStatus } from '@/api/statusService.ts'
 const emits = defineEmits(['status-updated'])
 const router = useRouter()
 const statuses = ref({
@@ -83,6 +84,7 @@ const statusId = router.currentRoute.value.params.id
 onMounted(async () => {
   try {
     const fetchedStatus = await getStatusById(statusId)
+    statusList.value = await getAllStatuses()
     statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
     if (!statuses.value.customizable) {
@@ -103,16 +105,11 @@ onMounted(async () => {
   }
 })
 
-const props = defineProps({
-  statusess: {
-    type: Array,
-    require: true
-  }
-})
+const statusList = ref([])
 
 const isNotUniqueName = computed(() => {
-  return props.statusess.some(
-    (status) => status.name.toLowerCase() === statuses.value.name.toLowerCase()
+  return statusList.value.some(
+    (status) => status.name.toLowerCase() === statuses.value.name.toLowerCase() && status.id !== statuses.value.id
   )
 })
 
