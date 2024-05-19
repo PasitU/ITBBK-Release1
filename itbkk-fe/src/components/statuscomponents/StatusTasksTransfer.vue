@@ -48,13 +48,12 @@
                     </option>
                   </select>
                 </td>
-                <td>{{ currentUsage }}</td>
+                <td>{{ TaskCount }}/10</td>
                 <td><v-icon name="co-arrow-right" /></td>
-                <td></td>
+                <td>{{ getStatusValue(task.status.id)  }}/10</td>
               </tr>
             </tbody>
           </table>
-          
         </CardContent>
         <CardFooter class="w-1/3 gap-2 pt-5">
           <button @click="$emit('cancelLimit', statusToTransfer.id)" class="btn w-1/2">
@@ -105,8 +104,8 @@ onMounted(async () => {
 
 const tasks = ref([])
 const statusesList = ref([])
-const updatedTasks = ref([])
 const currentUsage = ref([])
+
 
 const TaskCount = computed(() => {
   let count = 0
@@ -118,11 +117,17 @@ const TaskCount = computed(() => {
   return count
 })
 
+const getStatusValue = (statusId) => {
+  return currentUsage.value[statusId] || 'Unknown'
+}
+
+
+
 const saveAll = async () => {
   try {
     for (const task of tasks.value) {
       if (task.status.name !== props.statusToTransfer.name) {
-        await updateTask(task.id, { ...task });
+        await updateTask(task.id, { ...task })
       }
     }
     emits('crudAlert', {
