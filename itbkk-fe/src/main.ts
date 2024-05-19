@@ -13,9 +13,10 @@ import {
   OiCheck,
   FaCheck,
   BiX,
+  CoArrowRight
 } from 'oh-vue-icons/icons'
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
-addIcons(CoSettings, FaEdit, MdDeleteforever, CoSortAlphaDown, CoSortAlphaUp, MdCancel, FaCheck, OiCheck, BiX)
+addIcons(CoSettings, FaEdit, MdDeleteforever, CoSortAlphaDown, CoSortAlphaUp, MdCancel, FaCheck, OiCheck, BiX, CoArrowRight)
 
 const app = createApp(App)
 app.use(router)

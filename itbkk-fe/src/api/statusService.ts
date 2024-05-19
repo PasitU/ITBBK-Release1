@@ -69,9 +69,14 @@ export const deleteStatus = async (statusId: number, newStatusId: number = null)
   }
 }
 
-export const checkTaskDepend = async (statusId: number) => {
+export const checkTaskDepend = async (statusId?: number) => {
   try {
-    const response = await fetch(`${BASE_URL}/usage/${statusId}`)
+    let response
+    if (statusId === undefined) {
+      response = await fetch(`${BASE_URL}/usage`)
+    } else {
+      response = await fetch(`${BASE_URL}/usage/${statusId}`)
+    }
     if (!response.ok) {
       throw new Error(`Unable to get usage of status "${statusId}"`)
     }

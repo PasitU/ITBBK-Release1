@@ -4,7 +4,7 @@
     class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
   >
     <div class="itbkk-modal-status w-1/2">
-      <Card>
+      <Card class="itbkk-modal-task light items-center self-center min-w-full h-full light">
         <CardHeader>
           <h2 class="font-bold text-lg">
             Tasks in {{ statusToTransfer?.name }} is exceed the limit
@@ -24,6 +24,9 @@
                 <th></th>
                 <th>Title:</th>
                 <th>Status:</th>
+                <th></th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -45,9 +48,13 @@
                     </option>
                   </select>
                 </td>
+                <td>{{ currentUsage }}</td>
+                <td><v-icon name="co-arrow-right" /></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
+          
         </CardContent>
         <CardFooter class="w-1/3 gap-2 pt-5">
           <button @click="$emit('cancelLimit', statusToTransfer.id)" class="btn w-1/2">
@@ -68,7 +75,7 @@
 
 <script setup>
 import { getAllTasksInStatus, updateTask } from '@/api/taskService'
-import { getAllStatuses } from '@/api/statusService'
+import { getAllStatuses, checkTaskDepend } from '@/api/statusService'
 import { shortenTitle } from '@/lib/utils.ts'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { ref, onMounted, computed } from 'vue'
@@ -86,6 +93,7 @@ onMounted(async () => {
   try {
     statusesList.value = await getAllStatuses()
     tasks.value = await getAllTasksInStatus(props.statusToTransfer.name)
+    currentUsage.value = await checkTaskDepend()
   } catch (error) {
     emits('crudAlert', {
       displayResult: true,
@@ -97,6 +105,8 @@ onMounted(async () => {
 
 const tasks = ref([])
 const statusesList = ref([])
+const updatedTasks = ref([])
+const currentUsage = ref([])
 
 const TaskCount = computed(() => {
   let count = 0
@@ -110,17 +120,18 @@ const TaskCount = computed(() => {
 
 const saveAll = async () => {
   try {
-    tasks.value.forEach(async (task) => {
+    for (const task of tasks.value) {
       if (task.status.name !== props.statusToTransfer.name) {
-        await updateTask(task.id, { ...task })
+        await updateTask(task.id, { ...task });
       }
-    })
+    }
     emits('crudAlert', {
       displayResult: true,
       result: true,
       message: 'All tasks have been transferred successfully'
     })
   } catch (error) {
+    emits('cancelLimit', props.statusToTransfer.id)
     emits('crudAlert', {
       displayResult: true,
       result: false,

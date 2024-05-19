@@ -235,15 +235,20 @@ onMounted(async () => {
 })
 
 watchEffect(async () => {
-  if (statuses.value.length > 0) {
-    const limitStatus = statuses.value.find((status) => status.limitEnabled === true)
-    let isExceeded = (await checkTaskDepend(limitStatus.id)) > constLimit.value
-    if (isExceeded) {
-      exceededStat.value = limitStatus
-    } else {
-      exceededStat.value = null
-    }
+  const limitStatuses = await Promise.all(
+    statuses.value.map(async (status) => {
+      const taskDepend = await checkTaskDepend(status.id)
+      return { status, taskDepend }
+    })
+  )
+  const filteredLimitStatuses = limitStatuses.filter(
+    ({ status, taskDepend }) => status.limitEnabled && taskDepend > constLimit.value
+  )
+  if (filteredLimitStatuses.length === 0) {
+    exceededStat.value = null
+    return
   }
+  exceededStat.value = filteredLimitStatuses[0].status
 })
 
 const statusRemove = async (status) => {
