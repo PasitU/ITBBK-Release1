@@ -85,6 +85,9 @@ const statusId = router.currentRoute.value.params.id
 onMounted(async () => {
   try {
     const fetchedStatus = await getStatusById(statusId)
+    if (fetchedStatus.description === null) {
+      fetchedStatus.description = ''
+    }
     statusList.value = await getAllStatuses()
     statusOrg.value = { ...fetchedStatus }
     statuses.value = { ...fetchedStatus }
