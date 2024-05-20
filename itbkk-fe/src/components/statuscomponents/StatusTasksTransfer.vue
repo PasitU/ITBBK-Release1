@@ -48,10 +48,18 @@
                     </option>
                   </select>
                 </td>
-                <td>{{ TaskCount }}/10</td>
+                <td>
+                  {{ TaskCount }}/<span v-if="task.status.limitEnabled">10</span
+                  ><span v-else><v-icon name="bi-infinity" class="pt-1" /></span>
+                </td>
                 <td><v-icon name="co-arrow-right" /></td>
-                <td :class="getBadgeClass(task.status.id)">
-                  {{ getStatusValue(task.status.id) }}/10
+                <td
+                  ref="transferConditions"
+                  :class="task.status.limitEnabled ? getBadgeClass(task.status.id) : `text-success`"
+                >
+                  {{ getStatusValue(task.status.id) }}/<span v-if="task.status.limitEnabled"
+                    >10</span
+                  ><span v-else><v-icon name="bi-infinity" class="pt-1" /></span>
                 </td>
               </tr>
             </tbody>
@@ -64,7 +72,7 @@
           <button
             @click="saveAll"
             class="btn w-1/2"
-            :class="TaskCount > 10 ? 'btn-disabled' : 'btn-success'"
+            :class="TaskCount > constLimit || isTaskOverflow ? 'btn-disabled' : 'btn-success'"
           >
             Save
           </button>
@@ -79,8 +87,8 @@ import { getAllTasksInStatus, updateTask } from '@/api/taskService'
 import { getAllStatuses, checkTaskDepend } from '@/api/statusService'
 import { shortenTitle } from '@/lib/utils.ts'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
-import { ref, onMounted, computed } from 'vue'
-
+import { ref, onMounted, computed, watch, onBeforeUnmount } from 'vue'
+import { getConstants } from '@/api/constantService'
 const props = defineProps({
   statusToTransfer: {
     type: Object,
@@ -89,12 +97,21 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['cancelLimit', 'crudAlert'])
+const constLimit = ref(10)
+const observer = new MutationObserver((mutations) => {
+  for (const m of mutations) {
+    if (transferConditions.value.every((ele) => ele.className.includes(`success`)))
+      isTaskOverflow.value = false
+    else isTaskOverflow.value = true
+  }
+})
 
 onMounted(async () => {
   try {
     statusesList.value = await getAllStatuses()
     tasks.value = await getAllTasksInStatus(props.statusToTransfer.name)
     currentUsage.value = await checkTaskDepend()
+    constLimit.value = await getConstants('GStatLim')
   } catch (error) {
     emits('crudAlert', {
       displayResult: true,
@@ -102,11 +119,27 @@ onMounted(async () => {
       message: error.message
     })
   }
+
+  const config = { attributes: true }
+  transferConditions.value.forEach((td) => {
+    observer.observe(td, config)
+  })
+})
+
+onBeforeUnmount(() => {
+  observer.disconnect()
 })
 
 const tasks = ref([])
 const statusesList = ref([])
 const currentUsage = ref([])
+
+const transferConditions = ref([])
+const isTaskOverflow = ref(true)
+
+const allConditionsSuccess = computed(() => {
+  return transferConditions.value.every((elem) => elem.className.includes('success'))
+})
 
 const TaskCount = computed(() => {
   let count = 0
@@ -116,6 +149,10 @@ const TaskCount = computed(() => {
     }
   })
   return count
+})
+
+watch(allConditionsSuccess, (newValue) => {
+  isTaskOverflow.value = !newValue
 })
 
 const getStatusValue = computed(() => {
