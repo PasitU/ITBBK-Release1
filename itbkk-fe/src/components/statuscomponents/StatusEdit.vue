@@ -14,12 +14,13 @@
             <input
               type="text"
               class="itbkk-status-name input input-bordered w-full space-x-5 border p-4 mt-2"
-              :class="{ 'shake-horizontal input-error': isNotUniqueName }"
+              :class="{ 'shake-horizontal input-error': isNotUniqueName || isNameNull }"
               v-model="statuses.name"
               maxlength="50"
             />
-            <p v-show="isNotUniqueName" class="shake-horizontal text-error mt-2">
-              Status name must be unique, please choose another name.
+            <p v-show="isNotUniqueName || isNameNull" class="shake-horizontal text-error mt-2">
+              {{ isNotUniqueName ? 'Status name must be unique, please choose another name.' : '' }}
+              {{ isNameNull ? 'Status name cannot be empty' : '' }}
             </p>
           </CardHeader>
           <CardContent class="flex-row">
@@ -43,9 +44,9 @@
             </button>
             <button
               class="itbkk-button-confirm btn btn-success w-20"
-              :class="{ 'btn-disabled': !isDirty || isNotUniqueName }"
+              :class="{ 'btn-disabled': !isDirty || isNotUniqueName || isNameNull }"
               @click="saveStatus"
-              :disabled="!isDirty"
+              :disabled="!isDirty || isNotUniqueName || isNameNull"
             >
               Save
             </button>
@@ -107,6 +108,10 @@ onMounted(async () => {
 
 const statusList = ref([])
 
+const isNameNull = computed(() => {
+  return statuses.value.name.length === 0 ? true : false
+})
+
 const isNotUniqueName = computed(() => {
   return statusList.value.some(
     (status) =>
@@ -121,7 +126,7 @@ const isDirty = computed(() => {
 
 const statusLength = computed(() => ({
   nameLength: statuses.value.name.length,
-  descriptionLength: statuses.value.description === null ? 0 : statuses.value.description.length  
+  descriptionLength: statuses.value.description === null ? 0 : statuses.value.description.length
 }))
 
 const saveStatus = async () => {

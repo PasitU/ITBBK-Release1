@@ -228,6 +228,10 @@ const isTaskSame = computed(() => {
   )
 })
 
+const isTitleNull = computed(() => {
+  return task.value.title.length === 0 ? "Title can't be empty!" : ''
+})
+
 const saveTask = async () => {
   if (task.value.status.limitEnabled) {
     const dependsNum = await checkTaskDepend(task.value.status.id)
