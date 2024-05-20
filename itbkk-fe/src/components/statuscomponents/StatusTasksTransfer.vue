@@ -24,9 +24,9 @@
                 <th></th>
                 <th>Title:</th>
                 <th>Status:</th>
+                <th>Original</th>
                 <th></th>
-                <th></th>
-                <th></th>
+                <th>Transfer to</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +50,9 @@
                 </td>
                 <td>{{ TaskCount }}/10</td>
                 <td><v-icon name="co-arrow-right" /></td>
-                <td>{{ getStatusValue(task.status.id)  }}/10</td>
+                <td :class="getBadgeClass(task.status.id)">
+                  {{ getStatusValue(task.status.id) }}/10
+                </td>
               </tr>
             </tbody>
           </table>
@@ -106,7 +108,6 @@ const tasks = ref([])
 const statusesList = ref([])
 const currentUsage = ref([])
 
-
 const TaskCount = computed(() => {
   let count = 0
   tasks.value.forEach((task) => {
@@ -117,11 +118,29 @@ const TaskCount = computed(() => {
   return count
 })
 
-const getStatusValue = (statusId) => {
-  return currentUsage.value[statusId] || 'Unknown'
+const getStatusValue = computed(() => {
+  const statusValues = {}
+
+  tasks.value.forEach((task) => {
+    if (!statusValues[task.status.id]) {
+      statusValues[task.status.id] = 0
+    }
+    statusValues[task.status.id]++
+  })
+
+  return (statusId) => {
+    if (props.statusToTransfer.id === statusId) {
+      return TaskCount.value
+    }
+
+    const taskCount = statusValues[statusId] || 0
+    return (currentUsage.value[statusId] || 0) + taskCount
+  }
+})
+
+const getBadgeClass = (statusId) => {
+  return getStatusValue.value(statusId) > 10 ? 'text-error' : 'text-success'
 }
-
-
 
 const saveAll = async () => {
   try {
