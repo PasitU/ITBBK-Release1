@@ -109,7 +109,9 @@ const statusList = ref([])
 
 const isNotUniqueName = computed(() => {
   return statusList.value.some(
-    (status) => status.name.toLowerCase() === statuses.value.name.toLowerCase() && status.id !== statuses.value.id
+    (status) =>
+      status.name.toLowerCase() === statuses.value.name.toLowerCase() &&
+      status.id !== statuses.value.id
   )
 })
 
@@ -119,7 +121,7 @@ const isDirty = computed(() => {
 
 const statusLength = computed(() => ({
   nameLength: statuses.value.name.length,
-  descriptionLength: statuses.value.description.length
+  descriptionLength: statuses.value.description === null ? 0 : statuses.value.description.length  
 }))
 
 const saveStatus = async () => {
