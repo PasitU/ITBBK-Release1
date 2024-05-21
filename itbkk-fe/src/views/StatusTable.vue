@@ -162,7 +162,7 @@
                         if (!transferStatus.limitEnabled) {
                           confirmDelete(deleteability.statusId, transferStatus)
                         } else {
-                          confirmDeleteWithLimit(deleteability.statusId, selectStatus)
+                          confirmDeleteWithLimit(deleteability.statusId, transferStatus)
                         }
                       }
                     "
@@ -296,6 +296,7 @@ const confirmDeleteWithLimit = async (deleteStatus, newStatus) => {
     }
     return
   } else {
+    transferStatus.value = null
     confirmDelete(deleteStatus, newStatus)
   }
 }
