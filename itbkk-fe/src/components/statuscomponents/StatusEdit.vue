@@ -39,17 +39,18 @@
           </CardContent>
 
           <CardFooter>
-            <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">
-              Cancel
-            </button>
             <button
-              class="itbkk-button-confirm btn btn-success w-20"
+              class="itbkk-button-confirm btn btn-success w-20 mr-3"
               :class="{ 'btn-disabled': !isDirty || isNotUniqueName || isNameNull }"
               @click="saveStatus"
               :disabled="!isDirty || isNotUniqueName || isNameNull"
             >
               Save
             </button>
+            <button class="itbkk-button-cancel btn btn-error w-20" @click="closePage">
+              Cancel
+            </button>
+            
           </CardFooter>
         </Card>
       </div>

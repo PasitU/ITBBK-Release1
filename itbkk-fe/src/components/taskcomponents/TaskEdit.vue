@@ -11,106 +11,84 @@
       </Card>
 
       <Card
-        class="items-center self-center min-w-full h-full"
+        class="itbkk-modal-task light items-center self-center min-w-full h-full"
         v-if="!fetchError.hasError && !isLoading"
       >
-        <CardHeader>
-          <div class="flex gap-1">
-            <p class="pb-2">Title</p>
+        <TaskForm>
+          <template #titleAddOn>
             <p class="text-gray-500">({{ taskLengths.titleLength }}/100)</p>
-          </div>
-          <input
-            type="text"
-            class="itbkk-title input input-bordered w-full space-x-5 border p-4 mt-2"
-            v-model="task.title"
-            :class="isTitleNull ? `input-error` : ``"
-            :placeholder="taskUpdate.title"
-            maxlength="100"
-          />
-        </CardHeader>
-        <CardContent class="flex-row">
-          <div class="flex gap-1">
-            <p>Description</p>
-            <p class="text-gray-500">({{ taskLengths.descriptionLength }}/500)</p>
-          </div>
-
-          <textarea
-            class="itbkk-description textarea textarea-bordered h-44 w-full"
-            v-model="task.description"
-            :placeholder="taskUpdate.description"
-            maxlength="500"
+          </template>
+          <template #title>
+            <input
+              type="text"
+              class="itbkk-title input input-bordered w-full space-x-5 border p-4 mt-2"
+              v-model="task.title"
+              :class="isTitleNull ? `input-error` : ``"
+              :placeholder="taskUpdate.title"
+              maxlength="100"
+            />
+          </template>
+          <template #descriptionAddOn
+            ><p class="text-gray-500">({{ taskLengths.descriptionLength }}/500)</p></template
           >
-          </textarea>
-          <div class="flex justify-between">
-            <div class="w-1/2 pr-6">
-              <div class="w-full">
-                <div class="flex gap-1">
-                  <p class="pb-2">Assignees</p>
-                  <p class="text-gray-500">({{ taskLengths.assigneesLength }}/30)</p>
-                </div>
-                <input
-                  type="text"
-                  class="itbkk-assignees input input-bordered w-full border"
-                  v-model="task.assignees"
-                  :placeholder="taskUpdate.assignees"
-                  maxlength="30"
-                />
-                <p>Status:</p>
-                <select
-                  class="itbkk-status select select-bordered w-full"
-                  v-model="task.status"
-                  :selected="task.status"
-                >
-                  <option
-                    v-for="(selectStatus, key) in statusList"
-                    :key="key"
-                    :value="selectStatus"
-                  >
-                    {{ selectStatus.name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="rounded-2xl w-1/2 shadow text-slate-700 mt-5">
-              <div class="stat">
-                <div class="stat-title">CreatedOn</div>
-                <div class="stat-desc">
-                  <p class="itbkk-created-on">{{ task.createdOn }}</p>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-title">UpdatedOn</div>
-                <div class="stat-desc">
-                  <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-title">TimeZone</div>
-                <div class="stat-desc">
-                  <p class="itbkk-timezone">{{ task.timezone }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
+          <template #description>
+            <textarea
+              class="itbkk-description textarea textarea-bordered h-44 w-full"
+              v-model="task.description"
+              :placeholder="taskUpdate.description"
+              maxlength="500"
+            >
+            </textarea>
+          </template>
+          <template #assignessAddOn>
+            <p class="text-gray-500">({{ taskLengths.assigneesLength }}/30)</p></template
+          >
+          <template #assignees
+            ><input
+              type="text"
+              class="itbkk-assignees input input-bordered w-full border"
+              v-model="task.assignees"
+              :placeholder="taskUpdate.assignees"
+              maxlength="30"
+          /></template>
+          <template #status>
+            <select
+              class="itbkk-status select select-bordered w-full"
+              v-model="task.status"
+              :selected="task.status"
+            >
+              <option v-for="(selectStatus, key) in statusList" :key="key" :value="selectStatus">
+                {{ selectStatus.name }}
+              </option>
+            </select>
+          </template>
+          <template #createdOn
+            ><p class="itbkk-created-on">{{ task.createdOn }}</p></template
+          >
+          <template #updatedOn
+            ><p class="itbkk-updated-on">{{ task.updatedOn }}</p></template
+          >
+          <template #timezone
+            ><p class="itbkk-timezone">{{ task.timezone }}</p></template
+          >
+        </TaskForm>
         <CardContent class="-mb-3 -mt-3">
           <div v-if="isTitleNull" class="gap-3 text-red-600">
             {{ isTitleNull }}
           </div>
         </CardContent>
         <CardFooter>
-          <button class="itbkk-button-cancel btn btn-error mr-3 w-20" @click="closePage">
-            Cancel
-          </button>
           <button
-            class="itbkk-button-confirm btn btn-success w-20"
+            class="itbkk-button-confirm btn btn-success w-20 mr-3"
             :class="{ 'btn-disabled disabled': isTaskSame || isTitleNull }"
             @click="saveTask"
           >
             Save
           </button>
+          <button class="itbkk-button-cancel btn btn-error w-20" @click="closePage">
+            Cancel
+          </button>
+          
         </CardFooter>
       </Card>
 
@@ -151,13 +129,15 @@
 <script setup>
 import Button from '../ui/button/Button.vue'
 import { computed, onMounted, ref, defineEmits } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { getTaskById, updateTask } from '@/api/taskService.ts'
 import { getAllStatuses, checkTaskDepend } from '@/api/statusService.ts'
 import { getConstants } from '@/api/constantService'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter.ts'
 import { shortenTitle } from '@/lib/utils.ts'
+import TaskForm from './TaskForm.vue'
+const route = useRoute()
 const router = useRouter()
 const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
@@ -250,7 +230,10 @@ const saveTask = async () => {
     mount()
     emit('returnStatus', {
       status: true,
-      message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`
+      message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`,
+      from: "edit",
+      value: {id:Number(task.value.id), assignees:task.value.assignees, status:task.value.status, title:task.value.title}
+      // value: {...task.value, id:route.params.id}
     })
     router.back()
   } catch (error) {

@@ -13,68 +13,69 @@
         class="itbkk-modal-task light items-center self-center min-w-full h-full"
         v-if="!fetchError.hasError && !isLoading"
       >
-        <CardHeader>
-          Title
-          <div>
-            <div class="space-x-5 rounded-md border p-4">
-              <p class="itbkk-title">
-                {{ task.title }}
-              </p>
+        <TaskForm>
+          <template #title
+            ><div>
+              <div class="space-x-5 rounded-md border p-4">
+                <p class="itbkk-title">
+                  {{ task.title }}
+                </p>
+              </div>
+            </div></template
+          >
+          <template #description>
+            <div class="space-x-5 border p-4 rounded-md">
+              <h1 class="break-words">
+                <p
+                  class="itbkk-description"
+                  :class="
+                    task.description === null || task.description?.length === 0
+                      ? `italic text-slate-400`
+                      : ``
+                  "
+                >
+                  {{ task.description || 'No Description Provided' }}
+                </p>
+              </h1>
             </div>
-          </div>
-        </CardHeader>
-        <CardContent class="flex-col">
-          <p>Description:</p>
-          <div class="space-x-5 border p-4 rounded-md">
-            <h1 class="break-words">
-              <p
-                class="itbkk-description"
-                :class=" task.description === null || task.description?.length === 0  ? `italic text-slate-400` : ``"
-              >
-                {{ task.description || 'No Description Provided' }}
-              </p>
-            </h1>
-          </div>
-          <div class="flex gap-5">
-            <div class="w-1/2">
-              <p>Assignees:</p>
-              <div class="space-x-5 border p-3 rounded-md">
-                <h1 class="break-words">
-                  <p
-                    class="itbkk-assignees"
-                    :class="task.description === null || task.assignees?.length === 0 ? `italic text-slate-400` : ``"
-                  >
-                    {{ task.assignees || 'Unassigned' }}
-                  </p>
-                </h1>
-              </div>
-              <p>Status:</p>
-              <div class="badge badge-neutral p-3 rounded-md">
-                <p class="itbkk-status">{{ task.status.name }}</p>
-              </div>
-            </div>
-            <div class="rounded-2xl w-1/2 shadow text-slate-700 mt-5">
-              <div class="stat">
-                <div class="stat-title">CreatedOn</div>
-                <div class="stat-desc">
-                  <p class="itbkk-created-on">{{ task.createdOn }}</p>
-                </div>
-              </div>
-              <div class="stat">
-                <div class="stat-title">UpdatedOn</div>
-                <div class="stat-desc">
-                  <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
-                </div>
-              </div>
-              <div class="stat">
-                <div class="stat-title">TimeZone</div>
-                <div class="stat-desc">
-                  <p class="itbkk-timezone">{{ task.timezone }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
+          </template>
+          <template #assignees
+            ><div class="space-x-5 border p-3 rounded-md">
+              <h1 class="break-words">
+                <p
+                  class="itbkk-assignees"
+                  :class="
+                    task.description === null || task.assignees?.length === 0
+                      ? `italic text-slate-400`
+                      : ``
+                  "
+                >
+                  {{ task.assignees || 'Unassigned' }}
+                </p>
+              </h1>
+            </div></template
+          >
+          <template #status
+            ><div class="badge badge-neutral p-3 rounded-md">
+              <p class="itbkk-status">{{ task.status.name }}</p>
+            </div></template
+          >
+          <template #createdOn
+            ><div class="stat-desc">
+              <p class="itbkk-created-on">{{ task.createdOn }}</p>
+            </div></template
+          >
+          <template #updatedOn
+            ><div class="stat-desc">
+              <p class="itbkk-updated-on">{{ task.updatedOn }}</p>
+            </div></template
+          >
+          <template #timezone
+            ><div class="stat-desc">
+              <p class="itbkk-timezone">{{ task.timezone }}</p>
+            </div></template
+          >
+        </TaskForm>
         <CardFooter>
           <Button class="justify-between content-between" @click="closePage">Close</Button>
         </CardFooter>
@@ -121,6 +122,7 @@ import { useRouter } from 'vue-router'
 import { getTaskById } from '@/api/taskService.ts'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter.ts'
+import TaskForm from './TaskForm.vue'
 const router = useRouter()
 const fetchError = ref({ hasError: false, message: '' })
 const isLoading = ref(false)

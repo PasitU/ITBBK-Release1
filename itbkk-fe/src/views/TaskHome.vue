@@ -205,7 +205,7 @@
 import TaskDetail from '../components/taskcomponents/TaskDetail.vue'
 import TaskAdd from '../components/taskcomponents/TaskAdd.vue'
 import TaskEdit from '../components/taskcomponents/TaskEdit.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, watch } from 'vue'
 import { onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
@@ -218,6 +218,7 @@ import CrudResponseAlert from '@/components/ui/CrudResponseAlert.vue'
 
 const tasks = ref([])
 const allTasks = ref([]) //this name is suck but my brain is suck too
+const route = useRoute()
 const router = useRouter()
 const isNull = ref(false)
 const crudResult = ref({ displayResult: false, result: true, message: '' })
@@ -291,11 +292,24 @@ const checkReceivedStatus = async (response) => {
   crudResult.value.result = response.status
   crudResult.value.message = response.message
   if (crudResult.value.result) {
-    try {
-      tasks.value = await getAllTasks()
-      allTasks.value = tasks.value
-    } catch (error) {
-      crudResult.value = { displayResult: true, result: false, message: error.message }
+    if (response.from === 'edit') {
+      console.log(response.value)
+      let updatedTaskId = allTasks.value.findIndex((task) => task.id === response.value.id)
+      console.log(allTasks.value)
+      allTasks.value.splice(updatedTaskId, 1, response.value)
+    } else if(response.from === 'delete'){
+      console.log(response.value)
+      let updatedTaskId = allTasks.value.findIndex((task) => task.id === response.value.id)
+      allTasks.value.splice(updatedTaskId, 1)
+    }
+    
+    else {
+      try {
+        tasks.value = await getAllTasks()
+        allTasks.value = tasks.value
+      } catch (error) {
+        crudResult.value = { displayResult: true, result: false, message: error.message }
+      }
     }
   }
 }
@@ -306,7 +320,9 @@ const deleteTaskConfirm = async () => {
       await deleteTask(taskId.value)
       await checkReceivedStatus({
         status: true,
-        message: `"${shortenTitle(taskTitle.value)}" The task has been deleted successfully`
+        message: `"${shortenTitle(taskTitle.value)}" The task has been deleted successfully`,
+        from: "delete",
+        value: taskId.value
       })
       // my_modal_1.closeModal()
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
