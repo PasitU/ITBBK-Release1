@@ -146,7 +146,6 @@ const saveStatus = async () => {
         from: 'edit',
         value: {...statuses.value, customizable: true}
       })
-      // alert('Status updated successfully!')
       router.push({ name: 'status' })
     } catch (error) {
       emits('status-updated', {
@@ -154,7 +153,6 @@ const saveStatus = async () => {
         result: false,
         message: `An error occurred: ${error.message}`
       })
-      // alert('Failed to update status.')
       router.push({ name: 'status' })
     }
   }

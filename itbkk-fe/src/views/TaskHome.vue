@@ -217,7 +217,7 @@ import StatusCard from '../components/statuscomponents/StatusCard.vue'
 import CrudResponseAlert from '@/components/ui/CrudResponseAlert.vue'
 
 const tasks = ref([])
-const allTasks = ref([]) //this name is suck but my brain is suck too
+const allTasks = ref([])
 const route = useRoute()
 const router = useRouter()
 const isNull = ref(false)
@@ -293,17 +293,12 @@ const checkReceivedStatus = async (response) => {
   crudResult.value.message = response.message
   if (crudResult.value.result) {
     if (response.from === 'edit') {
-      console.log(response.value)
       let updatedTaskId = allTasks.value.findIndex((task) => task.id === response.value.id)
-      console.log(allTasks.value)
       allTasks.value.splice(updatedTaskId, 1, response.value)
-    } else if(response.from === 'delete'){
-      console.log(response.value)
+    } else if (response.from === 'delete') {
       let updatedTaskId = allTasks.value.findIndex((task) => task.id === response.value.id)
       allTasks.value.splice(updatedTaskId, 1)
-    }
-    
-    else {
+    } else {
       try {
         tasks.value = await getAllTasks()
         allTasks.value = tasks.value
@@ -322,10 +317,9 @@ const deleteTaskConfirm = async () => {
       await checkReceivedStatus({
         status: true,
         message: `"${shortenTitle(taskTitle.value)}" The task has been deleted successfully`,
-        from: "delete",
+        from: 'delete',
         value: taskId.value
       })
-      // my_modal_1.closeModal()
       tasks.value = tasks.value.filter((task) => task.id !== taskId.value)
       allTasks.value = allTasks.value.filter((task) => task.id !== taskId.value)
     } catch (error) {

@@ -83,7 +83,7 @@
 </template>
 
 <script setup>
-import { getAllTasksInStatus, updateTask } from '@/api/taskService'
+import { getAllTasksInStatus, updateAllTasks } from '@/api/taskService'
 import { getAllStatuses, checkTaskDepend } from '@/api/statusService'
 import { shortenTitle } from '@/lib/utils.ts'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
@@ -180,12 +180,9 @@ const getBadgeClass = (statusId) => {
 }
 
 const saveAll = async () => {
+  const transferedTasks = tasks.value.filter((task) => task.status.name != props.statusToTransfer.name)
   try {
-    for (const task of tasks.value) {
-      if (task.status.name !== props.statusToTransfer.name) {
-        await updateTask(task.id, { ...task })
-      }
-    }
+    await updateAllTasks(transferedTasks)
     emits('crudAlert', {
       displayResult: true,
       result: true,

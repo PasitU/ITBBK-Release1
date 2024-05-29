@@ -110,3 +110,20 @@ export const updateTask = async (id: number, updatedTask: any) => {
     throw error
   }
 }
+
+export const updateAllTasks = async (updatedTasks: any) => {
+  try {
+    const response = await fetch(BASE_URL, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(updatedTasks)
+    })
+    if (!response.ok) {
+      throw new Error(`Failed to update all tasks.`)
+    }
+  } catch (error) {
+    throw error
+  }
+}
