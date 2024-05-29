@@ -4,38 +4,39 @@
     class="flex justify-center items-center h-screen w-screen bg-opacity-80 bg-zinc-800"
   >
     <div class="itbkk-modal-status w-3/5">
-      <Card class="items-center self-center min-w-full h-full">
-        <CardHeader>
-          <div class="flex gap-1">
-            <p class="pb-2">Status name :</p>
+      <Card class="items-center light self-center min-w-full h-full">
+        <StatusForm>
+          <template #nameAddOn>
             <p class="text-gray-500">({{ statusLength.nameLength }}/50)</p>
-          </div>
-          <input
-            type="text"
-            placeholder="name is required"
-            class="itbkk-status-name input input-bordered w-full bg-white"
-            :class="{ 'shake-horizontal input-error': isNotUniqueName }"
-            v-model="newStatus.name"
-            maxlength="50"
-          />
-          <p v-show="isNotUniqueName" class="shake-horizontal text-error mt-2">
-            Status name must be unique, please choose another name.
-          </p>
-        </CardHeader>
-        <CardContent class="flex flex-col">
-          <div class="flex gap-1">
-            <p class="pb-2">Description :</p>
+          </template>
+          <template #name>
+            <input
+              type="text"
+              placeholder="name is required"
+              class="itbkk-status-name input input-bordered w-full bg-white"
+              :class="{ 'shake-horizontal input-error': isNotUniqueName }"
+              v-model="newStatus.name"
+              maxlength="50"
+            />
+            <p v-show="isNotUniqueName" class="shake-horizontal text-error mt-2">
+              Status name must be unique, please choose another name.
+            </p>
+          </template>
+          <template #descriptionAddOn>
             <p class="text-gray-500">({{ statusLength.descriptionLength }}/200)</p>
-          </div>
-          <textarea
-            class="itbkk-status-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
-            placeholder="enter description here"
-            v-model="newStatus.description"
-            maxlength="200"
-          ></textarea>
-          <p class="pb-2">Enable Limit:</p>
-          <input type="checkbox" class="toggle toggle-warning" v-model="newStatus.limitEnabled" />
-        </CardContent>
+          </template>
+          <template #description>
+            <textarea
+              class="itbkk-status-description textarea textarea-bordered min-h-[8rem] w-full bg-white"
+              placeholder="enter description here"
+              v-model="newStatus.description"
+              maxlength="200"
+            ></textarea>
+          </template>
+          <template #limit>
+            <input type="checkbox" class="toggle toggle-warning" v-model="newStatus.limitEnabled" />
+          </template>
+        </StatusForm>
         <CardFooter class="gap-3">
           <button
             class="itbkk-button-confirm btn btn-success text-white"
@@ -57,9 +58,10 @@
 
 <script setup>
 import { ref, defineEmits, computed } from 'vue'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
+import { Card, CardFooter } from '@/components/ui/card/index.ts'
 import { useRouter } from 'vue-router'
 import { createStatus } from '@/api/statusService.ts'
+import StatusForm  from './StatusForm.vue'
 
 const emit = defineEmits(['returnStatus'])
 const newStatus = ref({ name: '', description: '', limitEnabled: false })
@@ -100,7 +102,7 @@ const createNewStatus = async () => {
     result: true,
     message: `Status "${newStatus.value.name}" created successfully`,
     from: 'add',
-    value: {...newStatus.value, customizable: true}
+    value: { ...newStatus.value, customizable: true }
   })
   router.back()
 }

@@ -6,11 +6,11 @@
     >
       <div class="itbkk-modal-status w-3/5">
         <Card class="items-center light self-center min-w-full h-full">
-          <CardHeader>
-            <div class="flex gap-1">
-              <p class="pb-2">Status name :</p>
+          <StatusForm>
+            <template #nameAddOn>
               <p class="text-gray-500">({{ statusLength.nameLength }}/50)</p>
-            </div>
+          </template>
+          <template #name>
             <input
               type="text"
               class="itbkk-status-name input input-bordered w-full space-x-5 border p-4 mt-2"
@@ -22,22 +22,22 @@
               {{ isNotUniqueName ? 'Status name must be unique, please choose another name.' : '' }}
               {{ isNameNull ? 'Status name cannot be empty' : '' }}
             </p>
-          </CardHeader>
-          <CardContent class="flex-row">
-            <div class="flex gap-1">
-              <p class="pb-2">Description :</p>
-              <p class="text-gray-500">({{ statusLength.descriptionLength }}/200)</p>
-            </div>
+          </template>
+          <template #descriptionAddOn>
+            <p class="text-gray-500">({{ statusLength.descriptionLength }}/200)</p>
+          </template>
+          <template #description>
             <textarea
               class="itbkk-status-description textarea textarea-bordered h-44 w-full"
               v-model="statuses.description"
               maxlength="200"
             >
             </textarea>
-            <p class="pb-2">Enable Limit:</p>
+          </template>
+          <template #limit>
             <input type="checkbox" class="toggle toggle-warning" v-model="statuses.limitEnabled" />
-          </CardContent>
-
+          </template>
+          </StatusForm>
           <CardFooter>
             <button
               class="itbkk-button-confirm btn btn-success w-20 mr-3"
@@ -60,9 +60,10 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/index.ts'
+import { Card, CardFooter } from '@/components/ui/card/index.ts'
 import { useRouter } from 'vue-router'
 import { getAllStatuses, getStatusById, updateStatus } from '@/api/statusService.ts'
+import StatusForm  from './StatusForm.vue'
 const emits = defineEmits(['status-updated'])
 const router = useRouter()
 const statuses = ref({
