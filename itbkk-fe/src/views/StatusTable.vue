@@ -304,10 +304,18 @@ const confirmDeleteWithLimit = async (deleteStatus, newStatus) => {
 const checkReceivedStatus = async (response) => {
   crudAlert.value = { ...response }
   if (crudAlert.value.result) {
-    try {
-      statuses.value = await getAllStatuses()
-    } catch (error) {
-      crudAlert.value = { displayResult: true, result: false, message: error.message }
+    if (response.from === 'edit') {
+      let updatedStatusId = statuses.value.findIndex((status) => status.id === response.value.id)
+      statuses.value.splice(updatedStatusId, 1, response.value)
+    } else if (response.from === 'delete') {
+      let deletedTaskId = statuses.value.findIndex((status) => status.id === response.value.id)
+      statuses.value.splice(deletedTaskId, 1)
+    } else {
+      try {
+        statuses.value = await getAllStatuses()
+      } catch (error) {
+        crudAlert.value = { displayResult: true, result: false, message: error.message }
+      }
     }
   }
 }

@@ -137,7 +137,6 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card/
 import { getUserTimeZoneId, UTCtoLocalFormat } from '@/utils/timeConverter.ts'
 import { shortenTitle } from '@/lib/utils.ts'
 import TaskForm from './TaskForm.vue'
-const route = useRoute()
 const router = useRouter()
 const emit = defineEmits(['returnStatus'])
 const fetchError = ref({ hasError: false, message: '' })
@@ -233,7 +232,6 @@ const saveTask = async () => {
       message: `The task "${shortenTitle(taskUpdate.value.title)}" has been updated!`,
       from: "edit",
       value: {id:Number(task.value.id), assignees:task.value.assignees, status:task.value.status, title:task.value.title}
-      // value: {...task.value, id:route.params.id}
     })
     router.back()
   } catch (error) {

@@ -141,7 +141,9 @@ const saveStatus = async () => {
         newStatus: statuses.value,
         displayResult: true,
         result: true,
-        message: `Status "${statuses.value.name}" updated successfully`
+        message: `Status "${statuses.value.name}" updated successfully`,
+        from: 'edit',
+        value: {...statuses.value, customizable: true}
       })
       // alert('Status updated successfully!')
       router.push({ name: 'status' })

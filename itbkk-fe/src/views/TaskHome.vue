@@ -311,6 +311,7 @@ const checkReceivedStatus = async (response) => {
         crudResult.value = { displayResult: true, result: false, message: error.message }
       }
     }
+    selectedStatus.value.length = 0
   }
 }
 

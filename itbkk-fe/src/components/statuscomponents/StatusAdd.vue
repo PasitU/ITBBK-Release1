@@ -18,7 +18,9 @@
             v-model="newStatus.name"
             maxlength="50"
           />
-          <p v-show="isNotUniqueName" class="shake-horizontal text-error mt-2">Status name must be unique, please choose another name. </p>
+          <p v-show="isNotUniqueName" class="shake-horizontal text-error mt-2">
+            Status name must be unique, please choose another name.
+          </p>
         </CardHeader>
         <CardContent class="flex flex-col">
           <div class="flex gap-1">
@@ -76,7 +78,9 @@ const statusLength = computed(() => ({
 }))
 
 const isNotUniqueName = computed(() => {
-  return props.statuses.some((status) => status.name.toLowerCase() === newStatus.value.name.toLowerCase())
+  return props.statuses.some(
+    (status) => status.name.toLowerCase() === newStatus.value.name.toLowerCase()
+  )
 })
 
 const createNewStatus = async () => {
@@ -94,7 +98,9 @@ const createNewStatus = async () => {
   emit('returnStatus', {
     displayResult: true,
     result: true,
-    message: `Status "${newStatus.value.name}" created successfully`
+    message: `Status "${newStatus.value.name}" created successfully`,
+    from: 'add',
+    value: {...newStatus.value, customizable: true}
   })
   router.back()
 }
@@ -105,67 +111,65 @@ const closePage = () => {
 </script>
 
 <style scoped>
-  .shake-horizontal {
-	-webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
-	        animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+.shake-horizontal {
+  -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+  animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
 }
 
-
- @-webkit-keyframes shake-horizontal {
+@-webkit-keyframes shake-horizontal {
   0%,
   100% {
     -webkit-transform: translateX(0);
-            transform: translateX(0);
+    transform: translateX(0);
   }
   10%,
   30%,
   50%,
   70% {
     -webkit-transform: translateX(-10px);
-            transform: translateX(-10px);
+    transform: translateX(-10px);
   }
   20%,
   40%,
   60% {
     -webkit-transform: translateX(10px);
-            transform: translateX(10px);
+    transform: translateX(10px);
   }
   80% {
     -webkit-transform: translateX(8px);
-            transform: translateX(8px);
+    transform: translateX(8px);
   }
   90% {
     -webkit-transform: translateX(-8px);
-            transform: translateX(-8px);
+    transform: translateX(-8px);
   }
 }
 @keyframes shake-horizontal {
   0%,
   100% {
     -webkit-transform: translateX(0);
-            transform: translateX(0);
+    transform: translateX(0);
   }
   10%,
   30%,
   50%,
   70% {
     -webkit-transform: translateX(-10px);
-            transform: translateX(-10px);
+    transform: translateX(-10px);
   }
   20%,
   40%,
   60% {
     -webkit-transform: translateX(10px);
-            transform: translateX(10px);
+    transform: translateX(10px);
   }
   80% {
     -webkit-transform: translateX(8px);
-            transform: translateX(8px);
+    transform: translateX(8px);
   }
   90% {
     -webkit-transform: translateX(-8px);
-            transform: translateX(-8px);
+    transform: translateX(-8px);
   }
 }
-
 </style>
