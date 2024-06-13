@@ -150,13 +150,16 @@ const saveNewTask = async () => {
     }
   }
   try {
-    await createTask(newTask.value)
+    const taskToCreate = {...newTask.value}
+    taskToCreate.statusId = taskToCreate.status.id
+    await createTask(taskToCreate)
     emit('returnStatus', {
       status: true,
       message: `The task "${shortenTitle(newTask.value.title)}" has been saved! ...`
     })
     router.back()
-  } catch (error) {
+  } 
+  catch (error) {
     emit('returnStatus', {
       status: false,
       message: `An error occured: task "${shortenTitle(newTask.value.title)}" couldn't be saved, Please try again later`

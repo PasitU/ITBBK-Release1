@@ -97,7 +97,7 @@ export const updateTask = async (id: number, updatedTask: any) => {
         title: updatedTask.title,
         description: updatedTask.description,
         assignees: updatedTask.assignees,
-        status: updatedTask.status
+        statusId: updatedTask.status.id
       })
     })
     if (response.status === 404) {

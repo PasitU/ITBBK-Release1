@@ -296,8 +296,8 @@ const checkReceivedStatus = async (response) => {
       let updatedTaskId = allTasks.value.findIndex((task) => task.id === response.value.id)
       allTasks.value.splice(updatedTaskId, 1, response.value)
     } else if (response.from === 'delete') {
-      let updatedTaskId = allTasks.value.findIndex((task) => task.id === response.value.id)
-      allTasks.value.splice(updatedTaskId, 1)
+      let deletedTaskId = allTasks.value.findIndex((task) => task.id === response.value)
+      allTasks.value.splice(deletedTaskId, 1)
     } else {
       try {
         tasks.value = await getAllTasks()
