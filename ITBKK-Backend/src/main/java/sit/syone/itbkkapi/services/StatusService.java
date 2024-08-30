@@ -1,7 +1,6 @@
 package sit.syone.itbkkapi.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,12 +9,10 @@ import org.springframework.http.HttpStatus;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import sit.syone.itbkkapi.entities.Status;
-import sit.syone.itbkkapi.entities.Task;
-import sit.syone.itbkkapi.repositories.StatusRepository;
-import sit.syone.itbkkapi.repositories.TaskRepository;
+import sit.syone.itbkkapi.primarydatasource.entities.Status;
+import sit.syone.itbkkapi.primarydatasource.repositories.StatusRepository;
+import sit.syone.itbkkapi.primarydatasource.repositories.TaskRepository;
 
 @Service
 public class StatusService {

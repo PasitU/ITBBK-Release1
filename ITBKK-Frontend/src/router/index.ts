@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import TaskHome from '@/views/TaskHome.vue'
+import LoginPage from '@/views/LoginPage.vue'
 import TaskEdit from '@/components/taskcomponents/TaskEdit.vue'
 // import TaskAdd from '@/views/TaskAdd.vue'
 import StatusTable from '@/views/StatusTable.vue'
@@ -10,6 +11,7 @@ import StatusEdit from '@/components/statuscomponents/StatusEdit.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
+    name: 'home',
     redirect: '/task'
   },
   {
@@ -41,6 +43,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/status/:id/edit',
     name: 'statusEdit',
     component: StatusTable
+  },
+  {
+    path: '/login',
+    name: 'loginPage',
+    component: LoginPage
   }
 ]
 

@@ -1,7 +1,7 @@
 package sit.syone.itbkkapi.dtos.task;
 
 import lombok.Data;
-import sit.syone.itbkkapi.entities.Status;
+import sit.syone.itbkkapi.primarydatasource.entities.Status;
 
 import java.time.ZonedDateTime;
 

@@ -15,9 +15,21 @@
           >Manage Status</Button
         >
         <Button
-          class="itbkk-button-add bg-blue-700 text-18 text-red-50 hover:bg-blue-800"
+          class="itbkk-button-add bg-blue-700 text-18 text-red-50 hover:bg-blue-800 mr-2"
           @click="navigateToAddTask"
           >Add Task</Button
+        >
+        <Button
+          v-if="!authStore.isAuthenticated"
+          class="itbkk-button-add bg-yellow-700 text-18 text-red-50 hover:bg-yellow-800"
+          @click="navigateToLogin"
+          >Login</Button
+        >
+        <Button
+          v-if="authStore.isAuthenticated"
+          class="itbkk-button-add bg-yellow-700 text-18 text-red-50 hover:bg-yellow-800"
+          @click="logout"
+          >Logout</Button
         >
       </div>
 
@@ -39,8 +51,11 @@
         @update-displayResult="crudResult.displayResult = $event"
       >
       </CrudResponseAlert>
-      <div class="flex gap-2">
-        <div class="dropdown dropdown-bottom ml-3">
+      <div class="flex gap-2 flex-col">
+        <div v-if="authStore.isAuthenticated" class="ml-4 itbkk-fullname">
+          Welcome, {{ authStore.decodedToken.name }}
+        </div>
+        <div class="dropdown dropdown-bottom ml-3 w-1/5">
           <div
             class="border h-8 rounded-md min-w-52 items-center flex pr-6"
             role="button"
@@ -215,6 +230,7 @@ import { getAllStatuses } from '@/api/statusService'
 import { shortenTitle, getStatusClass } from '@/lib/utils'
 import StatusCard from '../components/statuscomponents/StatusCard.vue'
 import CrudResponseAlert from '@/components/ui/CrudResponseAlert.vue'
+import { useAuthStore } from '@/stores/AuthStore'
 
 const tasks = ref([])
 const allTasks = ref([])
@@ -231,6 +247,8 @@ const deleteTaskNumber = ref(null)
 
 const selectedStatus = ref([])
 
+const authStore = useAuthStore()
+
 onMounted(async () => {
   try {
     tasks.value = await getAllTasks()
@@ -243,6 +261,10 @@ onMounted(async () => {
 })
 const navigateToAddTask = () => {
   router.push({ name: 'add' })
+}
+
+const navigateToLogin = () => {
+  router.push({ name: 'loginPage' })
 }
 
 const nextIcon = () => {
@@ -282,6 +304,11 @@ const sortedTasks = computed(() => {
   }
   return tasks.value.slice()
 })
+
+const logout = () => {
+  authStore.clearToken() // Clear the token to log out
+  router.push({ name: 'loginPage' }) // Optionally navigate to the login page after logout
+}
 
 const navigateToStatus = () => {
   router.push({ name: 'status' })

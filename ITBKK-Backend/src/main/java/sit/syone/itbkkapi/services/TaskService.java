@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import sit.syone.itbkkapi.dtos.task.CreateTaskDTO;
 import sit.syone.itbkkapi.dtos.task.UpdateTaskDTO;
-import sit.syone.itbkkapi.entities.Status;
-import sit.syone.itbkkapi.entities.Task;
-import sit.syone.itbkkapi.repositories.StatusRepository;
-import sit.syone.itbkkapi.repositories.TaskRepository;
+import sit.syone.itbkkapi.primarydatasource.entities.Status;
+import sit.syone.itbkkapi.primarydatasource.entities.Task;
+import sit.syone.itbkkapi.primarydatasource.repositories.StatusRepository;
+import sit.syone.itbkkapi.primarydatasource.repositories.TaskRepository;
 
 import java.util.List;
 

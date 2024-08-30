@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import sit.syone.itbkkapi.services.ConstantService;
 
 @RestController
-@RequestMapping("/v2/const")
+@RequestMapping("/v3/const")
 @CrossOrigin(origins = {"http://ip23sy1.sit.kmutt.ac.th:80", "http://localhost:5173", "http://intproj23.sit.kmutt.ac.th"})
 public class ConstantController {
     @Autowired

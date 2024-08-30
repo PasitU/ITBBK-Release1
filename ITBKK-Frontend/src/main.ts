@@ -3,6 +3,7 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { createPinia } from 'pinia'
 import {
   MdCancel,
   CoSettings,
@@ -21,5 +22,6 @@ addIcons(CoSettings, FaEdit, MdDeleteforever, CoSortAlphaDown, CoSortAlphaUp, Md
 
 const app = createApp(App)
 app.use(router)
+app.use(createPinia())
 app.component('v-icon', OhVueIcon)
 app.mount('#app')

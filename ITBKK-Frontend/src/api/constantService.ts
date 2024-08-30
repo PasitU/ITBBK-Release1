@@ -4,7 +4,8 @@ export const getConstants = async (name: string): Promise<any> => {
   try {
     const response = await fetch(`${BASE_URL}/${name}`)
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`)
+      const errorDetails = await response.json()
+      throw new Error(`${errorDetails.message || 'Unknown error'}`)
     }
     const data = await response.json()
     return data

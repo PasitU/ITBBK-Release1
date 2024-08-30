@@ -5,20 +5,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sit.syone.itbkkapi.dtos.task.CreateTaskDTO;
 import sit.syone.itbkkapi.dtos.task.DetailedTaskDTO;
 import sit.syone.itbkkapi.dtos.task.SimpleTaskDTO;
 import sit.syone.itbkkapi.dtos.task.UpdateTaskDTO;
-import sit.syone.itbkkapi.entities.Task;
+import sit.syone.itbkkapi.primarydatasource.entities.Task;
 import sit.syone.itbkkapi.services.TaskService;
 import sit.syone.itbkkapi.util.ListMapper;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/v2/tasks")
+@RequestMapping("/v3/tasks")
 @CrossOrigin(origins = {"http://ip23sy1.sit.kmutt.ac.th:80", "http://localhost:5173", "http://intproj23.sit.kmutt.ac.th"})
 public class TaskController {
     @Autowired
